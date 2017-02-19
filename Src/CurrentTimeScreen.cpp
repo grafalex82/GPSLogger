@@ -58,6 +58,7 @@ Screen * createCurrentTimeScreen()
 	tzScreen = tzScreen->addScreen(new TimeZoneScreen(-3, 30));
 	
 	CurrentTimeScreen * screen = new CurrentTimeScreen();
-	screen->addChildScreen(tzScreen); 
+	screen->addChildScreen(tzScreen);
 	return screen;
 }
+

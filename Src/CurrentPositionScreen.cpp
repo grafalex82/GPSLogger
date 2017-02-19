@@ -6,10 +6,19 @@ extern Adafruit_SSD1306 display;
 
 void CurrentPositionScreen::drawScreen()
 {
-  display.fillCircle(display.width()/2, display.height()/2, 10, WHITE);
+	display.setFont(NULL); //TODO: Use 8x12 font to effectively use screen space
+	display.setCursor(0,8);
+	display.println(F("LA:  --\"--'--.--")); //TODO Print actual coordinates
+	display.println(F("LO: ---\"--'--.--")); //TODO Print actual coordinates
 }
 
 CurrentPositionScreen::~CurrentPositionScreen()
 {
+}
+
+const char * CurrentPositionScreen::getOkButtonText()
+{
+	static const char text[] PROGMEM = "POI";
+	return text;
 }
 
