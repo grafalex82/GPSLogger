@@ -33,6 +33,7 @@ void setup()
 	
 	// by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
 	display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x32)
+	display.setTextColor(WHITE);				// Assuming all subsequent commands draw in white color
 	
 	pinMode(SEL_BUTTON_PIN, INPUT_PULLUP);
 	pinMode(OK_BUTTON_PIN, INPUT_PULLUP);

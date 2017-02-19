@@ -128,7 +128,6 @@ void RunFontTest()
 {
 	display.clearDisplay();
 	//	screens[current_screen]->drawScreen();
-	display.setTextColor(WHITE);
 	display.setCursor(0,30);
 	display.setFont(fonts[current_font].font);
 	display.print("12:34:56");

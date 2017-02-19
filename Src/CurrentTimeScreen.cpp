@@ -42,7 +42,6 @@ void CurrentTimeScreen::drawScreen()
 	buf[7] = 0x30 + s % 10;
 	buf[8] = 0;
 	
-	display.setTextColor(WHITE);
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);
 	display.print(buf);

@@ -15,7 +15,6 @@ TestScreen::~TestScreen()
 
 void TestScreen::drawScreen()
 {
-	display.setTextColor(WHITE);
 	display.setFont(NULL);
 	display.setCursor(0,16);
 	display.print(this->str);

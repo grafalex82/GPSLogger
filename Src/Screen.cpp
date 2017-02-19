@@ -14,7 +14,6 @@ Screen::Screen()
 
 void Screen::drawHeader()
 {
-	display.setTextColor(WHITE);
 	display.setFont(NULL);
 	display.setCursor(20, 0);
 	display.print('\x1e');

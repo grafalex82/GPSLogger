@@ -21,7 +21,6 @@ TimeZoneScreen::~TimeZoneScreen()
 
 void TimeZoneScreen::drawScreen()
 {
-	display.setTextColor(WHITE);
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);
 	display.print("12:34");
