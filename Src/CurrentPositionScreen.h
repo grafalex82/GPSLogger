@@ -6,9 +6,11 @@
 class CurrentPositionScreen: public Screen
 {
 public:
-  virtual ~CurrentPositionScreen();
+	virtual ~CurrentPositionScreen();
 
-  virtual void drawScreen();
+	virtual void drawScreen();
+
+	virtual void onOkButton();
 
 protected:
 	const char * getOkButtonText();

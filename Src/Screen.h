@@ -17,8 +17,8 @@ public:
 	virtual void onSelButton();
 	virtual void onOkButton();
 	
-	virtual PROGMEM const char * getSelButtonText();
-	virtual PROGMEM const char * getOkButtonText();
+	virtual const char * getSelButtonText();
+	virtual const char * getOkButtonText();
 	
 	Screen * addScreen(Screen * screen);
 };

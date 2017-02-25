@@ -15,8 +15,8 @@ public:
 	virtual void drawScreen();
 	virtual void onOkButton();
 	
-	virtual PROGMEM const char * getSelButtonText();
-	virtual PROGMEM const char * getOkButtonText();
+	virtual const char * getSelButtonText();
+	virtual const char * getOkButtonText();
 
 private:
 	TimeZoneScreen( const TimeZoneScreen &c );

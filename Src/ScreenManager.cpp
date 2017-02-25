@@ -21,11 +21,14 @@ const uint8_t OK_BUTTON_PIN = 3;
 
 // Timeouts
 const unsigned long DEBOUNCE_TIMEOUT = 30;
-const unsigned long MESSAGE_BOX_DIRATION = 5000;
+const unsigned long MESSAGE_BOX_DIRATION = 1000;
 
 // Stack of nested screens
 Screen * screenStack[3];
 int screenIdx = 0;
+
+// Pointer to currently displaying message box text
+const char * messageBoxText = NULL;
 
 enum State
 {
@@ -117,12 +120,15 @@ void drawDisplay()
 		// Draw a message box if requested
 		case MESSAGE_BOX:
 		{
+			//Center text
+			uint8_t x = 128/2 - strlen_P(messageBoxText)*6/2;
+			
+			// Draw the message
 			display.clearDisplay();
 			display.setFont(NULL);
 			display.drawRect(2, 2, 126, 30, 1);
-			//display.drawRoundRect(2, 2, 126, 30, 4, 1);
-			display.setCursor(10, 12);
-			display.print(F("Message Box!"));
+			display.setCursor(x, 12);
+			display.print(USE_PGM_STRING(messageBoxText));
 			display.display();
 			break;
 		}
@@ -159,23 +165,17 @@ void processState()
 			{
 				// TODO: Process long press here
 
+
+				// Unless button handlers change state little below we will be switching to IDLE mode by default
+				state = IDLE;
+
 				// process button according to current screen
 				Screen * currentScreen = getCurrentScreen();
 				if(prevButtonState == SEL_BUTTON)
-				currentScreen->onSelButton();
+					currentScreen->onSelButton();
 				
 				if(prevButtonState == OK_BUTTON)
-				{
-					//currentScreen->onOkButton();
-					
-					// TODO: Create a function for message boxes
-					state = MESSAGE_BOX;
-					lastEventMillis = millis();
-					break;
-				}
-
-				// Buttons processed - returning to IDLE
-				state = IDLE;
+					currentScreen->onOkButton();
 			}
 
 			break;
@@ -190,4 +190,12 @@ void processState()
 		default:
 		break;
 	}
+}
+
+void messageBox(PROGMEM const char * text)
+{
+	// entering message box displaying state
+	messageBoxText = text;	
+	state = MESSAGE_BOX;
+	lastEventMillis = millis();
 }

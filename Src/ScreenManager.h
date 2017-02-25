@@ -14,5 +14,6 @@ void initScreens();
 void drawDisplay();
 void processState();
 
+void messageBox(PROGMEM const char * text);
 
 #endif //__SCREENMANAGER_H__

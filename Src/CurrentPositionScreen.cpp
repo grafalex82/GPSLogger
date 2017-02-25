@@ -1,6 +1,7 @@
 #include <Adafruit_SSD1306.h>
 #include "8x12Font.h"
 
+#include "ScreenManager.h"
 #include "CurrentPositionScreen.h"
 
 extern Adafruit_SSD1306 display;
@@ -25,3 +26,8 @@ const char * CurrentPositionScreen::getOkButtonText()
 	return text;
 }
 
+void CurrentPositionScreen::onOkButton()
+{
+	static const char text[] PROGMEM = "Waypoint Saved!";
+	messageBox(text);
+}
