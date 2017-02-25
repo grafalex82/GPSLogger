@@ -9,5 +9,10 @@ Screen * getCurrentScreen();
 void enterChildScreen(Screen * screen);
 void backToParentScreen();
 
+void initDisplay();
+void initScreens();
+void drawDisplay();
+void processState();
+
 
 #endif //__SCREENMANAGER_H__
