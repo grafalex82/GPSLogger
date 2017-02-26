@@ -41,16 +41,16 @@ enum State
 State state = IDLE; // Current state
 unsigned long lastEventMillis = 0; // Milis() for last state change
 
-enum ButtonsEnum
+enum Buttons
 {
 	NO_BUTTON,
 	SEL_BUTTON,
 	OK_BUTTON
 };
 
-ButtonsEnum curPressedButton = NO_BUTTON;
+Buttons curPressedButton = NO_BUTTON;
 
-int8_t getCurPressedButton()
+int8_t getCurPressedButton() //TODO: Can't compile this when function returns Buttons
 {
 	if(!digitalRead(SEL_BUTTON_PIN))
 	return SEL_BUTTON;
@@ -157,7 +157,7 @@ void processState()
 		// Process button release
 		case BUTTON_PRESSED:
 		{
-			ButtonsEnum prevButtonState = curPressedButton;
+			Buttons prevButtonState = curPressedButton;
 			curPressedButton = getCurPressedButton();
 			
 			// Check if button was released after debouncing timeout
