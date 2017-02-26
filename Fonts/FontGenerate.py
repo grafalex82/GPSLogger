@@ -2,12 +2,12 @@ import os
 import sys
 import png
 
-def parse_symbol(pixels, x_offset, sym_width, sym_height):
+def parse_symbol(pixels, x_offset, y_offset, sym_width, sym_height):
 	symb = []
 	for y in range(sym_height):
 		line = []
 		for x in range(sym_width):
-			pixel = pixels[y][(x+x_offset)*4] # Greyscale is not supported yet. Assuming 4 bytes per pixel
+			pixel = pixels[y+y_offset][(x+x_offset)*4] # Greyscale is not supported yet. Assuming 4 bytes per pixel
 			line.append(1 if (pixel == 0) else 0)
 		symb.append(line)
 
@@ -58,7 +58,7 @@ def strip_symbol(symb):
 	return symb, x_padding, y_padding
 			
 
-def print_bitmap(symb):
+def print_bitmap(symb, idx):
 	bitmap = ""
 	for line in symb:
 		b = 0
@@ -66,25 +66,30 @@ def print_bitmap(symb):
 			b = b << 1
 			if p:
 				b += 1
+			
+		b = b << (8-len(line))
+			
 		bitmap += "0x" + format(b, "02x") + ", "
 
-	print bitmap
+	print "%s    //0x%s '%c'" % (bitmap, format(idx, "02x"), chr(idx))
 
-def print_glyph(symb, sym_height):
+def print_glyph(symb, sym_width, sym_height, idx, offset):
 	pixels = symb[0]
 	x_padding = symb[1]
 	y_padding = symb[2]
 
-	print "?, %d, %d, ?, %d, %d" % (len(pixels[0]), len(pixels), x_padding, y_padding-sym_height) 
+	print "%d, %d, %d, %d, %d, %d,    //0x%s '%c'" % (offset, sym_width, len(pixels), sym_width, x_padding, y_padding-sym_height, format(idx, "02x"), chr(idx)) 
+	return len(pixels)
 
 def main():
 	if len(sys.argv) < 4:
-		print "Usage: FontGenerate.py <font.png> <width> <height>"
+		print "Usage: FontGenerate.py <font.png> <width> <height> <base_idx>"
 		exit(1)
 
 	filename = sys.argv[1]
 	sym_width = int(sys.argv[2])
 	sym_height = int(sys.argv[3])
+	base_idx = int(sys.argv[4])
 
 	print "Reading", filename
 
@@ -93,14 +98,21 @@ def main():
 	pixels = list(pixels_obj)
 
 	symbols = []
-	for x_offset in [10*offset for offset in range(pic_width/sym_width)]:
-		symb = parse_symbol(pixels, x_offset, sym_width, sym_height)
-		symbols.append(strip_symbol(symb))
+	for y_offset in [sym_height*offset for offset in range(pic_height/sym_height)]:
+		for x_offset in [sym_width*offset for offset in range(pic_width/sym_width)]:
+			symb = parse_symbol(pixels, x_offset, y_offset, sym_width, sym_height)
+			symbols.append(strip_symbol(symb))
 
+	idx = base_idx
 	for symb in symbols:
-		print_bitmap(symb[0])
+		print_bitmap(symb[0], idx)
+		idx += 1
+		
+	idx = base_idx
+	offset = 0
 	for symb in symbols:
-		print_glyph(symb, sym_height)
+		offset += print_glyph(symb, sym_width, sym_height, idx, offset)
+		idx += 1
 
 if __name__ == "__main__":
 	main()
