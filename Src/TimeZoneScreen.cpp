@@ -23,7 +23,7 @@ void TimeZoneScreen::drawScreen()
 {
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);
-	display.print("12:34");
+	display.print(F("12:34"));
 	
 	display.setFont(NULL);
 	display.setCursor(78,8);
