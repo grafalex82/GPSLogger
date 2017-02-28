@@ -79,7 +79,7 @@ def print_bitmap(symb, idx):
 			
 	if bits != 0:
 		b = b << (8-bits)
-		bitmap += "0x" + format(b, "02x")
+		bitmap += "0x" + format(b, "02x") + ','
 		
 	print "%s    //0x%s '%c'" % (bitmap, format(idx, "02x"), chr(idx))
 
