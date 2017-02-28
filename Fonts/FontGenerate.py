@@ -3,6 +3,7 @@ import sys
 import png
 
 def parse_symbol(pixels, x_offset, y_offset, sym_width, sym_height):
+	print "Parsing symbol at %d:%d" % (x_offset, y_offset)
 	symb = []
 	for y in range(sym_height):
 		line = []
@@ -10,7 +11,7 @@ def parse_symbol(pixels, x_offset, y_offset, sym_width, sym_height):
 			pixel = pixels[y+y_offset][(x+x_offset)*4] # Greyscale is not supported yet. Assuming 4 bytes per pixel
 			line.append(1 if (pixel == 0) else 0)
 		symb.append(line)
-
+		
 	return symb
 
 def strip_symbol(symb):
@@ -52,25 +53,34 @@ def strip_symbol(symb):
 			for y in range(len(symb)):
 				symb[y] = symb[y][:-1]
 
-	for l in symb:
-		print l
+#	for l in symb:
+#		print l
 
 	return symb, x_padding, y_padding
 			
 
 def print_bitmap(symb, idx):
 	bitmap = ""
+	b = 0
+	bits = 0
+
 	for line in symb:
-		b = 0
 		for p in line:
 			b = b << 1
 			if p:
 				b += 1
+				
+			# Store the bit
+			bits += 1
+			if bits == 8:
+				bitmap += "0x" + format(b, "02x") + ", "
+				b = 0
+				bits = 0
 			
-		b = b << (8-len(line))
-			
-		bitmap += "0x" + format(b, "02x") + ", "
-
+	if bits != 0:
+		b = b << (8-bits)
+		bitmap += "0x" + format(b, "02x")
+		
 	print "%s    //0x%s '%c'" % (bitmap, format(idx, "02x"), chr(idx))
 
 def print_glyph(symb, sym_width, sym_height, idx, offset):
@@ -78,14 +88,19 @@ def print_glyph(symb, sym_width, sym_height, idx, offset):
 	x_padding = symb[1]
 	y_padding = symb[2]
 
-	print "%d, %d, %d, %d, %d, %d,    //0x%s '%c'" % (offset, sym_width, len(pixels), sym_width, x_padding, y_padding-sym_height, format(idx, "02x"), chr(idx)) 
-	return len(pixels)
+	print "%d, %d, %d, %d, %d, %d,    //0x%s '%c'" % (offset, len(pixels[0]), len(pixels), sym_width, x_padding, y_padding-sym_height, format(idx, "02x"), chr(idx)) 
+	
+	size = len(pixels) * len(pixels[0])
+	if size % 8 != 0:
+		size += 8 - size % 8
+	
+	return size / 8
 
 def main():
 	if len(sys.argv) < 4:
 		print "Usage: FontGenerate.py <font.png> <width> <height> <base_idx>"
 		exit(1)
-
+		
 	filename = sys.argv[1]
 	sym_width = int(sys.argv[2])
 	sym_height = int(sys.argv[3])
@@ -96,6 +111,9 @@ def main():
 	r=png.Reader(filename=filename)
 	pic_width, pic_height, pixels_obj, pic_params = r.read()
 	pixels = list(pixels_obj)
+	
+	print pic_params
+	print pixels[0]
 
 	symbols = []
 	for y_offset in [sym_height*offset for offset in range(pic_height/sym_height)]:
