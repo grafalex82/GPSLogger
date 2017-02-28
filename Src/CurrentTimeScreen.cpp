@@ -31,16 +31,17 @@ void CurrentTimeScreen::drawScreen()
 	Serial.println(gps.time.age());
 	*/
 	
-	char buf[9];
-	buf[0] = 0x30 + h / 10;
-	buf[1] = 0x30 + h % 10;
-	buf[2] = ':';
-	buf[3] = 0x30 + m / 10;
-	buf[4] = 0x30 + m % 10;
-	buf[5] = ':';
-	buf[6] = 0x30 + s / 10;
-	buf[7] = 0x30 + s % 10;
-	buf[8] = 0;
+	char buf[10];
+	buf[0] = ';';  // '~' symbol
+	buf[1] = 0x30 + h / 10;
+	buf[2] = 0x30 + h % 10;
+	buf[3] = ':';
+	buf[4] = 0x30 + m / 10;
+	buf[5] = 0x30 + m % 10;
+	buf[6] = ':';
+	buf[7] = 0x30 + s / 10;
+	buf[8] = 0x30 + s % 10;
+	buf[9] = 0;
 	
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);
