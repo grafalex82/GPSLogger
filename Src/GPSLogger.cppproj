@@ -67,12 +67,10 @@
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
@@ -80,7 +78,7 @@
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs</Value>
-      <Value>../../../GPSLogger</Value>
+      <Value>../../../Src</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/include/</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/</Value>
@@ -109,12 +107,10 @@
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
@@ -122,7 +118,7 @@
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs</Value>
-      <Value>../../../GPSLogger</Value>
+      <Value>../../../Src</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/include/</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/</Value>
@@ -148,7 +144,7 @@
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
-    <VMSETTING_IncludePaths>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Users/GrafAlex/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;../../../GPSLogger;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include/;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src/utility;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Users/GrafAlex/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;../../../GPSLogger;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include/;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src/utility;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility;../../../Src;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
@@ -447,12 +443,10 @@ build.arch=AVR
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
@@ -460,7 +454,7 @@ build.arch=AVR
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs</Value>
-      <Value>../../../GPSLogger</Value>
+      <Value>../../../Src</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/include/</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/</Value>
@@ -489,12 +483,10 @@ build.arch=AVR
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
@@ -502,7 +494,7 @@ build.arch=AVR
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino</Value>
       <Value>C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs</Value>
-      <Value>../../../GPSLogger</Value>
+      <Value>../../../Src</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/include/</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/</Value>
       <Value>c:/program files (x86)/arduino/hardware/tools/avr/avr/</Value>
@@ -528,7 +520,7 @@ build.arch=AVR
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
-    <VMSETTING_IncludePaths>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Users/GrafAlex/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;../../../GPSLogger;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include/;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src/utility;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Users/GrafAlex/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;../../../GPSLogger;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include/;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src/utility;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility;../../../Src;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
@@ -802,6 +794,9 @@ build.arch=AVR
     </VisualMicroSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="8x12Font.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="FontTest.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -841,12 +836,6 @@ build.arch=AVR
     <Compile Include="ScreenManager.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="TestScreen.cpp">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="TestScreen.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="TimeFont.h">
       <SubType>compile</SubType>
     </Compile>
@@ -857,6 +846,9 @@ build.arch=AVR
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="__vm\.GPSLogger.vsarduino.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="__vm\.Src.vsarduino.h">
       <SubType>compile</SubType>
     </Compile>
   </ItemGroup>
