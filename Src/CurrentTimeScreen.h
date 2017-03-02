@@ -9,7 +9,6 @@ public:
   virtual void drawScreen();
   
   CurrentTimeScreen();
-  virtual ~CurrentTimeScreen();
 };
 
 #endif //_TIME_SCREEN_H_

@@ -7,10 +7,6 @@ ParentScreen::ParentScreen()
 	childScreen = NULL;
 }
 
-ParentScreen::~ParentScreen()
-{
-}
-
 Screen * ParentScreen::addChildScreen(Screen * screen)
 {
 	childScreen = screen;

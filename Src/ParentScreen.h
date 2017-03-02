@@ -11,7 +11,6 @@ class ParentScreen : public Screen
 	
 public:
 	ParentScreen();
-	~ParentScreen();
 
 	Screen * addChildScreen(Screen * screen);
 

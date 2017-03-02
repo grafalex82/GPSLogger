@@ -7,7 +7,6 @@ class TimeZoneScreen : public Screen
 {
 public:
 	TimeZoneScreen();
-	~TimeZoneScreen();
 
 	virtual void drawScreen();
 	virtual void onOkButton();

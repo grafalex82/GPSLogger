@@ -55,8 +55,3 @@ CurrentTimeScreen::CurrentTimeScreen()
 	addChildScreen(&timeZoneScreen);
 }
 
-CurrentTimeScreen::~CurrentTimeScreen()
-{
-}
-
-

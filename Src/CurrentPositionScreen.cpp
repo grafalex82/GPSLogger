@@ -15,10 +15,6 @@ void CurrentPositionScreen::drawScreen()
 	display.print(F("LO:---\"--'--.--")); //TODO Print actual coordinates
 }
 
-CurrentPositionScreen::~CurrentPositionScreen()
-{
-}
-
 const char * CurrentPositionScreen::getOkButtonText()
 {
 	static const char text[] PROGMEM = "POI";

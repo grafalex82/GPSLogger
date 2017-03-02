@@ -10,7 +10,7 @@ class Screen
 	
 public:
 	Screen();
-	virtual ~Screen() {}
+	//virtual ~Screen() {} //Virtual destructor is intentionally commented as it consumes a lot of RAM/FLASH but will never called
 
 	virtual void drawScreen() = 0;
 	virtual void drawHeader();

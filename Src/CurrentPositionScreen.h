@@ -6,8 +6,6 @@
 class CurrentPositionScreen: public Screen
 {
 public:
-	virtual ~CurrentPositionScreen();
-
 	virtual void drawScreen();
 
 	virtual void onOkButton();

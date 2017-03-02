@@ -14,11 +14,6 @@ TimeZoneScreen::TimeZoneScreen()
 {
 }
 
-TimeZoneScreen::~TimeZoneScreen()
-{
-}
-
-
 void TimeZoneScreen::drawScreen()
 {
 	display.setFont(&TimeFont);
