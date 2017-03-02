@@ -8,9 +8,8 @@ class CurrentTimeScreen: public ParentScreen
 public:
   virtual void drawScreen();
   
+  CurrentTimeScreen();
   virtual ~CurrentTimeScreen();
 };
-
-Screen * createCurrentTimeScreen();
 
 #endif //_TIME_SCREEN_H_

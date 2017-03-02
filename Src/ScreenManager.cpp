@@ -41,6 +41,9 @@ enum State
 State state = IDLE; // Current state
 unsigned long lastEventMillis = 0; // Milis() for last state change
 
+CurrentTimeScreen timeScreen;
+CurrentPositionScreen positionScreen;
+
 enum Buttons
 {
 	NO_BUTTON,
@@ -96,9 +99,8 @@ void initDisplay()
 
 void initScreens()
 {
-	Screen * screen = createCurrentTimeScreen();
-	setCurrentScreen(screen);
-	screen = screen->addScreen(new CurrentPositionScreen());
+	setCurrentScreen(&timeScreen);
+	timeScreen.addScreen(&positionScreen);
 }
 
 // Display information according to current state and screen

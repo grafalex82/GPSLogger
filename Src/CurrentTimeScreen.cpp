@@ -8,6 +8,8 @@
 extern Adafruit_SSD1306 display;
 extern TinyGPSPlus gps;
 
+TimeZoneScreen timeZoneScreen; //TODO Move it to CurrentTimeScreen class
+
 void CurrentTimeScreen::drawScreen()
 {
 	int h = 12;
@@ -48,18 +50,13 @@ void CurrentTimeScreen::drawScreen()
 	display.print(buf);
 }
 
+CurrentTimeScreen::CurrentTimeScreen()
+{
+	addChildScreen(&timeZoneScreen);
+}
+
 CurrentTimeScreen::~CurrentTimeScreen()
 {
 }
 
-Screen * createCurrentTimeScreen()
-{
-	TimeZoneScreen * tzScreen = new TimeZoneScreen(1, 30);
-	tzScreen = tzScreen->addScreen(new TimeZoneScreen(2, 45));
-	tzScreen = tzScreen->addScreen(new TimeZoneScreen(-3, 30));
-	
-	CurrentTimeScreen * screen = new CurrentTimeScreen();
-	screen->addChildScreen(tzScreen);
-	return screen;
-}
 

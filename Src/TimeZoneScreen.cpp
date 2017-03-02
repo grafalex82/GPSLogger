@@ -7,10 +7,10 @@
 
 extern Adafruit_SSD1306 display;
 
+int8_t TimeZoneScreen::hourDiff = 0;
+int8_t TimeZoneScreen::minDiff = 0;
 
-TimeZoneScreen::TimeZoneScreen(int8_t hourDiff, int8_t minDiff )
-	: hourDiff(hourDiff)
-	, minDiff(minDiff)
+TimeZoneScreen::TimeZoneScreen()
 {
 }
 

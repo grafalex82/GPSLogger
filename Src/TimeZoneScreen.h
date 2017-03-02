@@ -5,11 +5,8 @@
 
 class TimeZoneScreen : public Screen
 {
-	int8_t hourDiff;
-	int8_t minDiff;
-	
 public:
-	TimeZoneScreen(int8_t hourDiff, int8_t minDiff);
+	TimeZoneScreen();
 	~TimeZoneScreen();
 
 	virtual void drawScreen();
@@ -22,6 +19,9 @@ private:
 	TimeZoneScreen( const TimeZoneScreen &c );
 	TimeZoneScreen& operator=( const TimeZoneScreen &c );
 
+	// TODO Change this to a static list of timezones
+	static int8_t hourDiff;
+	static int8_t minDiff;
 }; //TimeZoneScreen
 
 #endif //__TIMEZONESCREEN_H__
