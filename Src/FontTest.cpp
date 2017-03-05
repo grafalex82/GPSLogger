@@ -1,5 +1,5 @@
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include <Adafruit_SSD1306_STM32.h>
 #include <gfxfont.h>
 
 #include <fonts/FreeMono12pt7b.h>
@@ -56,7 +56,7 @@
 struct font_and_name
 {
 	const char * PROGMEM name;
-	GFXfont * font;
+	const GFXfont * font;
 };
 
 #define FONT(name) {#name, &name}

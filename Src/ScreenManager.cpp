@@ -1,7 +1,7 @@
 #include <stddef.h> //for NULL
 
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include <Adafruit_SSD1306_STM32.h>
 #include <HardwareSerial.h>
 
 #include "ScreenManager.h"
@@ -16,8 +16,8 @@ Adafruit_SSD1306 display;
 #endif
 
 // Pins assignment
-const uint8_t SEL_BUTTON_PIN = 2;
-const uint8_t OK_BUTTON_PIN = 3;
+const uint8_t SEL_BUTTON_PIN = PC14;
+const uint8_t OK_BUTTON_PIN = PC15;
 
 // Timeouts
 const unsigned long DEBOUNCE_TIMEOUT = 30;
@@ -53,7 +53,7 @@ enum Buttons
 
 Buttons curPressedButton = NO_BUTTON;
 
-int8_t getCurPressedButton() //TODO: Can't compile this when function returns Buttons
+Buttons getCurPressedButton() //TODO: Can't compile this when function returns Buttons
 {
 	if(!digitalRead(SEL_BUTTON_PIN))
 	return SEL_BUTTON;
