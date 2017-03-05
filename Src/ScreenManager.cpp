@@ -1,5 +1,7 @@
 #include <stddef.h> //for NULL
 
+#include <MapleFreeRTOS.h>
+
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306_STM32.h>
 #include <HardwareSerial.h>
@@ -200,4 +202,18 @@ void messageBox(PROGMEM const char * text)
 	messageBoxText = text;	
 	state = MESSAGE_BOX;
 	lastEventMillis = millis();
+}
+
+void vUserInteractionTask(void *pvParameters) 
+{
+	for (;;)
+	{
+		// Do what we need for current state
+		drawDisplay();
+
+		// It is time for change state
+		processState();
+		
+		vTaskDelay(100);
+	}
 }

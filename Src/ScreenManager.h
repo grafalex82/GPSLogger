@@ -16,4 +16,6 @@ void processState();
 
 void messageBox(PROGMEM const char * text);
 
+void vUserInteractionTask(void *pvParameters);
+
 #endif //__SCREENMANAGER_H__
