@@ -1,6 +1,6 @@
 #include <stddef.h> //for NULL
 
-#include <MapleFreeRTOS.h>
+#include <MapleFreeRTOS821.h>
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306_STM32.h>
@@ -55,7 +55,7 @@ enum Buttons
 
 Buttons curPressedButton = NO_BUTTON;
 
-Buttons getCurPressedButton() //TODO: Can't compile this when function returns Buttons
+static Buttons getCurPressedButton() //TODO: Can't compile this when function returns Buttons
 {
 	if(!digitalRead(SEL_BUTTON_PIN))
 	return SEL_BUTTON;

@@ -1,9 +1,10 @@
-#include <MapleFreeRTOS.h>
+#include <MapleFreeRTOS821.h>
 #include <Adafruit_SSD1306_STM32.h>
 #include <TinyGPS++.h>
 
 
 #include "ScreenManager.h"
+#include "Buttons.h"
 
 //TinyGPSPlus gps;
 
@@ -15,8 +16,6 @@ void vLEDFlashTask(void *pvParameters)
 		digitalWrite(PC13, HIGH);
 		vTaskDelay(150);
 		digitalWrite(PC13, LOW);
-		
-		Serial.println((int)configMINIMAL_STACK_SIZE);
 	}
 }
 
@@ -29,12 +28,14 @@ void setup()
 	Serial.begin(115200);
 
 	initDisplay();
+	initButtons();
 	initScreens();	
 	//gpsSerial.begin(9600);
 	
 	
-	xTaskCreate(vLEDFlashTask, (const signed char * const)"LED Task",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
-	xTaskCreate(vUserInteractionTask, (const signed char * const)"UI Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vLEDFlashTask, "LED Task",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vUserInteractionTask, "UI Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vButtonsTask, "Buttons Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 
 	vTaskStartScheduler();
 	
