@@ -17,7 +17,7 @@ void CurrentTimeScreen::drawScreen()
 	int s = gps.time.second();
 
 	char buf[10];
-	buf[0] = gps.time.isValid() ? ' ' : ';';  // '~' symbol
+	buf[0] = gps.time.isValid() ? '<' : ';';  // ';' is remapped to '~', '<' is remapped to space 
 	buf[1] = 0x30 + h / 10;
 	buf[2] = 0x30 + h % 10;
 	buf[3] = ':';
