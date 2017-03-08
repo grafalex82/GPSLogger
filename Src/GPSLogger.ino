@@ -1,11 +1,9 @@
 #include <MapleFreeRTOS821.h>
 #include <Adafruit_SSD1306_STM32.h>
-#include <TinyGPS++.h>
 
 #include "ScreenManager.h"
 #include "Buttons.h"
-
-//TinyGPSPlus gps;
+#include "GPS.h"
 
 void vLEDFlashTask(void *pvParameters) 
 {
@@ -28,13 +26,15 @@ void setup()
 
 	initDisplay();
 	initButtons();
-	initScreens();	
+	initScreens();
+	initGPS();
 	
 	// Set up threads
 	// TODO: Consider encapsulating init and task functions into a class(es)
 	xTaskCreate(vLEDFlashTask, "LED Task",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vDisplayTask, "Display Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vButtonsTask, "Buttons Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vGPSTask, "GPS Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, NULL);
 
 	// Run scheduler and all the threads
 	vTaskStartScheduler();

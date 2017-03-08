@@ -12,29 +12,12 @@ TimeZoneScreen timeZoneScreen; //TODO Move it to CurrentTimeScreen class
 
 void CurrentTimeScreen::drawScreen()
 {
-	int h = 12;
-	int m = 34;
-	int s = 56;
-	
-	/*
 	int h = gps.time.hour();
 	int m = gps.time.minute();
 	int s = gps.time.second();
-	
-	Serial.println("Hour:");
-	Serial.println(h);
-	Serial.println("Minute:");
-	Serial.println(m);
-	Serial.println("second:");
-	Serial.println(s);
-	Serial.println("Valid:");
-	Serial.println(gps.time.isValid());
-	Serial.println("Age:");
-	Serial.println(gps.time.age());
-	*/
-	
+
 	char buf[10];
-	buf[0] = ';';  // '~' symbol
+	buf[0] = gps.time.isValid() ? ' ' : ';';  // '~' symbol
 	buf[1] = 0x30 + h / 10;
 	buf[2] = 0x30 + h % 10;
 	buf[3] = ':';
