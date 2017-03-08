@@ -20,11 +20,11 @@ QueueHandle_t buttonsQueue;
 // Reading button state (perform debounce first)
 inline bool getButtonState(uint8 pin)
 {
-	if(!digitalRead(pin)) // Inverted logic due to using pullups instead of pulldown
+	if(digitalRead(pin))
 	{
 		// dobouncing
 		vTaskDelay(DEBOUNCE_DURATION);
-		if(!digitalRead(pin))
+		if(digitalRead(pin))
 			return true;
 	}
 	
@@ -47,8 +47,8 @@ ButtonID getPressedButtonID()
 void initButtons()
 {
 	// Set up button pins
-	pinMode(SEL_BUTTON_PIN, INPUT_PULLUP); // TODO: using PullUps is an AVR legacy. Consider changing this to pull down
-	pinMode(OK_BUTTON_PIN, INPUT_PULLUP);  //  so pin state match human logic expectations
+	pinMode(SEL_BUTTON_PIN, INPUT_PULLDOWN);
+	pinMode(OK_BUTTON_PIN, INPUT_PULLDOWN);
 	
 	// Initialize buttons queue
 	buttonsQueue = xQueueCreate(3, sizeof(ButtonMessage)); // 3 clicks more than enough
