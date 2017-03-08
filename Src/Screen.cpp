@@ -17,11 +17,11 @@ void Screen::drawHeader()
 	display.setFont(NULL);
 	display.setCursor(20, 0);
 	display.print('\x1e');
-	display.print(USE_PGM_STRING(getSelButtonText()));
+	display.print(getSelButtonText());
 	
 	display.setCursor(80, 0);
 	display.print('\x1e');
-	display.print(USE_PGM_STRING(getOkButtonText()));
+	display.print(getOkButtonText());
 }
 
 void Screen::onSelButton()

@@ -1,9 +1,6 @@
 #ifndef _SCREEN_H_
 #define _SCREEN_H_
 
-//TODO: move elsewhere
-#define USE_PGM_STRING(x) reinterpret_cast<const __FlashStringHelper *>(x)
-
 class Screen
 {
 	Screen * nextScreen;

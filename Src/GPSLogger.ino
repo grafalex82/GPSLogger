@@ -2,7 +2,6 @@
 #include <Adafruit_SSD1306_STM32.h>
 #include <TinyGPS++.h>
 
-
 #include "ScreenManager.h"
 #include "Buttons.h"
 
@@ -30,30 +29,19 @@ void setup()
 	initDisplay();
 	initButtons();
 	initScreens();	
-	//gpsSerial.begin(9600);
 	
-	
+	// Set up threads
+	// TODO: Consider encapsulating init and task functions into a class(es)
 	xTaskCreate(vLEDFlashTask, "LED Task",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
-	xTaskCreate(vUserInteractionTask, "UI Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vDisplayTask, "Display Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vButtonsTask, "Buttons Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 
+	// Run scheduler and all the threads
 	vTaskStartScheduler();
-	
 }
 
-// the loop function runs over and over again forever
+// Arduino boilerplate function. Do not write any code here, it would not execute.
 void loop()
 {
-	// Do not write any code here, it would not execute.
-
-	
-
-	/*
-	if (Serial.available()) {
-		gpsSerial.write(Serial.read());
-	}*/
-
-	// TODO: Process GPS data here
-
 }
 

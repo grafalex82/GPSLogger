@@ -24,5 +24,5 @@ const char * CurrentPositionScreen::getOkButtonText()
 void CurrentPositionScreen::onOkButton()
 {
 	static const char text[] PROGMEM = "Waypoint Saved!";
-	messageBox(text);
+	showMessageBox(text);
 }
