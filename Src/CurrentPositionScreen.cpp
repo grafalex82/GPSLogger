@@ -1,4 +1,6 @@
 #include <Adafruit_SSD1306_STM32.h>
+#include <NMEAGPS.h>
+
 #include "8x12Font.h"
 
 #include "ScreenManager.h"
@@ -6,13 +8,26 @@
 
 extern Adafruit_SSD1306 display;
 
+extern gps_fix gpsData;
+
 void CurrentPositionScreen::drawScreen()
 {
-	display.setFont(&Monospace8x12Font); //TODO: Use 8x12 font to effectively use screen space
+	display.setFont(&Monospace8x12Font);
 	display.setCursor(0,20);
-	display.print(F("LA: --\"--'--.--")); //TODO Print actual coordinates
-	display.setCursor(0,32);
-	display.print(F("LO:---\"--'--.--")); //TODO Print actual coordinates
+	if(gpsData.valid.location)
+	{
+		display.setCursor(0,20);
+		display.print(gpsData.latitudeL());
+		display.setCursor(0,32);
+		display.print(gpsData.longitudeL());
+	}
+	else
+	{
+		display.setCursor(0,20);
+		display.print("LA: --\"--'--.--");
+		display.setCursor(0,32);
+		display.print("LO:---\"--'--.--");
+	}
 }
 
 const char * CurrentPositionScreen::getOkButtonText()

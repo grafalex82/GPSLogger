@@ -1,11 +1,14 @@
 #include <HardwareSerial.h>
 #include <MapleFreeRTOS821.h>
-#include <TinyGPS++.h>
+#include <NMEAGPS.h>
+#include "Streamers.h"
 
 #include "GPS.h"
 
-// A GPS parsing library
-TinyGPSPlus gps;
+// A GPS parser
+NMEAGPS gpsParser;
+// GPS data
+gps_fix gpsData;
 
 void initGPS()
 {
@@ -17,18 +20,9 @@ void vGPSTask(void *pvParameters)
 {
 	for (;;)
 	{
-		while(Serial1.available()) 
-		{
-			int c = Serial1.read();
-			gps.encode(c);
-			Serial.write(c);
+		while (gpsParser.available( Serial1 ))
+			gpsData = gpsParser.read();
 			
-			if (c == 0x0a)
-			{
-				Serial.println(gps.time.value());
-			}
-		}		
-			
-		vTaskDelay(2);
+		vTaskDelay(10);
 	}
 }
