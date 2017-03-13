@@ -1,5 +1,4 @@
 #include <Adafruit_SSD1306_STM32.h>
-#include <TinyGPS++.h>
 
 #include "TimeZoneScreen.h"
 #include "ScreenManager.h"

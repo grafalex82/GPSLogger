@@ -26,13 +26,13 @@
 					<SourcePath></SourcePath>
 				</d4p1:anyType>
 				<d4p1:anyType i:type="FileInfo">
-					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include\avr\iom328p.h</AbsolutePath>
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\include\avr\iom2560.h</AbsolutePath>
 					<Attribute></Attribute>
 					<Category>header</Category>
 					<Condition>C</Condition>
-					<FileContentHash>UMk4QUzkkuShabuoYtNl/Q==</FileContentHash>
+					<FileContentHash>y62MZP1QC6MflsAr6ze0Ew==</FileContentHash>
 					<FileVersion></FileVersion>
-					<Name>include/avr/iom328p.h</Name>
+					<Name>include/avr/iom2560.h</Name>
 					<SelectString></SelectString>
 					<SourcePath></SourcePath>
 				</d4p1:anyType>
@@ -59,13 +59,13 @@
 					<SourcePath></SourcePath>
 				</d4p1:anyType>
 				<d4p1:anyType i:type="FileInfo">
-					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega328p</AbsolutePath>
+					<AbsolutePath>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.1.130\gcc\dev\atmega2560</AbsolutePath>
 					<Attribute></Attribute>
 					<Category>libraryPrefix</Category>
 					<Condition>GCC</Condition>
 					<FileContentHash i:nil="true" />
 					<FileVersion></FileVersion>
-					<Name>gcc/dev/atmega328p</Name>
+					<Name>gcc/dev/atmega2560</Name>
 					<SelectString></SelectString>
 					<SourcePath></SourcePath>
 				</d4p1:anyType>
@@ -74,7 +74,7 @@
 			<PackPath>C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.1.130/Atmel.ATmega_DFP.pdsc</PackPath>
 			<PackVersion>1.1.130</PackVersion>
 			<PresentInProject>true</PresentInProject>
-			<ReferenceConditionId>ATmega328P</ReferenceConditionId>
+			<ReferenceConditionId>ATmega2560</ReferenceConditionId>
 			<RteComponents xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
 				<d4p1:string></d4p1:string>
 			</RteComponents>

@@ -1,5 +1,4 @@
 #include <MapleFreeRTOS821.h>
-#include <Adafruit_SSD1306_STM32.h>
 
 #include "ScreenManager.h"
 #include "Buttons.h"

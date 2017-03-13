@@ -54,7 +54,7 @@
   <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>ARDUINO=10801</Value>
+      <Value>ARDUINO=106012</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=72000000L</Value>
       <Value>printf=iprintf</Value>
@@ -73,9 +73,9 @@
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries</Value>
@@ -106,7 +106,7 @@
   <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>ARDUINO=10801</Value>
+      <Value>ARDUINO=106012</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=72000000L</Value>
       <Value>printf=iprintf</Value>
@@ -125,9 +125,9 @@
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries</Value>
@@ -155,6 +155,7 @@
   <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
   <avrgcccpp.compiler.miscellaneous.OtherFlags>-felide-constructors -std=c++0x</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.compiler.miscellaneous.Verbose>True</avrgcccpp.compiler.miscellaneous.Verbose>
   <avrgcccpp.linker.libraries.Libraries>
     <ListValues>
       <Value>libm</Value>
@@ -168,7 +169,7 @@
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
-    <VMSETTING_IncludePaths>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Users/GrafAlex/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;../../../GPSLogger;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include/;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src/utility;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility;../../../Src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/avr;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/variants/generic_stm32f103c;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/stm32f1/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/usb/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/usb/usb_lib;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/4.8.3-2014q1/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include/;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS/utility;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Users/GrafAlex/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;../../../GPSLogger;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include/;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src/utility;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility;../../../Src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/avr;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/variants/generic_stm32f103c;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/stm32f1/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/usb/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/usb/usb_lib;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/4.8.3-2014q1/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include/;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS/utility;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/Adafruit_SSD1306;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/FreeRTOS821;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/FreeRTOS821/utility;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/cores/maple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/cores/maple/avr;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/cores/maple/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/cores/maple/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/variants/generic_stm32f103c;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple/stm32f1/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple/usb/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple/usb/usb_lib;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/SPI/src;C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master;C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/Wire;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
@@ -227,7 +228,7 @@ menu.cpu_speed.speed_48mhz.build.f_cpu=48000000L
 runtime.ide.path=C:\Program Files (x86)\Arduino
 runtime.os=windows
 build.system.path=C:\Users\GrafAlex\Documents\Arduino\hardware\Arduino_STM32\STM32F1\system
-runtime.ide.version=10801
+runtime.ide.version=106012
 target_package=Arduino_STM32
 target_platform=STM32F1
 runtime.hardware.path=C:\Users\GrafAlex\Documents\Arduino\hardware\Arduino_STM32
@@ -330,9 +331,7 @@ tools.jlink_upload.upload.params.verbose=-d
 tools.jlink_upload.upload.params.quiet=n
 tools.jlink_upload.upload.pattern="{path}/{cmd}" "{build.path}/{build.project_name}.bin"
 tools.stlink_upload.path={runtime.hardware.path}/tools/win
-vm.platform.root.path=C:\Program Files (x86)\Atmel\Studio\7.0\Extensions\z1twxdkd.z0n\Micro Platforms\arduino16x
-runtime.tools.arduinoOTA.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
-runtime.tools.arduinoOTA-1.0.0.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
+vm.platform.root.path=C:\Program Files (x86)\Atmel\Studio\7.0\Extensions\1qqvv0cn.rx0\Micro Platforms\arduino16x
 runtime.tools.arm-none-eabi-gcc.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1
 runtime.tools.arm-none-eabi-gcc-4.8.3-2014q1.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1
 runtime.tools.avrdude.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
@@ -341,10 +340,6 @@ runtime.tools.avr-gcc.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
 runtime.tools.avr-gcc-4.9.2-atmel3.5.3-arduino.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
 runtime.tools.bossac.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\bossac\1.6.1-arduino
 runtime.tools.bossac-1.6.1-arduino.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\bossac\1.6.1-arduino
-runtime.tools.mkspiffs.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\esp8266\tools\mkspiffs\0.1.2
-runtime.tools.mkspiffs-0.1.2.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\esp8266\tools\mkspiffs\0.1.2
-runtime.tools.xtensa-lx106-elf-gcc.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\esp8266\tools\xtensa-lx106-elf-gcc\1.20.0-26-gb404fb9-2
-runtime.tools.xtensa-lx106-elf-gcc-1.20.0-26-gb404fb9-2.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\esp8266\tools\xtensa-lx106-elf-gcc\1.20.0-26-gb404fb9-2
 runtime.vm.boardinfo.id=Arduino_STM32_genericSTM32F103C
 runtime.vm.boardinfo.name=Arduino_STM32_genericSTM32F103C
 runtime.vm.boardinfo.desc=Generic STM32F103C series
@@ -396,6 +391,10 @@ vm.boardsource.path=C:\Users\GrafAlex\Documents\Arduino\hardware\Arduino_STM32\S
 runtime.platform.path=C:\Users\GrafAlex\Documents\Arduino\hardware\Arduino_STM32\STM32F1
 vm.platformname.name=STM32F1
 build.arch=STM32F1
+builder.noino=false
+build.architecture=4.8.3-2014q1
+vmresolved.compiler.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1\bin\
+vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1
 </arduino.board.property_bag>
         <arduino.build.mcu>cortex-m3</arduino.build.mcu>
         <arduino.build.f_cpu>72000000L</arduino.build.f_cpu>
@@ -409,9 +408,9 @@ build.arch=STM32F1
         <visualmicro.application.name>arduino16x</visualmicro.application.name>
         <visualmicro.package.name>Arduino_STM32</visualmicro.package.name>
         <visualmicro.platform.name>STM32F1</visualmicro.platform.name>
-        <arduino.upload.port>COM21</arduino.upload.port>
+        <arduino.upload.port>COM7</arduino.upload.port>
         <vm.programmer_name>avrispmkii</vm.programmer_name>
-        <debug.local.portname>COM21</debug.local.portname>
+        <debug.local.portname>COM7</debug.local.portname>
         <debug.local.portspeed>115200</debug.local.portspeed>
       </VisualMicroSettings>
     </VisualMicroSettings>
@@ -429,7 +428,7 @@ build.arch=STM32F1
   <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>ARDUINO=10801</Value>
+      <Value>ARDUINO=106012</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=72000000L</Value>
       <Value>printf=iprintf</Value>
@@ -448,9 +447,9 @@ build.arch=STM32F1
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries</Value>
@@ -481,7 +480,7 @@ build.arch=STM32F1
   <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>ARDUINO=10801</Value>
+      <Value>ARDUINO=106012</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=72000000L</Value>
       <Value>printf=iprintf</Value>
@@ -500,9 +499,9 @@ build.arch=STM32F1
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility</Value>
       <Value>C:/Program Files (x86)/Arduino/libraries</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries</Value>
@@ -530,6 +529,7 @@ build.arch=STM32F1
   <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
   <avrgcccpp.compiler.miscellaneous.OtherFlags>-felide-constructors -std=c++0x</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.compiler.miscellaneous.Verbose>True</avrgcccpp.compiler.miscellaneous.Verbose>
   <avrgcccpp.linker.libraries.Libraries>
     <ListValues>
       <Value>libm</Value>
@@ -543,7 +543,7 @@ build.arch=STM32F1
   <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
 </AvrGccCpp>
     </ToolchainSettings>
-    <VMSETTING_IncludePaths>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Users/GrafAlex/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;../../../GPSLogger;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include/;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src/utility;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility;../../../Src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/avr;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/variants/generic_stm32f103c;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/stm32f1/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/usb/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/usb/usb_lib;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/4.8.3-2014q1/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include/;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS/utility;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility;</VMSETTING_IncludePaths>
+    <VMSETTING_IncludePaths>C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitGFX/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306;C:/Users/GrafAlex/Documents/Arduino/libraries/AdafruitSSD1306/utility;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/Wire/src/utility;C:/Program Files (x86)/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries;C:/Users/GrafAlex/Documents/Arduino/libraries;C:/Program Files (x86)/Arduino/hardware/arduino/avr/cores/arduino;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/yun;../../../GPSLogger;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/;c:/program files (x86)/arduino/hardware/tools/avr/avr/include/avr/;c:/program files (x86)/arduino/hardware/tools/avr/avr/;c:/program files (x86)/arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include/;C:/Program Files (x86)/Arduino/hardware/arduino/avr/variants/eightanaloginputs;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SPI/src/utility;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers/VM_DBG;C:/Program Files (x86)/Atmel/Studio/7.0/Extensions/rp4pbqv4.4kq/Micro Platforms/default/debuggers;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src;C:/Program Files (x86)/Arduino/hardware/arduino/avr/libraries/SoftwareSerial/src/utility;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus;C:/Users/GrafAlex/Documents/Arduino/libraries/TinyGPSPlus/utility;../../../Src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/avr;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/cores/maple/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/variants/generic_stm32f103c;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/stm32f1/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/usb/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/system/libmaple/usb/usb_lib;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/4.8.3-2014q1/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include;C:/Users/GrafAlex/AppData/Local/arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include/;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS/utility;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/;C:/Program Files (x86)/Arduino/hardware/tools/avr/avr/include/avr/;C:/Program Files (x86)/Arduino/hardware/tools/avr/lib/gcc/avr/4.9.2/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/Adafruit_SSD1306;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/FreeRTOS821;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/FreeRTOS821/utility;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/cores/maple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/cores/maple/avr;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/cores/maple/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/cores/maple/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/variants/generic_stm32f103c;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple/stm32f1/include;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple/usb/stm32f1;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/system/libmaple/usb/usb_lib;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/SPI/src;C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master;C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src;C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32-master/STM32F1/libraries/Wire;</VMSETTING_IncludePaths>
     <VisualMicroSettings>
       <VisualMicroSettings>
         <ValidatedAS7>1</ValidatedAS7>
@@ -602,7 +602,7 @@ menu.cpu_speed.speed_48mhz.build.f_cpu=48000000L
 runtime.ide.path=C:\Program Files (x86)\Arduino
 runtime.os=windows
 build.system.path=C:\Users\GrafAlex\Documents\Arduino\hardware\Arduino_STM32\STM32F1\system
-runtime.ide.version=10801
+runtime.ide.version=106012
 target_package=Arduino_STM32
 target_platform=STM32F1
 runtime.hardware.path=C:\Users\GrafAlex\Documents\Arduino\hardware\Arduino_STM32
@@ -705,9 +705,7 @@ tools.jlink_upload.upload.params.verbose=-d
 tools.jlink_upload.upload.params.quiet=n
 tools.jlink_upload.upload.pattern="{path}/{cmd}" "{build.path}/{build.project_name}.bin"
 tools.stlink_upload.path={runtime.hardware.path}/tools/win
-vm.platform.root.path=C:\Program Files (x86)\Atmel\Studio\7.0\Extensions\z1twxdkd.z0n\Micro Platforms\arduino16x
-runtime.tools.arduinoOTA.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
-runtime.tools.arduinoOTA-1.0.0.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
+vm.platform.root.path=C:\Program Files (x86)\Atmel\Studio\7.0\Extensions\1qqvv0cn.rx0\Micro Platforms\arduino16x
 runtime.tools.arm-none-eabi-gcc.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1
 runtime.tools.arm-none-eabi-gcc-4.8.3-2014q1.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1
 runtime.tools.avrdude.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
@@ -716,10 +714,6 @@ runtime.tools.avr-gcc.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
 runtime.tools.avr-gcc-4.9.2-atmel3.5.3-arduino.path=C:\Program Files (x86)\Arduino\hardware\tools\avr
 runtime.tools.bossac.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\bossac\1.6.1-arduino
 runtime.tools.bossac-1.6.1-arduino.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\bossac\1.6.1-arduino
-runtime.tools.mkspiffs.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\esp8266\tools\mkspiffs\0.1.2
-runtime.tools.mkspiffs-0.1.2.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\esp8266\tools\mkspiffs\0.1.2
-runtime.tools.xtensa-lx106-elf-gcc.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\esp8266\tools\xtensa-lx106-elf-gcc\1.20.0-26-gb404fb9-2
-runtime.tools.xtensa-lx106-elf-gcc-1.20.0-26-gb404fb9-2.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\esp8266\tools\xtensa-lx106-elf-gcc\1.20.0-26-gb404fb9-2
 runtime.vm.boardinfo.id=Arduino_STM32_genericSTM32F103C
 runtime.vm.boardinfo.name=Arduino_STM32_genericSTM32F103C
 runtime.vm.boardinfo.desc=Generic STM32F103C series
@@ -771,6 +765,10 @@ vm.boardsource.path=C:\Users\GrafAlex\Documents\Arduino\hardware\Arduino_STM32\S
 runtime.platform.path=C:\Users\GrafAlex\Documents\Arduino\hardware\Arduino_STM32\STM32F1
 vm.platformname.name=STM32F1
 build.arch=STM32F1
+builder.noino=false
+build.architecture=4.8.3-2014q1
+vmresolved.compiler.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1\bin\
+vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino\tools\arm-none-eabi-gcc\4.8.3-2014q1
 </arduino.board.property_bag>
         <arduino.build.mcu>cortex-m3</arduino.build.mcu>
         <arduino.build.f_cpu>72000000L</arduino.build.f_cpu>
@@ -784,9 +782,9 @@ build.arch=STM32F1
         <visualmicro.application.name>arduino16x</visualmicro.application.name>
         <visualmicro.package.name>Arduino_STM32</visualmicro.package.name>
         <visualmicro.platform.name>STM32F1</visualmicro.platform.name>
-        <arduino.upload.port>COM21</arduino.upload.port>
+        <arduino.upload.port>COM7</arduino.upload.port>
         <vm.programmer_name>avrispmkii</vm.programmer_name>
-        <debug.local.portname>COM21</debug.local.portname>
+        <debug.local.portname>COM7</debug.local.portname>
         <debug.local.portspeed>115200</debug.local.portspeed>
       </VisualMicroSettings>
     </VisualMicroSettings>
@@ -834,6 +832,12 @@ build.arch=STM32F1
     <Compile Include="ParentScreen.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="SatellitesScreen.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SatellitesScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Screen.cpp">
       <SubType>compile</SubType>
     </Compile>
@@ -853,6 +857,12 @@ build.arch=STM32F1
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TimeZoneScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utils.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="Utils.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="__vm\.GPSLogger.vsarduino.h">

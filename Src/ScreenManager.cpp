@@ -10,8 +10,9 @@
 
 #include "CurrentPositionScreen.h"
 #include "CurrentTimeScreen.h"
+#include "SatellitesScreen.h"
 
-Adafruit_SSD1306 display;
+Adafruit_SSD1306 display(-1);
 
 #if (SSD1306_LCDHEIGHT != 32)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
@@ -29,7 +30,7 @@ int screenIdx = 0;
 // Statically allocated screens
 CurrentTimeScreen timeScreen;
 CurrentPositionScreen positionScreen;
-
+SatellitesScreen satellitesScreen;
 
 void setCurrentScreen(Screen * screen)
 {
@@ -64,6 +65,7 @@ void initScreens()
 {
 	setCurrentScreen(&timeScreen);
 	timeScreen.addScreen(&positionScreen);
+	positionScreen.addScreen(&satellitesScreen);
 }
 
 // Display information according to current state and screen
