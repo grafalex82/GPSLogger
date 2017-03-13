@@ -5,6 +5,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306_STM32.h>
 
+#include "8x12Font.h"
 #include "ScreenManager.h"
 #include "Buttons.h"
 
@@ -81,13 +82,13 @@ void drawDisplay()
 void showMessageBox(const char * text)
 {
 	//Center text
-	uint8_t x = 128/2 - strlen_P(text)*6/2;
+	uint8_t x = 128/2 - strlen_P(text)*8/2;
 			
 	// Draw the message
 	display.clearDisplay();
-	display.setFont(NULL);
+	display.setFont(&Monospace8x12Font);
 	display.drawRect(2, 2, 126, 30, 1);
-	display.setCursor(x, 12);
+	display.setCursor(x, 22);
 	display.print(text);
 	display.display();
 	
