@@ -14,13 +14,15 @@ public:
 	virtual const char * getSelButtonText();
 	virtual const char * getOkButtonText();
 
+	//returns time zone as a number of minutes to add/substract from GPS time
+	int16 getCurrentTimeZone() const {return timeZone;} 
+
 private:
 	TimeZoneScreen( const TimeZoneScreen &c );
 	TimeZoneScreen& operator=( const TimeZoneScreen &c );
 
-	// TODO Change this to a static list of timezones
-	static int8_t hourDiff;
-	static int8_t minDiff;
+	// number of minutes to add/substract from GPS time
+	int16 timeZone;
 }; //TimeZoneScreen
 
 #endif //__TIMEZONESCREEN_H__

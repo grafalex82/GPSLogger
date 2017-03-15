@@ -1,44 +1,54 @@
 #include <Adafruit_SSD1306_STM32.h>
+#include <NMEAGPS.h>
 
 #include "TimeZoneScreen.h"
 #include "ScreenManager.h"
 #include "TimeFont.h"
+#include "GPS.h"
+#include "Utils.h"
 
 extern Adafruit_SSD1306 display;
 
-int8_t TimeZoneScreen::hourDiff = 0;
-int8_t TimeZoneScreen::minDiff = 0;
-
 TimeZoneScreen::TimeZoneScreen()
 {
+	timeZone = 150; // TODO: get the value in settings EEPROM
 }
 
 void TimeZoneScreen::drawScreen()
 {
+	// Get the date/time adjusted by selected timezone value
+	gps_fix gpsData = getGPSFixData();
+	NeoGPS::time_t dateTime = gpsData.dateTime + timeZone * 60; //timeZone is in minutes
+
+	// Prepare current time string
+	static const char * timeTemplate = "00:00";
+	char timeBuf[6];
+	strcpy(timeBuf, timeTemplate);
+	printNumber(timeBuf, dateTime.hours, 2);
+	printNumber(timeBuf+3, dateTime.minutes, 2);
+	
+	// Prepare date string
+	static const char * dateTemplate = "00/00/00";
+	char dateBuf[9];
+	strcpy(dateBuf, dateTemplate);
+	printNumber(dateBuf, dateTime.day, 2);
+	printNumber(dateBuf+3, dateTime.month, 2);
+	printNumber(dateBuf+6, dateTime.year, 2);
+	
+	// Draw the time string
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);
-	display.print(F("12:34"));
+	display.print(timeBuf);
 	
+	// Draw the date string
 	display.setFont(NULL);
 	display.setCursor(78,8);
-	display.print(F("04/02/17")); //TODO Print correct date
+	display.print(dateBuf);
 	display.setCursor(78,16);
-	display.print(F(" UTC"));
+	display.print("   UTC");
 
-	char buf[7];
-	buf[0] = '+';
-	if (hourDiff < 0)
-	{
-		buf[0] = '-';
-		hourDiff = 0 - hourDiff;
-	}
-	
-	buf[1] = hourDiff / 10 + '0';
-	buf[2] = hourDiff % 10 + '0';
-	buf[3] = ':';
-	buf[4] = minDiff / 10 + '0';
-	buf[5] = minDiff % 10 + '0';
-	buf[6] = 0;
+	char buf[8];
+	strcpy(buf, " +02:30");
 	display.setCursor(78,24);
 	display.print(buf);
 }
@@ -61,4 +71,3 @@ const char * TimeZoneScreen::getOkButtonText()
 	static const char text[] PROGMEM = "OK";
 	return text;
 }
-

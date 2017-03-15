@@ -13,20 +13,26 @@ TimeZoneScreen timeZoneScreen; //TODO Move it to CurrentTimeScreen class
 
 void CurrentTimeScreen::drawScreen()
 {
+	// Get the date/time adjusted by selected timezone value
 	gps_fix gpsData = getGPSFixData();
+	NeoGPS::time_t dateTime = gpsData.dateTime + timeZoneScreen.getCurrentTimeZone() * 60; //timeZone is in minutes
 
 	// Fill the buffer with a message template	
 	char buf[10];
 	static const char * timeStringTemplate = "<00:00:00"; // '<' is remapeed to space
 	strcpy(buf, timeStringTemplate);
 	
+	// Draw a '~' symbol if no time is available from GPS.
 	if(!gpsData.valid.time)
 		buf[0] =  ';';  // ';' is remapped to '~'
 	
-	printNumber(buf+1, gpsData.dateTime.hours, 2);
-	printNumber(buf+4, gpsData.dateTime.minutes, 2);
-	printNumber(buf+7, gpsData.dateTime.seconds, 2);
+	// Burn in current time
+	printNumber(buf+1, dateTime.hours, 2);
+	printNumber(buf+4, dateTime.minutes, 2);
+	printNumber(buf+7, dateTime.seconds, 2);
 	
+	// TODO: display approximate time even if GPS is not available
+
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);
 	display.print(buf);
