@@ -31,7 +31,7 @@ void TimeZoneScreen::drawScreen()
 	static const char * dateTemplate = "00/00/00";
 	char dateBuf[9];
 	strcpy(dateBuf, dateTemplate);
-	printNumber(dateBuf, dateTime.day, 2);
+	printNumber(dateBuf, dateTime.date, 2);
 	printNumber(dateBuf+3, dateTime.month, 2);
 	printNumber(dateBuf+6, dateTime.year, 2);
 	
@@ -45,10 +45,10 @@ void TimeZoneScreen::drawScreen()
 	display.setCursor(78,8);
 	display.print(dateBuf);
 	display.setCursor(78,16);
-	display.print("   UTC");
+	display.print("  UTC");
 
 	char buf[8];
-	strcpy(buf, " +02:30");
+	strcpy(buf, "+02:30");
 	display.setCursor(78,24);
 	display.print(buf);
 }
