@@ -34,23 +34,28 @@ void TimeZoneScreen::drawScreen()
 	printNumber(dateBuf, dateTime.date, 2);
 	printNumber(dateBuf+3, dateTime.month, 2);
 	printNumber(dateBuf+6, dateTime.year, 2);
+
+	// Prepare time zone string
+	static const char * timeZoneTemplate = "+00:00";
+	char timeZoneBuf[7];
+	strcpy(timeZoneBuf, timeZoneTemplate);
+	timeZoneBuf[0] = timeZone < 0 ? '-' : '+';
+	printNumber(timeZoneBuf+1, timeZone / 60, 2);
+	printNumber(timeZoneBuf+4, timeZone % 60, 2);
 	
 	// Draw the time string
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);
 	display.print(timeBuf);
 	
-	// Draw the date string
+	// Draw the date and time zone strings
 	display.setFont(NULL);
 	display.setCursor(78,8);
 	display.print(dateBuf);
 	display.setCursor(78,16);
 	display.print("  UTC");
-
-	char buf[8];
-	strcpy(buf, "+02:30");
 	display.setCursor(78,24);
-	display.print(buf);
+	display.print(timeZoneBuf);
 }
 
 void TimeZoneScreen::onOkButton()
