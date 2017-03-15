@@ -4,30 +4,28 @@
 #include "CurrentTimeScreen.h"
 #include "TimeZoneScreen.h"
 #include "TimeFont.h"
+#include "GPS.h"
+#include "Utils.h"
 
 extern Adafruit_SSD1306 display;
 
 TimeZoneScreen timeZoneScreen; //TODO Move it to CurrentTimeScreen class
 
-extern gps_fix gpsData;
-
 void CurrentTimeScreen::drawScreen()
 {
-	int h = gpsData.dateTime.hours;
-	int m = gpsData.dateTime.minutes;
-	int s = gpsData.dateTime.seconds;
+	gps_fix gpsData = getGPSFixData();
 
+	// Fill the buffer with a message template	
 	char buf[10];
-	buf[0] = gpsData.valid.time ? '<' : ';';  // ';' is remapped to '~', '<' is remapped to space 
-	buf[1] = 0x30 + h / 10;
-	buf[2] = 0x30 + h % 10;
-	buf[3] = ':';
-	buf[4] = 0x30 + m / 10;
-	buf[5] = 0x30 + m % 10;
-	buf[6] = ':';
-	buf[7] = 0x30 + s / 10;
-	buf[8] = 0x30 + s % 10;
-	buf[9] = 0;
+	static const char * timeStringTemplate = "<00:00:00"; // '<' is remapeed to space
+	strcpy(buf, timeStringTemplate);
+	
+	if(!gpsData.valid.time)
+		buf[0] =  ';';  // ';' is remapped to '~'
+	
+	printNumber(buf+1, gpsData.dateTime.hours, 2);
+	printNumber(buf+4, gpsData.dateTime.minutes, 2);
+	printNumber(buf+7, gpsData.dateTime.seconds, 2);
 	
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);

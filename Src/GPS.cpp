@@ -12,6 +12,7 @@ gps_fix gpsData;
 
 // Satellites in view
 NMEAGPS::satellite_view_t satellites[ NMEAGPS_MAX_SATELLITES ];
+// Number of satetlittes in view
 uint8_t sat_count;
 
 // TODO: Migrate to FreeRTOS 9.0 which allows allocating mutex statically
@@ -30,7 +31,6 @@ void vGPSTask(void *pvParameters)
 {
 	for (;;)
 	{
-//		while (gpsParser.available( Serial1 ))
 		while(Serial1.available())
 		{
 			int c = Serial1.read();
@@ -50,4 +50,15 @@ void vGPSTask(void *pvParameters)
 			
 		vTaskDelay(10);
 	}
+}
+
+gps_fix getGPSFixData()
+{
+	gps_fix ret;
+	
+	xSemaphoreTake(xGPSDataMutex, portMAX_DELAY); // TODO consider using RAII mutex locker
+	ret = gpsData;
+	xSemaphoreGive(xGPSDataMutex);
+	
+	return ret;
 }
