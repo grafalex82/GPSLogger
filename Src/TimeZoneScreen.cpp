@@ -11,7 +11,7 @@ extern Adafruit_SSD1306 display;
 
 TimeZoneScreen::TimeZoneScreen()
 {
-	timeZone = 150; // TODO: get the value in settings EEPROM
+	timeZone = -150; // TODO: get the value in settings EEPROM
 }
 
 void TimeZoneScreen::drawScreen()
@@ -40,8 +40,8 @@ void TimeZoneScreen::drawScreen()
 	char timeZoneBuf[7];
 	strcpy(timeZoneBuf, timeZoneTemplate);
 	timeZoneBuf[0] = timeZone < 0 ? '-' : '+';
-	printNumber(timeZoneBuf+1, timeZone / 60, 2);
-	printNumber(timeZoneBuf+4, timeZone % 60, 2);
+	printNumber(timeZoneBuf+1, abs(timeZone) / 60, 2);
+	printNumber(timeZoneBuf+4, abs(timeZone) % 60, 2);
 	
 	// Draw the time string
 	display.setFont(&TimeFont);
