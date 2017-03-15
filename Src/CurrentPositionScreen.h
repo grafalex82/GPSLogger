@@ -6,12 +6,12 @@
 class CurrentPositionScreen: public Screen
 {
 public:
-	virtual void drawScreen();
+	virtual void drawScreen() const;
 
 	virtual void onOkButton();
 
 protected:
-	const char * getOkButtonText();
+	const char * getOkButtonText() const;
 };
 
 #endif //_POSITION_SCREEN_H_

@@ -17,7 +17,7 @@ SatellitesScreen::SatellitesScreen()
 {
 }
 
-void SatellitesScreen::drawScreen()
+void SatellitesScreen::drawScreen() const
 {	
 	// Try locking the semaphore as little as possible.
 	// do not perform too much drawing while semaphore is locked, 

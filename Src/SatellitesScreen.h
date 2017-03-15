@@ -8,7 +8,7 @@ class SatellitesScreen : public Screen
 public:
 	SatellitesScreen();
 
-	virtual void drawScreen();
+	virtual void drawScreen() const;
 
 
 private:

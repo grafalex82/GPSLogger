@@ -6,7 +6,7 @@
 class CurrentTimeScreen: public ParentScreen
 {
 public:
-  virtual void drawScreen();
+  virtual void drawScreen() const;
   
   CurrentTimeScreen();
 };

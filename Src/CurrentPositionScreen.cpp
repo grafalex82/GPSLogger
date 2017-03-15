@@ -11,7 +11,7 @@ extern Adafruit_SSD1306 display;
 
 extern gps_fix gpsData;
 
-void CurrentPositionScreen::drawScreen()
+void CurrentPositionScreen::drawScreen() const
 {
 	static char latitudeString[17]; // 16 symbols + terminating zerno
 	static char longtitudeString[17];
@@ -45,7 +45,7 @@ void CurrentPositionScreen::drawScreen()
 	display.print(longtitudeString);
 }
 
-const char * CurrentPositionScreen::getOkButtonText()
+const char * CurrentPositionScreen::getOkButtonText() const
 {
 	static const char text[] PROGMEM = "POI";
 	return text;

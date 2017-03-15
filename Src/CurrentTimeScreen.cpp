@@ -11,7 +11,7 @@ extern Adafruit_SSD1306 display;
 
 TimeZoneScreen timeZoneScreen; //TODO Move it to CurrentTimeScreen class
 
-void CurrentTimeScreen::drawScreen()
+void CurrentTimeScreen::drawScreen() const
 {
 	// Get the date/time adjusted by selected timezone value
 	gps_fix gpsData = getGPSFixData();

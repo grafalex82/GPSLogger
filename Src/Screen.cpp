@@ -12,7 +12,7 @@ Screen::Screen()
 	nextScreen = this;
 }
 
-void Screen::drawHeader()
+void Screen::drawHeader() const
 {
 	display.setFont(NULL);
 	display.setCursor(20, 0);
@@ -41,13 +41,13 @@ Screen * Screen::addScreen(Screen * screen)
 	return screen;
 }
 
-const char * Screen::getSelButtonText()
+const char * Screen::getSelButtonText() const
 {
 	static const char text[] PROGMEM = "MODE";
 	return text;
 }
 
-const char * Screen::getOkButtonText()
+const char * Screen::getOkButtonText() const
 {
 	static const char text[] PROGMEM = "ENTER";
 	return text;

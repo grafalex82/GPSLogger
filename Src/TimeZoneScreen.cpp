@@ -14,7 +14,7 @@ TimeZoneScreen::TimeZoneScreen()
 	timeZone = -150; // TODO: get the value in settings EEPROM
 }
 
-void TimeZoneScreen::drawScreen()
+void TimeZoneScreen::drawScreen() const
 {
 	// Get the date/time adjusted by selected timezone value
 	gps_fix gpsData = getGPSFixData();
@@ -65,13 +65,13 @@ void TimeZoneScreen::onOkButton()
 	backToParentScreen();
 }
 
-const char * TimeZoneScreen::getSelButtonText()
+const char * TimeZoneScreen::getSelButtonText() const
 {
 	static const char text[] PROGMEM = "SELECT";
 	return text;
 }
 
-const char * TimeZoneScreen::getOkButtonText()
+const char * TimeZoneScreen::getOkButtonText() const
 {
 	static const char text[] PROGMEM = "OK";
 	return text;
