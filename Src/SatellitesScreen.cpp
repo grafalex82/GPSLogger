@@ -55,9 +55,18 @@ void SatellitesScreen::drawScreen() const
 	display.setFont(NULL);
 	display.setCursor(0,8);
 	display.print("Sats: ");
+	display.print(tracked);
+	display.print("/");
 	display.println(sat_count_local);
-	display.print("Tracked: ");
-	display.println(tracked);
+	if(gpsData.valid.hdop)
+		display.print(gpsData.hdop);
+	else
+		display.print("-");
+	display.print(" ");
+	if(gpsData.valid.vdop)
+		display.println(gpsData.vdop);
+	else
+	display.print("-");
 	display.print("St: ");
 	static const char * statuses[] = {"NONE", "EST", "TIME", "STD", "DGPS"};
 	display.println(statuses[status]);
