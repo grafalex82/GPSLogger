@@ -2,6 +2,7 @@
 #include <NMEAGPS.h>
 
 #include "SpeedScreen.h"
+#include "AltitudeScreen.h"
 #include "TimeFont.h"
 #include "8x12Font.h"
 #include "GPS.h"
@@ -9,8 +10,11 @@
 
 extern Adafruit_SSD1306 display;
 
+AltitudeScreen altitudeScreen;
+
 SpeedScreen::SpeedScreen()
 {
+	addChildScreen(&altitudeScreen);
 }
 
 void SpeedScreen::drawScreen() const
@@ -39,7 +43,7 @@ void SpeedScreen::drawScreen() const
 		if(gpsData.alt.whole >= 0)
 			printNumber(buf, gpsData.alt.whole, 5);
 		else
-			printNumber(buf+1, abs(gpsData.alt.whole), 5); // there could be negative altitude
+			printNumber(buf+1, abs(gpsData.alt.whole), 4); // there could be negative altitude
 	}
 	display.setFont(NULL);
 	display.setCursor(90, 24);
@@ -82,4 +86,10 @@ const char * SpeedScreen::headingAsLetter(uint16 heading)
 		return "NW";
 	
 	return "N";
+}
+
+const char * SpeedScreen::getOkButtonText() const
+{
+	static const char text[] PROGMEM = "ALTITUDE";
+	return text;
 }

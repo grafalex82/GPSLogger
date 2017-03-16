@@ -15,11 +15,11 @@ Screen::Screen()
 void Screen::drawHeader() const
 {
 	display.setFont(NULL);
-	display.setCursor(20, 0);
+	display.setCursor(16, 0);
 	display.print('\x1e');
 	display.print(getSelButtonText());
 	
-	display.setCursor(80, 0);
+	display.setCursor(70, 0);
 	display.print('\x1e');
 	display.print(getOkButtonText());
 }

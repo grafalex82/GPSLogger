@@ -1,14 +1,16 @@
 #ifndef __SPEEDSCREEN_H__
 #define __SPEEDSCREEN_H__
 
-#include "Screen.h"
+#include "ParentScreen.h"
 
-class SpeedScreen : public Screen
+class SpeedScreen : public ParentScreen
 {
 public:
 	SpeedScreen();
 
 	virtual void drawScreen() const;
+	
+	virtual const char * getOkButtonText() const;
 
 	static const char * headingAsLetter(uint16 heading);
 

@@ -793,6 +793,12 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
     <Compile Include="8x12Font.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="AltitudeScreen.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="AltitudeScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Buttons.cpp">
       <SubType>compile</SubType>
     </Compile>
