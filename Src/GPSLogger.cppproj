@@ -850,6 +850,12 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
     <Compile Include="ScreenManager.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="SpeedScreen.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="SpeedScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="TimeFont.h">
       <SubType>compile</SubType>
     </Compile>

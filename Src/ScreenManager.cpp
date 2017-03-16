@@ -11,6 +11,7 @@
 
 #include "CurrentPositionScreen.h"
 #include "CurrentTimeScreen.h"
+#include "SpeedScreen.h"
 #include "SatellitesScreen.h"
 
 Adafruit_SSD1306 display(-1);
@@ -31,6 +32,7 @@ int screenIdx = 0;
 // Statically allocated screens
 CurrentTimeScreen timeScreen;
 CurrentPositionScreen positionScreen;
+SpeedScreen speedScreen;
 SatellitesScreen satellitesScreen;
 
 void setCurrentScreen(Screen * screen)
@@ -66,7 +68,8 @@ void initScreens()
 {
 	setCurrentScreen(&timeScreen);
 	timeScreen.addScreen(&positionScreen);
-	positionScreen.addScreen(&satellitesScreen);
+	positionScreen.addScreen(&speedScreen);
+	speedScreen.addScreen(&satellitesScreen);
 }
 
 // Display information according to current state and screen
