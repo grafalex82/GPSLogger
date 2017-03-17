@@ -6,6 +6,10 @@
 #include "8x12Font.h"
 #include "GPS.h"
 
+// DebugScreen should not be here. I just needed to attach DebugScreen somewhere
+#include "DebugScreen.h"
+DebugScreen debugScreen;
+
 extern Adafruit_SSD1306 display;
 extern NMEAGPS::satellite_view_t satellites[ NMEAGPS_MAX_SATELLITES ];
 extern uint8_t sat_count;
@@ -15,6 +19,7 @@ extern SemaphoreHandle_t xGPSDataMutex;
 
 SatellitesScreen::SatellitesScreen()
 {
+	addChildScreen(&debugScreen);
 }
 
 void SatellitesScreen::drawScreen() const

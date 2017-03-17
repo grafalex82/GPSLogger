@@ -1,15 +1,14 @@
 #ifndef __SATELLITESSCREEN_H__
 #define __SATELLITESSCREEN_H__
 
-#include "Screen.h"
+#include "ParentScreen.h"
 
-class SatellitesScreen : public Screen
+class SatellitesScreen : public ParentScreen  // TODO: This should inherit Screen, not ParentScreen. I just needed to attach DebugScreen somewhere
 {
 public:
 	SatellitesScreen();
 
 	virtual void drawScreen() const;
-
 
 private:
 	SatellitesScreen( const SatellitesScreen &c );
