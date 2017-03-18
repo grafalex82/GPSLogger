@@ -2,20 +2,44 @@
 
 #include "IdleThread.h"
 
-volatile TickType_t idleTicks = 0;
+static const uint8 periodLen = 9; // 2^periodLen ticks
+
+volatile TickType_t curIdleTicks = 0;
 volatile TickType_t lastCountedTick = 0;
+volatile TickType_t lastCountedPeriod = 0;
+volatile TickType_t lastPeriodIdleValue = 0;
+volatile TickType_t minIdleValue = 1 << periodLen;
 
 extern "C" void vApplicationIdleHook( void )
 {
+	// Process idle tick counter
 	volatile TickType_t curTick = xTaskGetTickCount();
 	if(curTick != lastCountedTick)
 	{
-		idleTicks++;
+		curIdleTicks++;
 		lastCountedTick = curTick;
+	}
+	
+	// Store idle metrics each ~0.5 seconds (512 ticks)
+	curTick >>= periodLen;
+	if(curTick >  lastCountedPeriod)
+	{
+		lastPeriodIdleValue = curIdleTicks;
+		curIdleTicks = 0;
+		lastCountedPeriod = curTick;
+		
+		// Store the max value
+		if(lastPeriodIdleValue < minIdleValue)
+			minIdleValue = lastPeriodIdleValue;
 	}
 }
 
-uint32_t getIdleTicks()
+float getCPULoad()
 {
-	return idleTicks;
+	return 100. - 100. * lastPeriodIdleValue /  (1 << periodLen);
+}
+
+float getMaxCPULoad()
+{
+	return 100. - 100. * minIdleValue /  (1 << periodLen);
 }

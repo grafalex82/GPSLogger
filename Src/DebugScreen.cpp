@@ -31,17 +31,13 @@ void DebugScreen::drawScreen() const
 	{
 		case IDLE_METRICS:
 		{
-			TickType_t totalTicks = xTaskGetTickCount();
-			TickType_t idleTicks = getIdleTicks();
 			display.setCursor(0, 19);
-			display.print("Idle: ");
-			display.print(idleTicks);
-			display.print(" ");
-			display.print(100. * (totalTicks - idleTicks)/totalTicks, 1);
+			display.print("CPU Load: ");
+			display.print(getCPULoad(), 1);
 			
 			display.setCursor(0, 32);
-			display.print("Total: ");
-			display.print(totalTicks);
+			display.print("Max Load: ");
+			display.print(getMaxCPULoad(), 1);
 			break;
 		}
 		case STACK_METRICS:
