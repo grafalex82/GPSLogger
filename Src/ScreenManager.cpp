@@ -140,7 +140,7 @@ void vDisplayTask(void *pvParameters)
 			lastActionTicks = xTaskGetTickCount();
 		}
 		
-		// Do what we need for current state
+		// Draw the current page
 		drawDisplay();
 	}
 }
