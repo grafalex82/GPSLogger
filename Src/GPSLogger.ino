@@ -8,10 +8,10 @@ void vLEDFlashTask(void *pvParameters)
 {
 	for (;;) 
 	{
-		vTaskDelay(1000);
-		digitalWrite(PC13, HIGH);
-		vTaskDelay(150);
+		vTaskDelay(2000);
 		digitalWrite(PC13, LOW);
+		vTaskDelay(100);
+		digitalWrite(PC13, HIGH);
 	}
 }
 
