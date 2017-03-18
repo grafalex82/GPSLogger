@@ -112,12 +112,33 @@ void processButton(const ButtonMessage &msg)
 
 void vDisplayTask(void *pvParameters) 
 {
+	TickType_t lastActionTicks = xTaskGetTickCount();
+	
 	for (;;)
 	{
 		// Poll the buttons queue for an event. Process button if pressed, or show current screen as usual if no button pressed
 		ButtonMessage msg;
 		if(xQueueReceive(buttonsQueue, &msg, DISPLAY_CYCLE))
+		{
 			processButton(msg);
+			
+			// Reset display off timer
+			lastActionTicks = xTaskGetTickCount();
+		}
+		
+		// Enter display off mode if needed
+		if(xTaskGetTickCount() - lastActionTicks > 10000) // TODO Store display off duration in settings
+		{
+			// Turn off the display
+			display.ssd1306_command(SSD1306_DISPLAYOFF);
+			
+			// Wait for a button
+			xQueueReceive(buttonsQueue, &msg, portMAX_DELAY);
+			
+			// Resume
+			display.ssd1306_command(SSD1306_DISPLAYON);
+			lastActionTicks = xTaskGetTickCount();
+		}
 		
 		// Do what we need for current state
 		drawDisplay();
