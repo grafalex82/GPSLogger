@@ -71,9 +71,9 @@
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility</Value>
@@ -123,9 +123,9 @@
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility</Value>
@@ -445,9 +445,9 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
   <avrgcc.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility</Value>
@@ -497,9 +497,9 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
   <avrgcccpp.compiler.directories.IncludePaths>
     <ListValues>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821</Value>
+      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Adafruit_SSD1306</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/SPI/src</Value>
-      <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/Adafruit-GFX-Library-master</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/libraries/NeoGPS-master/src</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/Wire</Value>
       <Value>C:/Users/GrafAlex/Documents/Arduino/hardware/Arduino_STM32/STM32F1/libraries/FreeRTOS821/utility</Value>
@@ -790,6 +790,9 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
     </VisualMicroSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="8x12Font.cpp">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="8x12Font.h">
       <SubType>compile</SubType>
     </Compile>
@@ -878,6 +881,9 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="SpeedScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="TimeFont.cpp">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="TimeFont.h">
