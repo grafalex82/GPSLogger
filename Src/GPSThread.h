@@ -1,11 +1,7 @@
-#ifndef __GPS_H__
-#define __GPS_H__
-
-class gps_fix;
+#ifndef __GPSTHREAD_H__
+#define __GPSTHREAD_H__
 
 void initGPS();
 void vGPSTask(void *pvParameters);
 
-gps_fix getGPSFixData();
-
-#endif //__GPS_H__
+#endif //__GPSTHREAD_H__

@@ -4,7 +4,7 @@
 #include "CurrentTimeScreen.h"
 #include "TimeZoneScreen.h"
 #include "TimeFont.h"
-#include "GPSThread.h"
+#include "GPSData.h"
 #include "Utils.h"
 
 extern Adafruit_SSD1306 display;
@@ -14,8 +14,8 @@ TimeZoneScreen timeZoneScreen; //TODO Move it to CurrentTimeScreen class
 void CurrentTimeScreen::drawScreen() const
 {
 	// Get the date/time adjusted by selected timezone value
-	gps_fix gpsData = getGPSFixData();
-	NeoGPS::time_t dateTime = gpsData.dateTime + timeZoneScreen.getCurrentTimeZone() * 60; //timeZone is in minutes
+	gps_fix gpsFix = gpsData.getGPSFix();
+	NeoGPS::time_t dateTime = gpsFix.dateTime + timeZoneScreen.getCurrentTimeZone() * 60; //timeZone is in minutes
 
 	// Fill the buffer with a message template	
 	char buf[10];
@@ -23,7 +23,7 @@ void CurrentTimeScreen::drawScreen() const
 	strcpy(buf, timeStringTemplate);
 	
 	// Draw a '~' symbol if no time is available from GPS.
-	if(!gpsData.valid.time)
+	if(!gpsFix.valid.time)
 		buf[0] =  ';';  // ';' is remapped to '~'
 	
 	// Burn in current time

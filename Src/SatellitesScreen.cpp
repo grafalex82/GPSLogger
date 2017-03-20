@@ -4,7 +4,7 @@
 
 #include "SatellitesScreen.h"
 #include "8x12Font.h"
-#include "GPSThread.h"
+#include "GPSData.h"
 
 // DebugScreen should not be here. I just needed to attach DebugScreen somewhere
 #include "DebugScreen.h"
@@ -13,9 +13,6 @@ DebugScreen debugScreen;
 extern Adafruit_SSD1306 display;
 extern NMEAGPS::satellite_view_t satellites[ NMEAGPS_MAX_SATELLITES ];
 extern uint8_t sat_count;
-extern gps_fix gpsData;
-
-extern SemaphoreHandle_t xGPSDataMutex;
 
 SatellitesScreen::SatellitesScreen()
 {
@@ -27,7 +24,8 @@ void SatellitesScreen::drawScreen() const
 	// Try locking the semaphore as little as possible.
 	// do not perform too much drawing while semaphore is locked, 
 	// otherwise we will have to make another copy of data
-	xSemaphoreTake(xGPSDataMutex, portMAX_DELAY);
+	// xSemaphoreTake(xGPSDataMutex, portMAX_DELAY);
+	// TODO: wrap satellites data into a data object so there is no need to lock semaphore
 	
 	// Draw a bar on each satellites in the list
 	uint8 width = 3;
@@ -51,10 +49,12 @@ void SatellitesScreen::drawScreen() const
 
 	// other stuff
 	uint8 sat_count_local = sat_count;
-	gps_fix::status_t status = gpsData.status;
+	gps_fix gpsFix = gpsData.getGPSFix(); 
+	gps_fix::status_t status = gpsFix.status;
 
 	// No more need to keep mutex
-	xSemaphoreGive(xGPSDataMutex);
+	//xSemaphoreGive(xGPSDataMutex);
+	// TODO: wrap satellites data into a data object so there is no need to lock semaphore
 
 	// Drawing stats
 	display.setFont(NULL);
@@ -63,13 +63,13 @@ void SatellitesScreen::drawScreen() const
 	display.print(tracked);
 	display.print("/");
 	display.println(sat_count_local);
-	if(gpsData.valid.hdop)
-		display.print(gpsData.hdop);
+	if(gpsFix.valid.hdop)
+		display.print(gpsFix.hdop);
 	else
 		display.print("-");
 	display.print(" ");
-	if(gpsData.valid.vdop)
-		display.println(gpsData.vdop);
+	if(gpsFix.valid.vdop)
+		display.println(gpsFix.vdop);
 	else
 	display.print("-");
 	display.print("St: ");
