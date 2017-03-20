@@ -4,7 +4,7 @@
 
 #include "SatellitesScreen.h"
 #include "8x12Font.h"
-#include "GPS.h"
+#include "GPSThread.h"
 
 // DebugScreen should not be here. I just needed to attach DebugScreen somewhere
 #include "DebugScreen.h"

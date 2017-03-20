@@ -832,10 +832,10 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
     <Compile Include="FontTest.h">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GPS.cpp">
+    <Compile Include="GPSThread.cpp">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="GPS.h">
+    <Compile Include="GPSThread.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="GPSLogger.ino">

@@ -3,7 +3,7 @@
 #include <NMEAGPS.h>
 #include "Streamers.h"
 
-#include "GPS.h"
+#include "GPSThread.h"
 
 // A GPS parser
 NMEAGPS gpsParser;

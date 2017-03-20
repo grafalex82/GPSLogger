@@ -4,7 +4,7 @@
 #include "CurrentTimeScreen.h"
 #include "TimeZoneScreen.h"
 #include "TimeFont.h"
-#include "GPS.h"
+#include "GPSThread.h"
 #include "Utils.h"
 
 extern Adafruit_SSD1306 display;

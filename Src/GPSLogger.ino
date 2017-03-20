@@ -2,7 +2,7 @@
 
 #include "ScreenManager.h"
 #include "Buttons.h"
-#include "GPS.h"
+#include "GPSThread.h"
 
 void vLEDFlashTask(void *pvParameters) 
 {

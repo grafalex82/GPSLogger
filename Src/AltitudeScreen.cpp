@@ -5,7 +5,7 @@
 #include "ScreenManager.h"
 #include "TimeFont.h"
 #include "8x12Font.h"
-#include "GPS.h"
+#include "GPSThread.h"
 #include "Utils.h"
 
 extern Adafruit_SSD1306 display;
