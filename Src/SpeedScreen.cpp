@@ -5,7 +5,7 @@
 #include "AltitudeScreen.h"
 #include "TimeFont.h"
 #include "8x12Font.h"
-#include "GPSData.h"
+#include "GPSDataModel.h"
 #include "Utils.h"
 
 extern Adafruit_SSD1306 display;
@@ -20,7 +20,7 @@ SpeedScreen::SpeedScreen()
 void SpeedScreen::drawScreen() const
 {
 	// Get the gps fix data
-	gps_fix gpsFix = gpsData.getGPSFix();
+	gps_fix gpsFix = gpsDataModel.getGPSFix();
 	
 	// Draw speed
 	// TODO draw '----' if no GPS signal found. Requires new character in font

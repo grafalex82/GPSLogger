@@ -12,10 +12,10 @@ typedef QueueHandle_t SemaphoreHandle_t;
 /**
  * GPS data model. Encapsulates all the knowledge about various GPS related data in the device
  */
-class GPSData
+class GPSDataModel
 {
 public:
-	GPSData();
+	GPSDataModel();
 	
 	void processNewGPSFix(const gps_fix & fix);
 	void processNewSatellitesData(NMEAGPS::satellite_view_t * data, uint8_t count);
@@ -29,11 +29,11 @@ private:
 	
 	SemaphoreHandle_t xGPSDataMutex;
 	
-	GPSData( const GPSData &c );
-	GPSData& operator=( const GPSData &c );	
-}; //GPSData
+	GPSDataModel( const GPSDataModel &c );
+	GPSDataModel& operator=( const GPSDataModel &c );	
+}; //GPSDataModel
 
-/// A single instance of GPS data
-extern GPSData gpsData;
+/// A single instance of GPS data model
+extern GPSDataModel gpsDataModel;
 
 #endif //__GPSDATA_H__

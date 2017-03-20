@@ -4,7 +4,7 @@
 
 #include "SatellitesScreen.h"
 #include "8x12Font.h"
-#include "GPSData.h"
+#include "GPSDataModel.h"
 
 // DebugScreen should not be here. I just needed to attach DebugScreen somewhere
 #include "DebugScreen.h"
@@ -19,7 +19,7 @@ SatellitesScreen::SatellitesScreen()
 
 void SatellitesScreen::drawScreen() const
 {	
-	GPSSatellitesData satellites = gpsData.getSattelitesData();	
+	GPSSatellitesData satellites = gpsDataModel.getSattelitesData();	
 	
 	// Draw a bar on each satellites in the list
 	uint8 width = 3;
@@ -44,7 +44,7 @@ void SatellitesScreen::drawScreen() const
 
 	// other stuff
 	uint8 sat_count_local = sat_count;
-	gps_fix gpsFix = gpsData.getGPSFix(); 
+	gps_fix gpsFix = gpsDataModel.getGPSFix(); 
 	gps_fix::status_t status = gpsFix.status;
 
 	// No more need to keep mutex

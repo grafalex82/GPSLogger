@@ -4,7 +4,7 @@
 #include "TimeZoneScreen.h"
 #include "ScreenManager.h"
 #include "TimeFont.h"
-#include "GPSData.h"
+#include "GPSDataModel.h"
 #include "Utils.h"
 
 extern Adafruit_SSD1306 display;
@@ -57,7 +57,7 @@ TimeZoneScreen::TimeZoneScreen()
 void TimeZoneScreen::drawScreen() const
 {
 	// Get the date/time adjusted by selected timezone value
-	gps_fix gpsFix = gpsData.getGPSFix();
+	gps_fix gpsFix = gpsDataModel.getGPSFix();
 	int16 timeZone = getCurrentTimeZone();
 	NeoGPS::time_t dateTime = gpsFix.dateTime + timeZone * 60; //timeZone is in minutes
 

@@ -5,7 +5,7 @@
 #include "ScreenManager.h"
 #include "TimeFont.h"
 #include "8x12Font.h"
-#include "GPSData.h"
+#include "GPSDataModel.h"
 #include "Utils.h"
 
 extern Adafruit_SSD1306 display;
@@ -17,7 +17,7 @@ AltitudeScreen::AltitudeScreen()
 void AltitudeScreen::drawScreen() const
 {
 	// Get the gps fix data
-	gps_fix gpsFix = gpsData.getGPSFix();
+	gps_fix gpsFix = gpsDataModel.getGPSFix();
 	
 	// Draw Altitude
 	// TODO draw '----' if no GPS signal found. Requires new character in font
