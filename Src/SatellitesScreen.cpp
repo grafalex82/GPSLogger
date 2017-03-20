@@ -11,8 +11,6 @@
 DebugScreen debugScreen;
 
 extern Adafruit_SSD1306 display;
-extern NMEAGPS::satellite_view_t satellites[ NMEAGPS_MAX_SATELLITES ];
-extern uint8_t sat_count;
 
 SatellitesScreen::SatellitesScreen()
 {
@@ -21,26 +19,23 @@ SatellitesScreen::SatellitesScreen()
 
 void SatellitesScreen::drawScreen() const
 {	
-	// Try locking the semaphore as little as possible.
-	// do not perform too much drawing while semaphore is locked, 
-	// otherwise we will have to make another copy of data
-	// xSemaphoreTake(xGPSDataMutex, portMAX_DELAY);
-	// TODO: wrap satellites data into a data object so there is no need to lock semaphore
+	GPSSatellitesData satellites = gpsData.getSattelitesData();	
 	
 	// Draw a bar on each satellites in the list
 	uint8 width = 3;
 	uint8 tracked = 0;
+	uint8 sat_count = satellites.getSattelitesCount();
 	for(uint8 sat = 0; sat < sat_count; sat++)
 	{
 		uint8 x = display.width() / 2 + sat * width;
-		uint8 snr = satellites[sat].snr;
+		uint8 snr = satellites.getSatteliteSNR(sat);
 		if (snr > 50) // Cap value with 50 dBm
 			snr = 50;
 		uint8 h = (float)snr * 22 / 50; // TODO: Remove hardcoded numbers. 22 is max height for a bar, 50 is max dBm
 		display.fillRect(x, display.height() - h, width - 1, h, 1);
 
 		// Draw a short stroke above the tracked satellite bar
-		if (satellites[sat].tracked) // TODO: check if we are really interested in this
+		if (satellites.isSatteliteTracked(sat))
 		{
 			display.drawFastHLine(x, 9, width - 1, 1);
 			tracked++;

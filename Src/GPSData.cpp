@@ -20,8 +20,20 @@ void GPSData::processNewGPSFix(const gps_fix & fix)
 	cur_fix = fix;
 }
 
-gps_fix GPSData::getGPSFix()
+void GPSData::processNewSatellitesData(NMEAGPS::satellite_view_t * data, uint8_t count)
+{
+	MutexLocker lock(xGPSDataMutex);
+	sattelitesData.parseSatellitesData(data, count);
+}
+
+gps_fix GPSData::getGPSFix() const
 {
 	MutexLocker lock(xGPSDataMutex);
 	return cur_fix;	
+}
+
+GPSSatellitesData GPSData::getSattelitesData() const
+{
+	MutexLocker lock(xGPSDataMutex);
+	return sattelitesData;
 }
