@@ -6,6 +6,7 @@
 #include <Adafruit_SSD1306_STM32.h>
 
 #include "8x12Font.h"
+#include "Screen.h"
 #include "ScreenManager.h"
 #include "Buttons.h"
 
@@ -62,7 +63,7 @@ void backToParentScreen()
 void initDisplay()
 {
 	// by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-	display.begin(SSD1306_SWITCHCAPVCC, 0x3C);  // initialize with the I2C addr 0x3C (for the 128x32)
+	display.begin(SSD1306_SWITCHCAPVCC, 0x3C, false);  // initialize with the I2C addr 0x3C (for the 128x32)
 	display.setTextColor(WHITE);				// Assuming all subsequent commands draw in white color
 }
 

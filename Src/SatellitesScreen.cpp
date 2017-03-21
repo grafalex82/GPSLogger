@@ -47,10 +47,6 @@ void SatellitesScreen::drawScreen() const
 	gps_fix gpsFix = gpsDataModel.getGPSFix(); 
 	gps_fix::status_t status = gpsFix.status;
 
-	// No more need to keep mutex
-	//xSemaphoreGive(xGPSDataMutex);
-	// TODO: wrap satellites data into a data object so there is no need to lock semaphore
-
 	// Drawing stats
 	display.setFont(NULL);
 	display.setCursor(0,8);
@@ -66,7 +62,7 @@ void SatellitesScreen::drawScreen() const
 	if(gpsFix.valid.vdop)
 		display.println(gpsFix.vdop);
 	else
-	display.print("-");
+		display.println("-");
 	display.print("St: ");
 	static const char * statuses[] = {"NONE", "EST", "TIME", "STD", "DGPS"};
 	display.println(statuses[status]);
