@@ -40,11 +40,19 @@ void AltitudeScreen::drawScreen() const
 	display.print("m");
 
 	// Draw vertical speed
-	strcpy(buf, "+333m/s");
-	// TODO print actual vertical speed here
-	display.setFont(NULL);
-	display.setCursor(80, 24);
-	display.print(buf);
+	float vspeed = gpsDataModel.getVerticalSpeed();
+	if(!isnan(vspeed))
+	{
+		display.setFont(NULL);
+		display.setCursor(80, 24);
+		display.print(vspeed > 0 ? '+' : '-');
+		vspeed = abs(vspeed);
+		if(vspeed < 10)
+			display.print(vspeed, 1);
+		else
+			display.print((uint16)vspeed);
+		display.print("m/s"); //TODO: Add a space before 'm/s'. Requires text wrapping fix in GFX library
+	}
 }
 
 void AltitudeScreen::onOkButton()
