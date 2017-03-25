@@ -31,6 +31,7 @@ public:
 	int timeDifference() const;
 	
 	// Odometers
+	GPSOdometer getOdometer(uint8 idx) const;
 	void resumeAllOdometer();
 	void pauseAllOdometer();
 	void resetAllOdometer();

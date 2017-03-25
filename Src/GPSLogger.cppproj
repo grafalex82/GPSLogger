@@ -864,6 +864,12 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
     <Compile Include="IdleThread.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="OdometerScreen.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="OdometerScreen.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="ParentScreen.cpp">
       <SubType>compile</SubType>
     </Compile>

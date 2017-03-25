@@ -82,6 +82,12 @@ int GPSDataModel::timeDifference() const
 	return cur_fix.dateTime - prev_fix.dateTime;
 }
 
+GPSOdometer GPSDataModel::getOdometer(uint8 idx) const
+{
+	MutexLocker lock(xGPSDataMutex);
+	return *odometers[idx];
+}
+
 void GPSDataModel::resumeAllOdometer()
 {
 	if(odometerWasActive[0])
