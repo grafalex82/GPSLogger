@@ -10,6 +10,9 @@ class NMEAGPS;
 struct NMEAGPS::satellite_view_t;
 typedef void * QueueHandle_t;
 typedef QueueHandle_t SemaphoreHandle_t;
+class GPSOdometer;
+
+const uint8 ODOMERTERS_COUNT = 3;
 
 /**
  * GPS data model. Encapsulates all the knowledge about various GPS related data in the device
@@ -27,10 +30,17 @@ public:
 	float getVerticalSpeed() const;
 	int timeDifference() const;
 	
+	// Odometers
+	void resumeAllOdometer();
+	void pauseAllOdometer();
+	void resetAllOdometer();
+	
 private:
 	gps_fix cur_fix; /// most recent fix data
 	gps_fix prev_fix; /// previously set fix data
-	GPSSatellitesData sattelitesData;
+	GPSSatellitesData sattelitesData; // Sattelites count and signal power
+	GPSOdometer * odometers[ODOMERTERS_COUNT];
+	bool odometerWasActive[ODOMERTERS_COUNT];
 	
 	SemaphoreHandle_t xGPSDataMutex;
 	
