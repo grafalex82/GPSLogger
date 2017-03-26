@@ -71,10 +71,12 @@ void OdometerScreen::drawDetailsScreen() const
 	display.print(odometer.getMaxSpeed()); // TODO: Use exactly 4 symbols. Consider adding a helper function
 
 	display.setCursor(0,24);
-	display.print("T:12:34:56");
+	display.print("T:");
+	display.print(TimePrinter(odometer.getTotalTime())); // TODO: This may not fit if total time is more that 1 day
 
 	display.setCursor(64,24);
-	display.print("A:21:43:65");
+	display.print("A:");
+	display.print(TimePrinter(odometer.getActiveTime()));  // TODO: This may not fit if active time is more that 1 day
 }
 
 const char * OdometerScreen::getOkButtonText() const
