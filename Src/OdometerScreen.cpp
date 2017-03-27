@@ -32,7 +32,7 @@ void OdometerScreen::drawBriefScreen() const
 	display.setCursor(0,31);
 	
 	if(odometer.isActive())
-		display.print(odometer.getOdometerValue()); // TODO: Use exactly 4 symbols. Consider adding a helper function
+		display.print(FloatPrinter(odometer.getOdometerValue(), 4));
 	else
 		display.print("0000"); // TODO: print '----' when there is such symbol in the font
 		
@@ -44,7 +44,7 @@ void OdometerScreen::drawBriefScreen() const
 	display.setFont(NULL);
 	display.setCursor(64,22);
 	display.print("dH: ");
-	display.print(odometer.getAltitudeDifference()); // TODO: Use exactly 4 symbols. Consider adding a helper function
+	display.print(FloatPrinter(odometer.getAltitudeDifference(), 4));
 	display.print("m");
 }
 
@@ -56,19 +56,19 @@ void OdometerScreen::drawDetailsScreen() const
 
 	display.setCursor(0,8);
 	display.print("Dist: ");
-	display.print(odometer.getOdometerValue()); // TODO: Use exactly 4 symbols. Consider adding a helper function
+	display.print(FloatPrinter(odometer.getOdometerValue(), 4));
 	
 	display.setCursor(64,8);
 	display.print("dH: ");
-	display.print(odometer.getAltitudeDifference()); // TODO: Use exactly 4 symbols. Consider adding a helper function
+	display.print(FloatPrinter(odometer.getAltitudeDifference(), 4));
 
 	display.setCursor(0,16);
 	display.print("Vavg: ");
-	display.print(odometer.getAvgSpeed()); // TODO: Use exactly 4 symbols. Consider adding a helper function
+	display.print(FloatPrinter(odometer.getAvgSpeed(), 4));
 
 	display.setCursor(64,16);
 	display.print("Vmax: ");
-	display.print(odometer.getMaxSpeed()); // TODO: Use exactly 4 symbols. Consider adding a helper function
+	display.print(FloatPrinter(odometer.getMaxSpeed(), 4));
 
 	display.setCursor(0,24);
 	display.print("T:");

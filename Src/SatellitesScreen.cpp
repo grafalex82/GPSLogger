@@ -5,6 +5,7 @@
 #include "SatellitesScreen.h"
 #include "8x12Font.h"
 #include "GPSDataModel.h"
+#include "Utils.h"
 
 // DebugScreen should not be here. I just needed to attach DebugScreen somewhere
 #include "DebugScreen.h"
@@ -55,14 +56,14 @@ void SatellitesScreen::drawScreen() const
 	display.print("/");
 	display.println(sat_count_local);
 	if(gpsFix.valid.hdop)
-		display.print(gpsFix.hdop);
+		display.print(FloatPrinter(gpsFix.hdop/1000, 4));
 	else
-		display.print("-");
+		display.print("----");
 	display.print(" ");
 	if(gpsFix.valid.vdop)
-		display.println(gpsFix.vdop);
+		display.println(FloatPrinter(gpsFix.vdop/1000, 4));
 	else
-		display.println("-");
+		display.println("----");
 	display.print("St: ");
 	static const char * statuses[] = {"NONE", "EST", "TIME", "STD", "DGPS"};
 	display.println(statuses[status]);

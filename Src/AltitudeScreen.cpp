@@ -45,12 +45,7 @@ void AltitudeScreen::drawScreen() const
 	{
 		display.setFont(NULL);
 		display.setCursor(80, 24);
-		display.print(vspeed > 0 ? '+' : '-');
-		vspeed = abs(vspeed);
-		if(vspeed < 10)
-			display.print(vspeed, 1);
-		else
-			display.print((uint16)vspeed);
+		display.print(FloatPrinter(vspeed, 5));
 		display.print("m/s"); //TODO: Add a space before 'm/s'. Requires text wrapping fix in GFX library
 	}
 }

@@ -6,7 +6,7 @@
 // TODO: port this to print to Stream one day
 void printNumber(char * buf, uint16_t value, uint8_t digits, bool leadingZeros)
 {
-	// TODO Fix a case whenvalue is larger than digits specified
+	// TODO Fix a case when value is larger than digits specified
 
 	bool drawSpaces = false;	
 	while(digits)
@@ -35,4 +35,65 @@ TimePrinter::TimePrinter(const NeoGPS::time_t & time)
 size_t TimePrinter::printTo(Print& p) const
 {
 	return p.print(buf);
+}
+
+FloatPrinter::FloatPrinter(float value, uint8 width, bool leadingZeros, bool alwaysPrintSign)
+{
+    // reserve a space for sign
+    uint8 minpos = 0;
+    if(alwaysPrintSign || value < 0)
+		minpos++;
+
+    // absolute value to print, deal with sign later
+    float v = value;
+    if(v < 0)
+		v = 0. - v;
+    
+    // floating point position will depend on the value
+    uint8 precision = 0;
+    if(v < 100)
+    {
+	    v *= 10;
+	    precision++;
+    }
+    if(v < 100) // doing this twice
+    {
+	    v *= 10;
+	    precision++;
+    }
+
+    uint32 iv = v + 0.5; // we will be operating with integers
+
+    // Filling the buffer starting from the right
+    pos = width;
+    buf[pos] = '\0';
+    bool onceMore = true; // Print at least one zero before dot
+    while((iv > 0 || onceMore) && (pos > minpos))
+    {
+	    pos--;
+	    onceMore = false;
+	    
+	    // Fill one digit
+	    buf[pos] = iv % 10 + '0';
+	    iv /= 10;
+	    
+	    // Special case for printing point
+	    // Trick used: if precision is 0 here it will become 255 and dot will never be printed (assuming the buffer size is less than 255)
+	    if(--precision == 0)
+	    {
+		    buf[--pos] = '.';
+		    onceMore = true;
+	    }
+    }
+    
+    //Print sign
+    if(value < 0)
+		buf[--pos] = '-';
+    else if (alwaysPrintSign)
+	    buf[--pos] = '+';
+}
+
+size_t FloatPrinter::printTo(Print& p) const
+{
+	return p.print(buf+pos);
 }
