@@ -22,7 +22,7 @@ void vGPSTask(void *pvParameters)
 		while(Serial1.available())
 		{
 			int c = Serial1.read();
-			Serial.write(c);
+//			Serial.write(c);
 			gpsParser.handle(c);
 		}
 		
