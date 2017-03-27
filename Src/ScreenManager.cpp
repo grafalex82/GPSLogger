@@ -28,7 +28,7 @@ const uint16 DISPLAY_CYCLE = 100 / portTICK_PERIOD_MS;
 const uint16 MESSAGE_BOX_DIRATION = 1000 / portTICK_PERIOD_MS;
 
 // Stack of nested screens
-Screen * screenStack[3];
+Screen * screenStack[5];
 int screenIdx = 0;
 
 

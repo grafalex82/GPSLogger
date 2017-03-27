@@ -19,5 +19,5 @@ void SettingsGroupScreen::drawCentered(const char * str, uint8 y) const
 {
 	uint8 x = display.width() / 2 - strlen(str) * 8 / 2;
 	display.setCursor(x, y);
-	display.print("Settings");
+	display.print(str);
 }

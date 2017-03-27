@@ -2,6 +2,8 @@
 #include <NMEAGPS.h>
 
 #include "OdometerScreen.h"
+#include "SelectorScreen.h"
+#include "ScreenManager.h"
 #include "GPSOdometer.h"
 #include "TimeFont.h"
 #include "8x12Font.h"
@@ -9,6 +11,16 @@
 #include "Utils.h"
 
 extern Adafruit_SSD1306 display;
+
+SelectorRecord odometerActions[] =
+{
+	"Start", NULL,
+	"Resume", NULL,
+	"Pause", NULL,
+	"Reset", NULL
+};
+
+SelectorScreen actionSelector(odometerActions, sizeof(odometerActions)/sizeof(SelectorRecord));
 
 OdometerScreen::OdometerScreen(uint8 idx)
 {
@@ -104,4 +116,7 @@ void OdometerScreen::onOkButton()
 {
 	// just toggle mode
 	inDetailsMode = !inDetailsMode;
+	
+	if(!inDetailsMode)
+		enterChildScreen(&actionSelector);
 }
