@@ -3,16 +3,15 @@
 
 #include "Screen.h"
 
-typedef void (*valueAcceptedFunc)();
-
+/// Selector Screen is a base class for screens that provides user with number of options to select.
+/// The class implements iteration over items and displaying items text. Class does not handle items themselves.
+/// That is because items may be generated in runtime by a class-ancestor
 class SelectorScreen: public Screen
 {
-	const char ** itemsList;
-	uint8 count;
 	uint8 currentIdx;
 
 public:
-	SelectorScreen(const char ** items, uint8 cnt);
+	SelectorScreen();
 
 	virtual void drawScreen() const;
 
@@ -23,6 +22,8 @@ public:
 	virtual void onOkButton();
 
 protected:
+	virtual const char * getItemText(uint8 idx) const = 0;
+	virtual uint8 getItemsCount() const = 0;
 	virtual void applySelection(uint8 idx) = 0;	
 
 private:

@@ -6,10 +6,8 @@
 
 extern Adafruit_SSD1306 display;
 
-SelectorScreen::SelectorScreen(const char ** items, uint8 cnt)
+SelectorScreen::SelectorScreen()
 {
-	itemsList = items;
-	count = cnt;
 	currentIdx = 0;
 }
 
@@ -18,8 +16,8 @@ void SelectorScreen::drawScreen() const
 	Serial.println("SelectorScreen::drawScreen()");
 	
 	display.setFont(&Monospace8x12Font);
-	if(currentIdx != count)
-		drawCentered(itemsList[currentIdx], 26);
+	if(currentIdx != getItemsCount())
+		drawCentered(getItemText(currentIdx), 26);
 	else
 		drawCentered("Back", 26);
 }
@@ -34,13 +32,13 @@ void SelectorScreen::drawCentered(const char * str, uint8 y) const
 void SelectorScreen::onSelButton()
 {
 	currentIdx++;
-	currentIdx %= (count + 1); // +1 to account 'Back' value
+	currentIdx %= (getItemsCount() + 1); // +1 to account 'Back' value
 }
 
 void SelectorScreen::onOkButton()
 {
 	// Perform an action associated with selected item
-	if(currentIdx < count)
+	if(currentIdx < getItemsCount())
 		applySelection(currentIdx);
 	
 	// Reset the index so user starts from the beginning next time
