@@ -2,11 +2,13 @@
 #define __ODOMETERSCREEN_H__
 
 #include "Screen.h"
+#include "OdometerActionScreen.h"
 
 class OdometerScreen : public Screen
 {
 	uint8 odometerIdx;
 	bool inDetailsMode;
+	OdometerActionScreen actionSelector;
 	
 public:
 	OdometerScreen(uint8 idx);

@@ -5,20 +5,14 @@
 
 typedef void (*valueAcceptedFunc)();
 
-struct SelectorRecord
-{
-	const char * valueStr;
-	valueAcceptedFunc acceptFunc;
-};
-
 class SelectorScreen: public Screen
 {
-	SelectorRecord * records;
+	const char ** itemsList;
 	uint8 count;
 	uint8 currentIdx;
 
 public:
-	SelectorScreen(SelectorRecord * recs, uint8 cnt);
+	SelectorScreen(const char ** items, uint8 cnt);
 
 	virtual void drawScreen() const;
 
@@ -27,7 +21,9 @@ public:
 
 	virtual void onSelButton();
 	virtual void onOkButton();
-	
+
+protected:
+	virtual void applySelection(uint8 idx) = 0;	
 
 private:
 	SelectorScreen( const SelectorScreen &c );

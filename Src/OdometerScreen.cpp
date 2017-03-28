@@ -12,17 +12,8 @@
 
 extern Adafruit_SSD1306 display;
 
-SelectorRecord odometerActions[] =
-{
-	"Start", NULL,
-	"Resume", NULL,
-	"Pause", NULL,
-	"Reset", NULL
-};
-
-SelectorScreen actionSelector(odometerActions, sizeof(odometerActions)/sizeof(SelectorRecord));
-
 OdometerScreen::OdometerScreen(uint8 idx)
+	: actionSelector(idx)
 {
 	odometerIdx = idx;
 	inDetailsMode = false;
