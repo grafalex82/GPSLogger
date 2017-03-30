@@ -410,6 +410,7 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
         <vm.programmer_name>avrispmkii</vm.programmer_name>
         <debug.local.portname>COM20</debug.local.portname>
         <debug.local.portspeed>115200</debug.local.portspeed>
+        <custom_Arduino_STM32_genericSTM32F103C_device_variant>STM32F103CB</custom_Arduino_STM32_genericSTM32F103C_device_variant>
       </VisualMicroSettings>
     </VisualMicroSettings>
   </PropertyGroup>
@@ -782,6 +783,7 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
         <vm.programmer_name>avrispmkii</vm.programmer_name>
         <debug.local.portname>COM20</debug.local.portname>
         <debug.local.portspeed>115200</debug.local.portspeed>
+        <custom_Arduino_STM32_genericSTM32F103C_device_variant>STM32F103CB</custom_Arduino_STM32_genericSTM32F103C_device_variant>
       </VisualMicroSettings>
     </VisualMicroSettings>
   </PropertyGroup>
@@ -862,6 +864,12 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="IdleThread.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="OdometerActionScreen.cpp">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="OdometerActionScreen.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="OdometerScreen.cpp">
