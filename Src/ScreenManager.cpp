@@ -25,7 +25,7 @@ Adafruit_SSD1306 display(-1);
 
 // Timeouts
 const uint16 DISPLAY_CYCLE = 100 / portTICK_PERIOD_MS;
-const uint16 MESSAGE_BOX_DIRATION = 1000 / portTICK_PERIOD_MS;
+const uint16 MESSAGE_BOX_DURATION = 1000 / portTICK_PERIOD_MS;
 
 // Stack of nested screens
 Screen * screenStack[5];
@@ -103,7 +103,7 @@ void showMessageBox(const char * text)
 	display.display();
 	
 	// Wait required duration
-	vTaskDelay(MESSAGE_BOX_DIRATION);
+	vTaskDelay(MESSAGE_BOX_DURATION);
 }
 
 void processButton(const ButtonMessage &msg)

@@ -14,7 +14,7 @@ const char * OdometerActionScreen::getItemText(uint8 idx) const
 		return "Reset";
 
 	// Assume idx=0 here, so actual text depends on odometer state	
-	GPSOdometer odometer = gpsDataModel.getOdometer(odometerID);
+	GPSOdometerData odometer = gpsDataModel.getOdometerData(odometerID);
 	
 	// Active odometer can only be paused
 	if(odometer.isActive())
@@ -34,5 +34,23 @@ uint8 OdometerActionScreen::getItemsCount() const
 
 void OdometerActionScreen::applySelection(uint8 idx)
 {
-	showMessageBox("Action");
+	// Process reset action
+	if(idx == 1)
+	{
+		showMessageBox("Reset");
+		gpsDataModel.resetOdometer(odometerID);
+		return;
+	}
+
+	// Active odometer can only be paused
+	if(gpsDataModel.getOdometerData(odometerID).isActive())
+	{
+		showMessageBox("Pause");
+		gpsDataModel.pauseOdometer(odometerID);
+		return;
+	}
+	
+	// Resuming/starting inactive odometer
+	showMessageBox("Start/Resume");
+	gpsDataModel.resumeOdometer(odometerID);
 }

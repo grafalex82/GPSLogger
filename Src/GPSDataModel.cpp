@@ -82,14 +82,36 @@ int GPSDataModel::timeDifference() const
 	return cur_fix.dateTime - prev_fix.dateTime;
 }
 
-GPSOdometer GPSDataModel::getOdometer(uint8 idx) const
+GPSOdometerData GPSDataModel::getOdometerData(uint8 idx) const
 {
 	MutexLocker lock(xGPSDataMutex);
-	return *odometers[idx];
+	
+	// This function returns an odometer copy so that subsequent fixes do not invalidate returned object
+	return odometers[idx]->getData();
 }
 
-void GPSDataModel::resumeAllOdometer()
+void GPSDataModel::resumeOdometer(uint8 idx)
 {
+	MutexLocker lock(xGPSDataMutex);
+	odometers[idx]->startOdometer();
+}
+
+void GPSDataModel::pauseOdometer(uint8 idx)
+{
+	MutexLocker lock(xGPSDataMutex);
+	odometers[idx]->pauseOdometer();
+}
+
+void GPSDataModel::resetOdometer(uint8 idx)
+{
+	MutexLocker lock(xGPSDataMutex);
+	odometers[idx]->resetOdometer();
+}
+
+void GPSDataModel::resumeAllOdometers()
+{
+	MutexLocker lock(xGPSDataMutex);
+
 	if(odometerWasActive[0])
 		odometers[0]->startOdometer();
 	if(odometerWasActive[1])
@@ -98,8 +120,10 @@ void GPSDataModel::resumeAllOdometer()
 		odometers[2]->startOdometer();
 }
 
-void GPSDataModel::pauseAllOdometer()
+void GPSDataModel::pauseAllOdometers()
 {
+	MutexLocker lock(xGPSDataMutex);
+
 	odometerWasActive[0] = odometers[0]->isActive();
 	odometerWasActive[1] = odometers[1]->isActive();
 	odometerWasActive[2] = odometers[2]->isActive();
@@ -109,8 +133,10 @@ void GPSDataModel::pauseAllOdometer()
 	odometers[2]->pauseOdometer();
 }
 
-void GPSDataModel::resetAllOdometer()
+void GPSDataModel::resetAllOdometers()
 {
+	MutexLocker lock(xGPSDataMutex);
+
 	odometers[0]->resetOdometer();
 	odometers[1]->resetOdometer();
 	odometers[2]->resetOdometer();

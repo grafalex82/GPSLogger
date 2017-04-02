@@ -13,8 +13,6 @@ SelectorScreen::SelectorScreen()
 
 void SelectorScreen::drawScreen() const
 {
-	Serial.println("SelectorScreen::drawScreen()");
-	
 	display.setFont(&Monospace8x12Font);
 	if(currentIdx != getItemsCount())
 		drawCentered(getItemText(currentIdx), 26);

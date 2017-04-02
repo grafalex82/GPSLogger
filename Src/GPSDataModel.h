@@ -11,6 +11,7 @@ struct NMEAGPS::satellite_view_t;
 typedef void * QueueHandle_t;
 typedef QueueHandle_t SemaphoreHandle_t;
 class GPSOdometer;
+class GPSOdometerData;
 
 const uint8 ODOMERTERS_COUNT = 3;
 
@@ -31,10 +32,13 @@ public:
 	int timeDifference() const;
 	
 	// Odometers
-	GPSOdometer getOdometer(uint8 idx) const;
-	void resumeAllOdometer();
-	void pauseAllOdometer();
-	void resetAllOdometer();
+	GPSOdometerData getOdometerData(uint8 idx) const;
+	void resumeOdometer(uint8 idx);
+	void pauseOdometer(uint8 idx);
+	void resetOdometer(uint8 idx);
+	void resumeAllOdometers();
+	void pauseAllOdometers();
+	void resetAllOdometers();
 	
 private:
 	gps_fix cur_fix; /// most recent fix data
