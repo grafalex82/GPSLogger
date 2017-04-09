@@ -54,7 +54,7 @@
   <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>ARDUINO=106012</Value>
+      <Value>ARDUINO=10801</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=72000000L</Value>
       <Value>printf=iprintf</Value>
@@ -105,7 +105,7 @@
   <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>ARDUINO=106012</Value>
+      <Value>ARDUINO=10801</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=72000000L</Value>
       <Value>printf=iprintf</Value>
@@ -427,7 +427,7 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
   <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcc.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>ARDUINO=106012</Value>
+      <Value>ARDUINO=10801</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=72000000L</Value>
       <Value>printf=iprintf</Value>
@@ -478,7 +478,7 @@ vmresolved.tools.path=C:\Users\GrafAlex\AppData\Local\arduino15\packages\arduino
   <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
   <avrgcccpp.compiler.symbols.DefSymbols>
     <ListValues>
-      <Value>ARDUINO=106012</Value>
+      <Value>ARDUINO=10801</Value>
       <Value>ARDUINO_MAIN</Value>
       <Value>F_CPU=72000000L</Value>
       <Value>printf=iprintf</Value>
