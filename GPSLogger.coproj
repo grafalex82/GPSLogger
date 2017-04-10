@@ -39,7 +39,7 @@
       </Link>
       <Output>
         <Option name="OutputFileType" value="0"/>
-        <Option name="Path" value="Build/"/>
+        <Option name="Path" value="build/"/>
         <Option name="Name" value="GPSLogger"/>
         <Option name="HEX" value="1"/>
         <Option name="BIN" value="1"/>
