@@ -1,41 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Project version="2G - 1.7.8" name="GPSLogger">
+<Project version="2G - 2.0.6" name="GPSLogger">
   <Target name="GPSLogger" isCurrent="1">
-    <Device manufacturerId="9" manufacturerName="ST" chipId="306" chipName="STM32F103CB" boardId="" boardName=""/>
+    <Device manufacturerId="9" manufacturerName="ST" chipId="603" chipName="STM32F103CBT6" boardId="" boardName="" boardUrl="" coreId="" coreName=""/>
     <BuildOption>
       <Compile>
         <Option name="OptimizationLevel" value="4"/>
         <Option name="UseFPU" value="0"/>
-        <Option name="UserEditCompiler" value=""/>
-        <Option name="SupportCPlusplus" value="1"/>
+        <Option name="UserEditCompiler" value="-fno-rtti;"/>
+        <Option name="SupportCPlusplus" value="0"/>
+        <Option name="DEBUG" value="2"/>
+        <Option name="WARNING" value="1"/>
+        <Option name="STANDARD" value="4"/>
+        <Option name="STANDARDCPP" value="0"/>
+        <Option name="ADVANCES" value="1"/>
         <Includepaths>
           <Includepath path="."/>
         </Includepaths>
         <DefinedSymbols>
           <Define name="STM32F103CB"/>
           <Define name="STM32F10X_MD"/>
-          <Define name="SUPPORT_CPLUSPLUS"/>
           <Define name="MCU_STM32F103CB"/>
           <Define name="F_CPU=72000000"/>
+          <Define name="ARDUINO=10801"/>
+          <Define name="VECT_TAB_ADDR=0x8002000"/>
         </DefinedSymbols>
       </Compile>
       <Link useDefault="0">
         <Option name="DiscardUnusedSection" value="0"/>
         <Option name="UserEditLinkder" value=""/>
-        <Option name="UseMemoryLayout" value="1"/>
-        <Option name="nostartfiles" value="0"/>
+        <Option name="UseMemoryLayout" value="0"/>
+        <Option name="nostartfiles" value="1"/>
         <Option name="LTO" value="0"/>
         <Option name="IsNewStartupCode" value="1"/>
         <Option name="Library" value="Not use C Library"/>
-        <Option name="UserEditLinker" value="-lstdc++; "/>
+        <Option name="UserEditLinker" value="--entry=main; -lgcc; -lm; "/>
+        <Option name="DiscardUnusedSections" value="1"/>
         <LinkedLibraries/>
         <MemoryAreas debugInFlashNotRAM="1">
-          <Memory name="IROM1" type="ReadOnly" size="0x0001E000" startValue="0x08002000"/>
+          <Memory name="IROM1" type="ReadOnly" size="0x00020000" startValue="0x08002000"/>
           <Memory name="IRAM1" type="ReadWrite" size="0x00005000" startValue="0x20000000"/>
           <Memory name="IROM2" type="ReadOnly" size="" startValue=""/>
           <Memory name="IRAM2" type="ReadWrite" size="" startValue=""/>
         </MemoryAreas>
-        <LocateLinkFile path="c:/coocox/coide/configuration/programdata/gpslogger/link.ld" type="0"/>
+        <LocateLinkFile path="libs/stm32duino/variants/generic_stm32f103c/ld/bootloader_20.ld" type="0"/>
       </Link>
       <Output>
         <Option name="OutputFileType" value="0"/>
@@ -66,22 +73,27 @@
       <Option name="org.coocox.codebugger.gdbjtag.core.autoDownload" value="1"/>
       <Option name="org.coocox.codebugger.gdbjtag.core.verify" value="1"/>
       <Option name="org.coocox.codebugger.gdbjtag.core.downloadFuction" value="Erase Effected"/>
-      <Option name="org.coocox.codebugger.gdbjtag.core.defaultAlgorithm" value="STM32F10x_MD_128.elf"/>
+      <Option name="org.coocox.codebugger.gdbjtag.core.defaultAlgorithm" value="C:\Users\GrafAlex\AppData\Roaming\CooCox\CoIDE\config\flash\CooCox-Flash\CoIDE_STM32F1xx_MD_128K\STM32F10x_MD_128.elf"/>
+      <Option name="org.coocox.codebugger.gdbjtag.coredebugInRamInitCommands" value="cd D:/Graf Alex/Hobbies/Prog/MyProjects/GPSLogger/build/GPSLogger/Debug/bin restore GPSLogger.elf set {unsigned int*}0xE000ED08 = 0x20000000 set $sp = {unsigned int*}0x20000000 set $pc = {unsigned int*}0x20000004 "/>
     </DebugOption>
     <ExcludeFile/>
   </Target>
   <Components path="./"/>
+  <LocalComponents/>
   <Files>
     <File name="Src/SettingsGroupScreen.h" path="Src/SettingsGroupScreen.h" type="1"/>
     <File name="Src/TimeZoneScreen.h" path="Src/TimeZoneScreen.h" type="1"/>
     <File name="Src/SpeedScreen.cpp" path="Src/SpeedScreen.cpp" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/pins_arduino.h" path="Libs/STM32duino/variants/generic_stm32f103c/pins_arduino.h" type="1"/>
     <File name="Src/AltitudeScreen.cpp" path="Src/AltitudeScreen.cpp" type="1"/>
     <File name="Libs/libmaple/Inc/flash.h" path="Libs/STM32duino/system/libmaple/include/libmaple/flash.h" type="1"/>
     <File name="Libs/libmaple/Src/exc.S" path="Libs/STM32duino/cores/maple/libmaple/exc.S" type="1"/>
     <File name="Libs/NeoGPS/CosaCompat.h" path="Libs/NeoGPS/CosaCompat.h" type="1"/>
     <File name="Libs/STM32duino/wiring_private.h" path="Libs/STM32duino/cores/maple/wiring_private.h" type="1"/>
+    <File name="Libs/FreeRTOS/MapleFreeRTOS821.h" path="Libs/STM32duino/libraries/FreeRTOS821/MapleFreeRTOS821.h" type="1"/>
     <File name="Libs/libmaple/Src/spi.c" path="Libs/STM32duino/cores/maple/libmaple/spi.c" type="1"/>
     <File name="Libs/libmaple/Src/gpio.c" path="Libs/STM32duino/cores/maple/libmaple/gpio.c" type="1"/>
+    <File name="Libs/FreeRTOS/MapleFreeRTOS821.cpp" path="Libs/STM32duino/libraries/FreeRTOS821/MapleFreeRTOS821.cpp" type="1"/>
     <File name="Libs/libmaple/Board/generic_stm32f103c" path="" type="2"/>
     <File name="Libs/libmaple/Src/usart_private.c" path="Libs/STM32duino/cores/maple/libmaple/usart_private.c" type="1"/>
     <File name="Libs/STM32duino/HardwareTimer.h" path="Libs/STM32duino/cores/maple/HardwareTimer.h" type="1"/>
@@ -89,22 +101,23 @@
     <File name="Libs/libmaple/Inc" path="" type="2"/>
     <File name="Libs/NeoGPS/NeoTime.h" path="Libs/NeoGPS/NeoTime.h" type="1"/>
     <File name="Libs/libmaple/Src/gpio_f1.c" path="Libs/STM32duino/cores/maple/libmaple/gpio_f1.c" type="1"/>
-    <File name="Libs/libmaple/Inc/exti.h" path="Libs/STM32duino/system/libmaple/include/libmaple/exti.h" type="1"/>
     <File name="Libs/STM32duino/pwm.cpp" path="Libs/STM32duino/cores/maple/pwm.cpp" type="1"/>
+    <File name="Libs/libmaple/Inc/exti.h" path="Libs/STM32duino/system/libmaple/include/libmaple/exti.h" type="1"/>
     <File name="Libs/libmaple/Src/usart_f1.c" path="Libs/STM32duino/cores/maple/libmaple/usart_f1.c" type="1"/>
     <File name="Libs/libmaple/Inc/dma.h" path="Libs/STM32duino/system/libmaple/include/libmaple/dma.h" type="1"/>
     <File name="Src/DebugScreen.h" path="Src/DebugScreen.h" type="1"/>
     <File name="Libs/libmaple/Src/systick.c" path="Libs/STM32duino/cores/maple/libmaple/systick.c" type="1"/>
-    <File name="Libs/STM32duino/hooks.c" path="Libs/STM32duino/cores/maple/hooks.c" type="1"/>
     <File name="Libs/STM32duino/io.h" path="Libs/STM32duino/cores/maple/io.h" type="1"/>
+    <File name="Libs/STM32duino/hooks.c" path="Libs/STM32duino/cores/maple/hooks.c" type="1"/>
     <File name="Libs/libmaple/Src/dma_f1.c" path="Libs/STM32duino/cores/maple/libmaple/dma_f1.c" type="1"/>
+    <File name="Libs/FreeRTOS/list.h" path="Libs/STM32duino/libraries/FreeRTOS821/utility/list.h" type="1"/>
+    <File name="Src/ParentScreen.cpp" path="Src/ParentScreen.cpp" type="1"/>
     <File name="Src/TimeFont.cpp" path="Src/TimeFont.cpp" type="1"/>
     <File name="Libs/NeoGPS/Streamers.h" path="Libs/NeoGPS/Streamers.h" type="1"/>
-    <File name="Src/ParentScreen.cpp" path="Src/ParentScreen.cpp" type="1"/>
     <File name="Src/IdleThread.h" path="Src/IdleThread.h" type="1"/>
     <File name="Src/GPSLogger.cpp" path="Src/GPSLogger.cpp" type="1"/>
-    <File name="Src/GPSOdometer.h" path="Src/GPSOdometer.h" type="1"/>
     <File name="Libs/libmaple/Inc/dma_common.h" path="Libs/STM32duino/system/libmaple/include/libmaple/dma_common.h" type="1"/>
+    <File name="Src/GPSOdometer.h" path="Src/GPSOdometer.h" type="1"/>
     <File name="Libs/STM32duino" path="" type="2"/>
     <File name="Src/GPSDataModel.h" path="Src/GPSDataModel.h" type="1"/>
     <File name="Libs/STM32duino/wirish_time.cpp" path="Libs/STM32duino/cores/maple/wirish_time.cpp" type="1"/>
@@ -114,40 +127,50 @@
     <File name="Libs/libmaple/Src/pwr.c" path="Libs/STM32duino/cores/maple/libmaple/pwr.c" type="1"/>
     <File name="Libs/libmaple/Inc/usb.h" path="Libs/STM32duino/system/libmaple/include/libmaple/usb.h" type="1"/>
     <File name="Libs/libmaple/Inc/ring_buffer.h" path="Libs/STM32duino/system/libmaple/include/libmaple/ring_buffer.h" type="1"/>
+    <File name="Libs/FreeRTOS/list.c" path="Libs/STM32duino/libraries/FreeRTOS821/utility/list.c" type="1"/>
+    <File name="Libs/FreeRTOS/tasks.c" path="Libs/STM32duino/libraries/FreeRTOS821/utility/tasks.c" type="1"/>
     <File name="Libs/libmaple/Src/usart.c" path="Libs/STM32duino/cores/maple/libmaple/usart.c" type="1"/>
     <File name="Src/ScreenManager.cpp" path="Src/ScreenManager.cpp" type="1"/>
     <File name="Libs/STM32duino/tone.cpp" path="Libs/STM32duino/cores/maple/tone.cpp" type="1"/>
-    <File name="Libs/libmaple/Inc/libmaple_types.h" path="Libs/STM32duino/system/libmaple/include/libmaple/libmaple_types.h" type="1"/>
     <File name="Libs/libmaple/Src/iwdg.c" path="Libs/STM32duino/cores/maple/libmaple/iwdg.c" type="1"/>
+    <File name="Libs/libmaple/Inc/libmaple_types.h" path="Libs/STM32duino/system/libmaple/include/libmaple/libmaple_types.h" type="1"/>
     <File name="Libs/NeoGPS/GPSfix_cfg.h" path="Libs/NeoGPS/GPSfix_cfg.h" type="1"/>
     <File name="Src/TimeZoneScreen.cpp" path="Src/TimeZoneScreen.cpp" type="1"/>
     <File name="Libs/libmaple/Src/i2c.c" path="Libs/STM32duino/cores/maple/libmaple/i2c.c" type="1"/>
     <File name="Libs/libmaple/Src/bkp_f1.c" path="Libs/STM32duino/cores/maple/libmaple/bkp_f1.c" type="1"/>
     <File name="Libs/STM32duino/ext_interrupts.cpp" path="Libs/STM32duino/cores/maple/ext_interrupts.cpp" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/start_c.c" path="Libs/STM32duino/variants/generic_stm32f103c/wirish/start_c.c" type="1"/>
     <File name="Src/CurrentPositionScreen.h" path="Src/CurrentPositionScreen.h" type="1"/>
     <File name="Src/GPSThread.cpp" path="Src/GPSThread.cpp" type="1"/>
+    <File name="Libs/FreeRTOS/heap_1.c" path="Libs/STM32duino/libraries/FreeRTOS821/utility/heap_1.c" type="1"/>
     <File name="Libs/NeoGPS/GPSTime.cpp" path="Libs/NeoGPS/GPSTime.cpp" type="1"/>
     <File name="Libs/STM32duino/wirish_analog.cpp" path="Libs/STM32duino/cores/maple/wirish_analog.cpp" type="1"/>
     <File name="Libs/STM32duino/Udp.h" path="Libs/STM32duino/cores/maple/Udp.h" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/variant.h" path="Libs/STM32duino/variants/generic_stm32f103c/variant.h" type="1"/>
     <File name="Src/TimeFont.h" path="Src/TimeFont.h" type="1"/>
     <File name="Libs/STM32duino/WString.h" path="Libs/STM32duino/cores/maple/WString.h" type="1"/>
     <File name="Libs/Adafruit_SSD1306" path="" type="2"/>
     <File name="Libs/NeoGPS/GPSTime.h" path="Libs/NeoGPS/GPSTime.h" type="1"/>
     <File name="Src/FontTest.cpp" path="Src/FontTest.cpp" type="1"/>
     <File name="Libs/STM32duino/usb_serial.h" path="Libs/STM32duino/cores/maple/usb_serial.h" type="1"/>
+    <File name="Libs/Wire/WireBase.cpp" path="Libs/STM32duino/libraries/Wire/WireBase.cpp" type="1"/>
     <File name="Src/ScreenManager.h" path="Src/ScreenManager.h" type="1"/>
     <File name="Src/SelectorScreen.cpp" path="Src/SelectorScreen.cpp" type="1"/>
     <File name="Libs/libmaple/Inc/spi.h" path="Libs/STM32duino/system/libmaple/include/libmaple/spi.h" type="1"/>
     <File name="Libs/libmaple/Src/exti.c" path="Libs/STM32duino/cores/maple/libmaple/exti.c" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/start.S" path="Libs/STM32duino/variants/generic_stm32f103c/wirish/start.S" type="1"/>
     <File name="Src/Buttons.cpp" path="Src/Buttons.cpp" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/syscalls.c" path="Libs/STM32duino/variants/generic_stm32f103c/wirish/syscalls.c" type="1"/>
     <File name="Libs/STM32duino/WCharacter.h" path="Libs/STM32duino/cores/maple/WCharacter.h" type="1"/>
     <File name="Libs/NeoGPS/GPSport.h" path="Libs/NeoGPS/GPSport.h" type="1"/>
     <File name="Libs/libmaple/Src/util.c" path="Libs/STM32duino/cores/maple/libmaple/util.c" type="1"/>
     <File name="Libs/libmaple/Src/exti_f1.c" path="Libs/STM32duino/cores/maple/libmaple/exti_f1.c" type="1"/>
+    <File name="Libs/Wire/HardWire.cpp" path="Libs/STM32duino/libraries/Wire/HardWire.cpp" type="1"/>
     <File name="Src/FontTest.h" path="Src/FontTest.h" type="1"/>
+    <File name="Libs/FreeRTOS/task.h" path="Libs/STM32duino/libraries/FreeRTOS821/utility/task.h" type="1"/>
     <File name="Src/OdometerActionScreen.cpp" path="Src/OdometerActionScreen.cpp" type="1"/>
-    <File name="Libs/STM32duino/tone.h" path="Libs/STM32duino/cores/maple/tone.h" type="1"/>
     <File name="Libs/libmaple/Inc/iwdg.h" path="Libs/STM32duino/system/libmaple/include/libmaple/iwdg.h" type="1"/>
+    <File name="Libs/STM32duino/tone.h" path="Libs/STM32duino/cores/maple/tone.h" type="1"/>
     <File name="Libs/libmaple/Src/timer_f1.c" path="Libs/STM32duino/cores/maple/libmaple/timer_f1.c" type="1"/>
     <File name="Src/SpeedScreen.h" path="Src/SpeedScreen.h" type="1"/>
     <File name="Libs/STM32duino/wirish_math.cpp" path="Libs/STM32duino/cores/maple/wirish_math.cpp" type="1"/>
@@ -155,41 +178,46 @@
     <File name="Src/OdometerActionScreen.h" path="Src/OdometerActionScreen.h" type="1"/>
     <File name="Libs/libmaple/Inc/libmaple.h" path="Libs/STM32duino/system/libmaple/include/libmaple/libmaple.h" type="1"/>
     <File name="Src/Utils.cpp" path="Src/Utils.cpp" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/board.cpp" path="Libs/STM32duino/variants/generic_stm32f103c/board.cpp" type="1"/>
     <File name="Libs" path="" type="2"/>
     <File name="Src/SatellitesScreen.h" path="Src/SatellitesScreen.h" type="1"/>
     <File name="Libs/libmaple/Src" path="" type="2"/>
-    <File name="Src/IdleThread.cpp" path="Src/IdleThread.cpp" type="1"/>
-    <File name="Libs/libmaple" path="" type="2"/>
+    <File name="Libs/FreeRTOS/portmacro.h" path="Libs/STM32duino/libraries/FreeRTOS821/utility/portmacro.h" type="1"/>
     <File name="Libs/STM32duino/Arduino.h" path="Libs/STM32duino/cores/maple/Arduino.h" type="1"/>
+    <File name="Libs/libmaple" path="" type="2"/>
+    <File name="Src/IdleThread.cpp" path="Src/IdleThread.cpp" type="1"/>
     <File name="Libs/STM32duino/main.cpp" path="Libs/STM32duino/cores/maple/main.cpp" type="1"/>
     <File name="Libs/STM32duino/boards_private.h" path="Libs/STM32duino/cores/maple/boards_private.h" type="1"/>
     <File name="Libs/libmaple/Inc/usb_cdcacm.h" path="Libs/STM32duino/system/libmaple/include/libmaple/usb_cdcacm.h" type="1"/>
     <File name="Src/Utils.h" path="Src/Utils.h" type="1"/>
     <File name="Libs/Adafruit_SSD1306/Adafruit_SSD1306_STM32.h" path="Libs/STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.h" type="1"/>
     <File name="Src/SatellitesScreen.cpp" path="Src/SatellitesScreen.cpp" type="1"/>
-    <File name="Libs/STM32duino/Print.h" path="Libs/STM32duino/cores/maple/Print.h" type="1"/>
-    <File name="Libs/NeoGPS/Location.h" path="Libs/NeoGPS/Location.h" type="1"/>
     <File name="Libs/NeoGPS/NeoTime.cpp" path="Libs/NeoGPS/NeoTime.cpp" type="1"/>
+    <File name="Libs/NeoGPS/Location.h" path="Libs/NeoGPS/Location.h" type="1"/>
+    <File name="Libs/STM32duino/Print.h" path="Libs/STM32duino/cores/maple/Print.h" type="1"/>
     <File name="Libs/libmaple/Src/flash.c" path="Libs/STM32duino/cores/maple/libmaple/flash.c" type="1"/>
     <File name="Libs/STM32duino/IPAddress.h" path="Libs/STM32duino/cores/maple/IPAddress.h" type="1"/>
     <File name="Src/Buttons.h" path="Src/Buttons.h" type="1"/>
     <File name="Src/CurrentTimeScreen.cpp" path="Src/CurrentTimeScreen.cpp" type="1"/>
-    <File name="Libs/libmaple/Inc/dac.h" path="Libs/STM32duino/system/libmaple/include/libmaple/dac.h" type="1"/>
     <File name="Libs/libmaple/Src/adc.c" path="Libs/STM32duino/cores/maple/libmaple/adc.c" type="1"/>
+    <File name="Libs/libmaple/Inc/dac.h" path="Libs/STM32duino/system/libmaple/include/libmaple/dac.h" type="1"/>
+    <File name="Libs/Adafruit_GFX/Adafruit_GFX.cpp" path="Libs/AdafruitGFX/Adafruit_GFX.cpp" type="1"/>
     <File name="Libs/STM32duino/wiring_pulse.h" path="Libs/STM32duino/cores/maple/wiring_pulse.h" type="1"/>
     <File name="Libs/STM32duino/HardwareSerial.cpp" path="Libs/STM32duino/cores/maple/HardwareSerial.cpp" type="1"/>
     <File name="Libs/STM32duino/wirish_time.h" path="Libs/STM32duino/cores/maple/wirish_time.h" type="1"/>
+    <File name="Libs/Wire/WireBase.h" path="Libs/STM32duino/libraries/Wire/WireBase.h" type="1"/>
     <File name="Libs/libmaple/Inc/usart.h" path="Libs/STM32duino/system/libmaple/include/libmaple/usart.h" type="1"/>
-    <File name="Libs/Adafruit_GFX/Adafruit_SSD1306.h" path="Libs/AdafruitGFX/Adafruit_SSD1306.h" type="1"/>
+    <File name="Libs/FreeRTOS/port.c" path="Libs/STM32duino/libraries/FreeRTOS821/utility/port.c" type="1"/>
     <File name="Libs/libmaple/Src/rcc_f1.c" path="Libs/STM32duino/cores/maple/libmaple/rcc_f1.c" type="1"/>
     <File name="Src/8x12Font.h" path="Src/8x12Font.h" type="1"/>
     <File name="Libs/STM32duino/boards.h" path="Libs/STM32duino/cores/maple/boards.h" type="1"/>
     <File name="Libs/libmaple/Src/i2c_f1.c" path="Libs/STM32duino/cores/maple/libmaple/i2c_f1.c" type="1"/>
-    <File name="Libs/STM32duino/ext_interrupts.h" path="Libs/STM32duino/cores/maple/ext_interrupts.h" type="1"/>
     <File name="Libs/STM32duino/bits.h" path="Libs/STM32duino/cores/maple/bits.h" type="1"/>
+    <File name="Libs/STM32duino/ext_interrupts.h" path="Libs/STM32duino/cores/maple/ext_interrupts.h" type="1"/>
     <File name="Libs/STM32duino/itoa.h" path="Libs/STM32duino/cores/maple/itoa.h" type="1"/>
     <File name="Libs/libmaple/Src/dma.c" path="Libs/STM32duino/cores/maple/libmaple/dma.c" type="1"/>
     <File name="Libs/Adafruit_SSD1306/Adafruit_SSD1306_STM32.cpp" path="Libs/STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.cpp" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/boards.cpp" path="Libs/STM32duino/variants/generic_stm32f103c/wirish/boards.cpp" type="1"/>
     <File name="Libs/STM32duino/Server.h" path="Libs/STM32duino/cores/maple/Server.h" type="1"/>
     <File name="Src/OdometerScreen.cpp" path="Src/OdometerScreen.cpp" type="1"/>
     <File name="Libs/STM32duino/HardwareTimer.cpp" path="Libs/STM32duino/cores/maple/HardwareTimer.cpp" type="1"/>
@@ -198,12 +226,14 @@
     <File name="Libs/STM32duino/cxxabi-compat.cpp" path="Libs/STM32duino/cores/maple/cxxabi-compat.cpp" type="1"/>
     <File name="Libs/NeoGPS/GPSfix.h" path="Libs/NeoGPS/GPSfix.h" type="1"/>
     <File name="Libs/STM32duino/bit_constants.h" path="Libs/STM32duino/cores/maple/bit_constants.h" type="1"/>
+    <File name="Libs/FreeRTOS/queue.c" path="Libs/STM32duino/libraries/FreeRTOS821/utility/queue.c" type="1"/>
     <File name="Src/FreeRTOSHelpers.h" path="Src/FreeRTOSHelpers.h" type="1"/>
+    <File name="Libs/libmaple/Src/wirish_digital_f1.cpp" path="Libs/STM32duino/cores/maple/stm32f1/wirish_digital_f1.cpp" type="1"/>
     <File name="Libs/libmaple/Inc/scb.h" path="Libs/STM32duino/system/libmaple/include/libmaple/scb.h" type="1"/>
     <File name="Libs/STM32duino/wirish_math.h" path="Libs/STM32duino/cores/maple/wirish_math.h" type="1"/>
     <File name="Libs/libmaple/Inc/gpio.h" path="Libs/STM32duino/system/libmaple/include/libmaple/gpio.h" type="1"/>
-    <File name="Src/DebugScreen.cpp" path="Src/DebugScreen.cpp" type="1"/>
     <File name="Libs/libmaple/Inc/syscfg.h" path="Libs/STM32duino/system/libmaple/include/libmaple/syscfg.h" type="1"/>
+    <File name="Src/DebugScreen.cpp" path="Src/DebugScreen.cpp" type="1"/>
     <File name="Libs/libmaple/Inc/systick.h" path="Libs/STM32duino/system/libmaple/include/libmaple/systick.h" type="1"/>
     <File name="Libs/STM32duino/new.cpp" path="Libs/STM32duino/cores/maple/new.cpp" type="1"/>
     <File name="Libs/NeoGPS/Location.cpp" path="Libs/NeoGPS/Location.cpp" type="1"/>
@@ -219,19 +249,23 @@
     <File name="Src/SelectorScreen.h" path="Src/SelectorScreen.h" type="1"/>
     <File name="Src/Screen.cpp" path="Src/Screen.cpp" type="1"/>
     <File name="Libs/STM32duino/Printable.h" path="Libs/STM32duino/cores/maple/Printable.h" type="1"/>
+    <File name="Libs/libmaple/Src/wirish_debug.cpp" path="Libs/STM32duino/cores/maple/stm32f1/wirish_debug.cpp" type="1"/>
+    <File name="Libs/Wire" path="" type="2"/>
     <File name="Libs/STM32duino/WString.cpp" path="Libs/STM32duino/cores/maple/WString.cpp" type="1"/>
     <File name="Libs/STM32duino/itoa.c" path="Libs/STM32duino/cores/maple/itoa.c" type="1"/>
-    <File name="Libs/Adafruit_GFX/Adafruit_SSD1306.cpp" path="Libs/AdafruitGFX/Adafruit_SSD1306.cpp" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/bootloader_20.ld" path="Libs/STM32duino/variants/generic_stm32f103c/ld/bootloader_20.ld" type="1"/>
     <File name="Src/GPSSatellitesData.h" path="Src/GPSSatellitesData.h" type="1"/>
     <File name="Src/OdometerScreen.h" path="Src/OdometerScreen.h" type="1"/>
     <File name="Libs/STM32duino/Stream.cpp" path="Libs/STM32duino/cores/maple/Stream.cpp" type="1"/>
     <File name="Src/SettingsGroupScreen.cpp" path="Src/SettingsGroupScreen.cpp" type="1"/>
     <File name="Src/Screen.h" path="Src/Screen.h" type="1"/>
-    <File name="Libs/STM32duino/wirish_types.h" path="Libs/STM32duino/cores/maple/wirish_types.h" type="1"/>
     <File name="Src/GPSThread.h" path="Src/GPSThread.h" type="1"/>
+    <File name="Libs/STM32duino/wirish_types.h" path="Libs/STM32duino/cores/maple/wirish_types.h" type="1"/>
     <File name="Libs/STM32duino/WProgram.h" path="Libs/STM32duino/cores/maple/WProgram.h" type="1"/>
+    <File name="Libs/FreeRTOS/queue.h" path="Libs/STM32duino/libraries/FreeRTOS821/utility/queue.h" type="1"/>
     <File name="Libs/NeoGPS/DMS.cpp" path="Libs/NeoGPS/DMS.cpp" type="1"/>
     <File name="Libs/libmaple/Inc/stm32.h" path="Libs/STM32duino/system/libmaple/include/libmaple/stm32.h" type="1"/>
+    <File name="Libs/libmaple/Board/generic_stm32f103c/boards_setup.cpp" path="Libs/STM32duino/variants/generic_stm32f103c/wirish/boards_setup.cpp" type="1"/>
     <File name="Libs/libmaple/Src/nvic.c" path="Libs/STM32duino/cores/maple/libmaple/nvic.c" type="1"/>
     <File name="Libs/NeoGPS/NMEAGPS.h" path="Libs/NeoGPS/NMEAGPS.h" type="1"/>
     <File name="Libs/libmaple/Inc/rcc.h" path="Libs/STM32duino/system/libmaple/include/libmaple/rcc.h" type="1"/>
@@ -240,9 +274,10 @@
     <File name="Libs/libmaple/Inc/bitband.h" path="Libs/STM32duino/system/libmaple/include/libmaple/bitband.h" type="1"/>
     <File name="Libs/libmaple/Src/dac.c" path="Libs/STM32duino/cores/maple/libmaple/dac.c" type="1"/>
     <File name="Libs/libmaple/Src/timer.c" path="Libs/STM32duino/cores/maple/libmaple/timer.c" type="1"/>
-    <File name="Libs/libmaple/Inc/delay.h" path="Libs/STM32duino/system/libmaple/include/libmaple/delay.h" type="1"/>
     <File name="Libs/libmaple/Inc/fsmc.h" path="Libs/STM32duino/system/libmaple/include/libmaple/fsmc.h" type="1"/>
+    <File name="Libs/libmaple/Inc/delay.h" path="Libs/STM32duino/system/libmaple/include/libmaple/delay.h" type="1"/>
     <File name="Libs/NeoGPS/DMS.h" path="Libs/NeoGPS/DMS.h" type="1"/>
+    <File name="Libs/Adafruit_GFX/Adafruit_GFX.h" path="Libs/AdafruitGFX/Adafruit_GFX.h" type="1"/>
     <File name="Libs/libmaple/Inc/bkp.h" path="Libs/STM32duino/system/libmaple/include/libmaple/bkp.h" type="1"/>
     <File name="Libs/STM32duino/wirish_digital.cpp" path="Libs/STM32duino/cores/maple/wirish_digital.cpp" type="1"/>
     <File name="Libs/libmaple/Inc/pwr.h" path="Libs/STM32duino/system/libmaple/include/libmaple/pwr.h" type="1"/>
@@ -251,6 +286,7 @@
     <File name="Src/ParentScreen.h" path="Src/ParentScreen.h" type="1"/>
     <File name="Libs/STM32duino/wirish_debug.h" path="Libs/STM32duino/cores/maple/wirish_debug.h" type="1"/>
     <File name="Libs/NeoGPS" path="" type="2"/>
+    <File name="Libs/FreeRTOS" path="" type="2"/>
     <File name="Libs/NeoGPS/NMEAGPS.cpp" path="Libs/NeoGPS/NMEAGPS.cpp" type="1"/>
     <File name="Libs/libmaple/Inc/i2c_common.h" path="Libs/STM32duino/system/libmaple/include/libmaple/i2c_common.h" type="1"/>
     <File name="Libs/STM32duino/wirish_shift.cpp" path="Libs/STM32duino/cores/maple/wirish_shift.cpp" type="1"/>
@@ -258,13 +294,15 @@
     <File name="Libs/Adafruit_GFX" path="" type="2"/>
     <File name="Libs/NeoGPS/NMEAGPS_cfg.h" path="Libs/NeoGPS/NMEAGPS_cfg.h" type="1"/>
     <File name="Libs/STM32duino/HardwareSerial.h" path="Libs/STM32duino/cores/maple/HardwareSerial.h" type="1"/>
-    <File name="Libs/libmaple/Inc/timer.h" path="Libs/STM32duino/system/libmaple/include/libmaple/timer.h" type="1"/>
     <File name="Libs/libmaple/Src/spi_f1.c" path="Libs/STM32duino/cores/maple/libmaple/spi_f1.c" type="1"/>
+    <File name="Libs/libmaple/Inc/timer.h" path="Libs/STM32duino/system/libmaple/include/libmaple/timer.h" type="1"/>
     <File name="Src/AltitudeScreen.h" path="Src/AltitudeScreen.h" type="1"/>
     <File name="Libs/STM32duino/wirish.h" path="Libs/STM32duino/cores/maple/wirish.h" type="1"/>
     <File name="Libs/STM32duino/usb_serial.cpp" path="Libs/STM32duino/cores/maple/usb_serial.cpp" type="1"/>
     <File name="Src" path="" type="2"/>
     <File name="Src/GPSOdometer.cpp" path="Src/GPSOdometer.cpp" type="1"/>
     <File name="Libs/NeoGPS/NeoGPS_cfg.h" path="Libs/NeoGPS/NeoGPS_cfg.h" type="1"/>
+    <File name="Libs/Wire/HardWire.h" path="Libs/STM32duino/libraries/Wire/HardWire.h" type="1"/>
   </Files>
+  <Bookmarks/>
 </Project>
