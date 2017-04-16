@@ -5,7 +5,7 @@ const uint8_t SAT_ARRAY_SIZE = 20; // Must match NMEAGPS_MAX_SATELLITES
 
 // Forward declaration
 class NMEAGPS;
-struct NMEAGPS::satellite_view_t;
+//struct NMEAGPS::satellite_view_t;
 
 class GPSSatellitesData
 {

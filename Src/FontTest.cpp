@@ -139,6 +139,6 @@ void RunFontTest()
 
 void SwitchToNextFont()
 {
-	current_font = ++current_font % fonts_count;
+	current_font = (current_font + 1) % fonts_count;
 }
 

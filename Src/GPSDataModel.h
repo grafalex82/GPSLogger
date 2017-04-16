@@ -7,7 +7,7 @@
 class gps_fix;
 class GPSSatellitesData;
 class NMEAGPS;
-struct NMEAGPS::satellite_view_t;
+//struct NMEAGPS::satellite_view_t;
 typedef void * QueueHandle_t;
 typedef QueueHandle_t SemaphoreHandle_t;
 class GPSOdometer;
