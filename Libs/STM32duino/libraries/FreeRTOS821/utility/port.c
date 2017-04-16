@@ -75,6 +75,9 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+// defined in libmaple
+void systick_attach_callback(void (*callback)(void));
+
 /* For backward compatibility, ensure configKERNEL_INTERRUPT_PRIORITY is
 defined.  The value should also ensure backward compatibility.
 FreeRTOS.org versions prior to V4.4.0 did not include this definition. */
