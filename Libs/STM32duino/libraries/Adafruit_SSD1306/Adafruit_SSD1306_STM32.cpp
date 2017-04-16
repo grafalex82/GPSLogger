@@ -24,10 +24,12 @@ All text above, and the splash screen below must be included in any redistributi
 
 //#include <HWIRE.h>
 #include <HardWire.h>
-//HardWire HWIRE(1,I2C_FAST_MODE); // I2c1
-HardWire HWIRE(2,I2C_FAST_MODE); // I2c2
+HardWire HWIRE(1, I2C_FAST_MODE); // I2c1
+//HardWire HWIRE(2, I2C_FAST_MODE); // I2c2
 #include "Adafruit_GFX.h"
 #include "Adafruit_SSD1306_STM32.h"
+
+#define ssd1306_swap(a, b) { int16_t t = a; a = b; b = t; }
 
 // the memory buffer for the LCD
 
@@ -112,7 +114,7 @@ void Adafruit_SSD1306::drawPixel(int16_t x, int16_t y, uint16_t color) {
   // check rotation, move pixel around if necessary
   switch (getRotation()) {
   case 1:
-    swap(x, y);
+    ssd1306_swap(x, y);
     x = WIDTH - x - 1;
     break;
   case 2:
@@ -120,7 +122,7 @@ void Adafruit_SSD1306::drawPixel(int16_t x, int16_t y, uint16_t color) {
     y = HEIGHT - y - 1;
     break;
   case 3:
-    swap(x, y);
+    ssd1306_swap(x, y);
     y = HEIGHT - y - 1;
     break;
   }  
@@ -164,6 +166,7 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr, bool reset) {
   _vccstate = vccstate;
   _i2caddr = i2caddr;
 
+#if 0
   // set pin directions
   if (sid != -1){
     pinMode(dc, OUTPUT);
@@ -191,6 +194,7 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr, bool reset) {
       }
     }
   else
+#endif //0
   {
     // I2C Init
     HWIRE.begin();
@@ -545,17 +549,18 @@ void Adafruit_SSD1306::clearDisplay(void) {
 
 
 inline void Adafruit_SSD1306::fastSPIwrite(uint8_t d) {
-  
+#if 0
   if(hwSPI) {
     (void)SPI.transfer(d);
   } else {
+#endif //0
     for(uint8_t bit = 0x80; bit; bit >>= 1) {
       *clkport &= ~clkpinmask;
       if(d & bit) *mosiport |=  mosipinmask;
       else        *mosiport &= ~mosipinmask;
       *clkport |=  clkpinmask;
     }
-  }
+//  }
   //*csport |= cspinmask;
 }
 
@@ -568,7 +573,7 @@ void Adafruit_SSD1306::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t c
     case 1:
       // 90 degree rotation, swap x & y for rotation, then invert x
       bSwap = true;
-      swap(x, y);
+      ssd1306_swap(x, y);
       x = WIDTH - x - 1;
       break;
     case 2:
@@ -580,7 +585,7 @@ void Adafruit_SSD1306::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t c
     case 3:
       // 270 degree rotation, swap x & y for rotation, then invert y  and adjust y for w (not to become h)
       bSwap = true;
-      swap(x, y);
+      ssd1306_swap(x, y);
       y = HEIGHT - y - 1;
       y -= (w-1);
       break;
@@ -636,7 +641,7 @@ void Adafruit_SSD1306::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t c
     case 1:
       // 90 degree rotation, swap x & y for rotation, then invert x and adjust x for h (now to become w)
       bSwap = true;
-      swap(x, y);
+      ssd1306_swap(x, y);
       x = WIDTH - x - 1;
       x -= (h-1);
       break;
@@ -649,7 +654,7 @@ void Adafruit_SSD1306::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t c
     case 3:
       // 270 degree rotation, swap x & y for rotation, then invert y 
       bSwap = true;
-      swap(x, y);
+      ssd1306_swap(x, y);
       y = HEIGHT - y - 1;
       break;
   }
