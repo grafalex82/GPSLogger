@@ -529,7 +529,7 @@ NMEAGPS::decode_t NMEAGPS::parseCommand
     uint8_t  msg_offset       = pgm_read_byte( &msgs->offset );
     decode_t res              = DECODE_CHR_INVALID;
     bool     check_this_table = true;
-    uint8_t  entry;
+    uint8_t  entry = 0;
 
     if (nmeaMessage == NMEA_UNKNOWN) {
       // We're just starting
