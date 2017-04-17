@@ -48,6 +48,12 @@ extern void __libc_init_array(void);
 
 extern int main(int, char**, char**);
 
+/* __libc_init_array() calls _init() which usually defined in crti.o.
+   For some reason I could not get crti.o into the linker when building under CMake.
+   So defining it here as a weak symbol and doing nothing.
+ */
+void __attribute__ ((weak)) _init(void)  {}
+
 extern void exit(int) __attribute__((noreturn, weak));
 
 /* The linker must ensure that these are at least 4-byte aligned. */

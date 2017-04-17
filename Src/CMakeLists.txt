@@ -1,3 +1,6 @@
+# Build rules for GPS logger target.
+# App specific compiler/linker settings are also defined here
+
 SET(SOURCE_FILES
 	8x12Font.cpp
 	AltitudeScreen.cpp
@@ -24,19 +27,20 @@ SET(SOURCE_FILES
 	TimeFont.cpp
 	TimeZoneScreen.cpp
 	Utils.cpp
-
-	../Libs/STM32duino/variants/generic_stm32f103c/wirish/syscalls.c
 )
 
 INCLUDE_DIRECTORIES(
 	.
-	${LIBS_DIR}/AdafruitGFX
-	${LIBS_DIR}/NeoGPS
-	${LIBS_DIR}/STM32duino/libraries/Adafruit_SSD1306
-	${LIBS_DIR}/STM32duino/libraries/SPI/src
-	${LIBS_DIR}/STM32duino/libraries/FreeRTOS821
+	${GPSLOGGER_LIBS_DIR}/AdafruitGFX
+	${GPSLOGGER_LIBS_DIR}/NeoGPS
+	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/Adafruit_SSD1306
+	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/SPI/src
+	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/FreeRTOS821
 	)
 
+
+# Do not link to libc or newlib-nano - we are not using anything from that
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nosys.specs")
 
 ADD_EXECUTABLE(GPSLogger ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(GPSLogger
@@ -47,3 +51,10 @@ TARGET_LINK_LIBRARIES(GPSLogger
 	ArduinoLibs
 	STM32duino
 )
+
+STM32_SET_TARGET_PROPERTIES(GPSLogger)
+STM32_PRINT_SIZE_OF_TARGETS(GPSLogger)
+
+# Additional handy targets
+STM32_ADD_HEX_BIN_TARGETS(GPSLogger)
+STM32_ADD_DUMP_TARGET(GPSLogger)

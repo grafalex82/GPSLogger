@@ -1,10 +1,10 @@
-SET(CMAKE_C_FLAGS "-mthumb -fno-builtin -mcpu=cortex-m3 -Wall -std=gnu99 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize" CACHE INTERNAL "c compiler flags")
-SET(CMAKE_CXX_FLAGS "-mthumb -fno-builtin -mcpu=cortex-m3 -Wall -std=c++11 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize" CACHE INTERNAL "cxx compiler flags")
+SET(CMAKE_C_FLAGS "-mthumb -mcpu=cortex-m3 -Wall -std=gnu99 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize -nostdlib -march=armv7-m --param max-inline-insns-single=500" CACHE INTERNAL "c compiler flags")
+SET(CMAKE_CXX_FLAGS "-mthumb -mcpu=cortex-m3 -Wall -std=c++11 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize -fno-rtti -fno-exceptions -nostdlib -fno-use-cxa-atexit -march=armv7-m --param max-inline-insns-single=500" CACHE INTERNAL "cxx compiler flags")
 SET(CMAKE_ASM_FLAGS "-mthumb -mcpu=cortex-m3 -x assembler-with-cpp" CACHE INTERNAL "asm compiler flags")
 
-SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -mthumb -mcpu=cortex-m3 -mabi=aapcs" CACHE INTERNAL "executable linker flags")
-SET(CMAKE_MODULE_LINKER_FLAGS "-mthumb -mcpu=cortex-m3 -mabi=aapcs" CACHE INTERNAL "module linker flags")
-SET(CMAKE_SHARED_LINKER_FLAGS "-mthumb -mcpu=cortex-m3 -mabi=aapcs" CACHE INTERNAL "shared linker flags")
+SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -mthumb -mcpu=cortex-m3 -march=armv7-m -mabi=aapcs -Wl,--warn-common -Wl,--warn-section-align" CACHE INTERNAL "executable linker flags")
+SET(CMAKE_MODULE_LINKER_FLAGS "-mthumb -mcpu=cortex-m3 -march=armv7-m -lgcc -mabi=aapcs" CACHE INTERNAL "module linker flags")
+SET(CMAKE_SHARED_LINKER_FLAGS "-mthumb -mcpu=cortex-m3 -march=armv7-m -lgcc -mabi=aapcs" CACHE INTERNAL "shared linker flags")
 
 SET(STM32_CHIP_TYPES 100xB 100xE 101x6 101xB 101xE 101xG 102x6 102xB 103x6 103xB 103xE 103xG 105xC 107xC CACHE INTERNAL "stm32f1 chip types")
 SET(STM32_CODES "100.[468B]" "100.[CDE]" "101.[46]" "101.[8B]" "101.[CDE]" "101.[FG]" "102.[46]" "102.[8B]" "103.[46]" "103.[8B]" "103.[CDE]" "103.[FG]" "105.[8BC]" "107.[BC]")

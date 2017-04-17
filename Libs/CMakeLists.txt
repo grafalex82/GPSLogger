@@ -1,7 +1,12 @@
-# Not pushing this file down to libraries in order to keep them as is.
+# Not pushing this file down to libraries in order to keep source tree as is (not populating with extra files, such as CMakeList.txt)
+#
+# Below each section represents a library with its own settings
+
+
 
 ###################
 # NeoGPS
+###################
 
 SET(NEOGPS_SRC
 	NeoGPS/DMS.cpp
@@ -12,8 +17,11 @@ SET(NEOGPS_SRC
 )
 ADD_LIBRARY(NeoGPS STATIC ${NEOGPS_SRC})
 
+
+
 ###################
 # FreeRTOS
+###################
 
 SET(FREERTOS_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32duino/libraries/FreeRTOS821)
 
@@ -28,16 +36,20 @@ SET(FREERTOS_SRC
 ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 
 
+
 ###################
 # Adafruit GFX library
+###################
 
 ADD_LIBRARY(AdafruitGFX STATIC 
 	AdafruitGFX/Adafruit_GFX.cpp 
 )
 
 
+
 ###################
 # Adafruit SSD1306 library
+###################
 
 ADD_LIBRARY(AdafruitSSD1306 STATIC 
 	STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.cpp
@@ -52,6 +64,7 @@ TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
 
 ###################
 # Various Arduino libraries
+###################
 
 SET(ARDUINO_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32duino/libraries)
 
@@ -66,16 +79,18 @@ ADD_LIBRARY(ArduinoLibs STATIC ${ARDUINO_LIBS_SRC})
 ###################
 # STM32duino, libmaple and system layer
 # Has to be as a single library, otherwise linker does not resolve all crossreferences
+# Unused files are commented on the list
+###################
 
 SET(LIBMAPLE_SRC
 	STM32duino/variants/generic_stm32f103c/board.cpp
 	STM32duino/variants/generic_stm32f103c/wirish/boards.cpp
 	STM32duino/variants/generic_stm32f103c/wirish/boards_setup.cpp
-#	STM32duino/variants/generic_stm32f103c/wirish/start.S
-#	STM32duino/variants/generic_stm32f103c/wirish/start_c.c
-	STM32duino/variants/generic_stm32f103c/wirish/syscalls.c
+	STM32duino/variants/generic_stm32f103c/wirish/start.S
+	STM32duino/variants/generic_stm32f103c/wirish/start_c.c
+ 	STM32duino/variants/generic_stm32f103c/wirish/syscalls.c
 
-#	STM32duino/cores/maple/cxxabi-compat.cpp
+	STM32duino/cores/maple/cxxabi-compat.cpp
 #	STM32duino/cores/maple/ext_interrupts.cpp
 	STM32duino/cores/maple/HardwareSerial.cpp
 #	STM32duino/cores/maple/HardwareTimer.cpp
@@ -114,7 +129,7 @@ SET(LIBMAPLE_SRC
 	STM32duino/cores/maple/libmaple/gpio_f1.c
 	STM32duino/cores/maple/libmaple/i2c.c
 	STM32duino/cores/maple/libmaple/i2c_f1.c
-#	STM32duino/cores/maple/libmaple/iwdg.c
+	STM32duino/cores/maple/libmaple/iwdg.c
 	STM32duino/cores/maple/libmaple/nvic.c
 #	STM32duino/cores/maple/libmaple/pwr.c
 	STM32duino/cores/maple/libmaple/rcc.c
@@ -128,7 +143,29 @@ SET(LIBMAPLE_SRC
 	STM32duino/cores/maple/libmaple/usart_f1.c
 	STM32duino/cores/maple/libmaple/usart_private.c
 	STM32duino/cores/maple/libmaple/util.c
+
+	STM32duino/cores/maple/libmaple/stm32f1/performance/isrs.S
+	STM32duino/cores/maple/libmaple/stm32f1/performance/vector_table.S
+
+	STM32duino/cores/maple/libmaple/usb/stm32f1/usb.c
+	STM32duino/cores/maple/libmaple/usb/stm32f1/usb_cdcacm.c
+	STM32duino/cores/maple/libmaple/usb/stm32f1/usb_reg_map.c
+
+	STM32duino/cores/maple/libmaple/usb/usb_lib/usb_core.c
+	STM32duino/cores/maple/libmaple/usb/usb_lib/usb_init.c
+	STM32duino/cores/maple/libmaple/usb/usb_lib/usb_mem.c
+	STM32duino/cores/maple/libmaple/usb/usb_lib/usb_regs.c
 )
 
 ADD_LIBRARY(STM32duino STATIC ${LIBMAPLE_SRC})
-TARGET_COMPILE_DEFINITIONS(STM32duino PRIVATE -DVECT_TAB_ADDR=${VECT_TAB_ADDR})
+
+TARGET_INCLUDE_DIRECTORIES(STM32duino PRIVATE
+	STM32duino/system/libmaple/usb/stm32f1
+	STM32duino/system/libmaple/usb/usb_lib
+)
+
+TARGET_COMPILE_DEFINITIONS(STM32duino PRIVATE 
+	-DVECT_TAB_ADDR=${VECT_TAB_ADDR} 
+	-DGENERIC_BOOTLOADER 
+	-DBOARD_maple
+)
