@@ -2,12 +2,23 @@
 # App specific compiler/linker settings are also defined here
 
 SET(SOURCE_FILES
+	Screens/AltitudeScreen.cpp
+	Screens/CurrentPositionScreen.cpp
+	Screens/CurrentTimeScreen.cpp
+	Screens/DebugScreen.cpp
+	Screens/OdometerActionScreen.cpp
+	Screens/OdometerScreen.cpp
+	Screens/ParentScreen.cpp
+	Screens/SatellitesScreen.cpp
+	Screens/Screen.cpp
+	Screens/ScreenManager.cpp
+	Screens/SelectorScreen.cpp
+	Screens/SettingsGroupScreen.cpp
+	Screens/SpeedScreen.cpp
+	Screens/TimeZoneScreen.cpp
+
 	8x12Font.cpp
-	AltitudeScreen.cpp
 	Buttons.cpp
-	CurrentPositionScreen.cpp
-	CurrentTimeScreen.cpp
-	DebugScreen.cpp
 	FontTest.cpp
 	GPSDataModel.cpp
 	GPSLogger.cpp
@@ -15,17 +26,7 @@ SET(SOURCE_FILES
 	GPSSatellitesData.cpp
 	GPSThread.cpp
 	IdleThread.cpp
-	OdometerActionScreen.cpp
-	OdometerScreen.cpp
-	ParentScreen.cpp
-	SatellitesScreen.cpp
-	Screen.cpp
-	ScreenManager.cpp
-	SelectorScreen.cpp
-	SettingsGroupScreen.cpp
-	SpeedScreen.cpp
 	TimeFont.cpp
-	TimeZoneScreen.cpp
 	Utils.cpp
 )
 
