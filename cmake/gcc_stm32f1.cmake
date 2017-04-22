@@ -1,5 +1,5 @@
-SET(CMAKE_C_FLAGS "-mthumb -mcpu=cortex-m3 -Wall -std=gnu99 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize -nostdlib -march=armv7-m --param max-inline-insns-single=500" CACHE INTERNAL "c compiler flags")
-SET(CMAKE_CXX_FLAGS "-mthumb -mcpu=cortex-m3 -Wall -std=c++11 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize -fno-rtti -fno-exceptions -nostdlib -fno-use-cxa-atexit -march=armv7-m --param max-inline-insns-single=500" CACHE INTERNAL "cxx compiler flags")
+SET(CMAKE_C_FLAGS "-mthumb -fno-builtin -mcpu=cortex-m3 -Wall -std=gnu99 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize -nostdlib -march=armv7-m --param max-inline-insns-single=500" CACHE INTERNAL "c compiler flags")
+SET(CMAKE_CXX_FLAGS "-mthumb -fno-builtin -mcpu=cortex-m3 -Wall -std=c++11 -ffunction-sections -fdata-sections -fomit-frame-pointer -mabi=aapcs -fno-unroll-loops -ffast-math -ftree-vectorize -fno-rtti -fno-exceptions -nostdlib -fno-use-cxa-atexit -march=armv7-m --param max-inline-insns-single=500" CACHE INTERNAL "cxx compiler flags")
 SET(CMAKE_ASM_FLAGS "-mthumb -mcpu=cortex-m3 -x assembler-with-cpp" CACHE INTERNAL "asm compiler flags")
 
 SET(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections -mthumb -mcpu=cortex-m3 -march=armv7-m -mabi=aapcs -Wl,--warn-common -Wl,--warn-section-align" CACHE INTERNAL "executable linker flags")
