@@ -109,6 +109,9 @@ SET(LIBMAPLE_SRC
 	STM32duino/cores/maple/wirish_time.cpp
 #	STM32duino/cores/maple/WString.cpp
 
+#	STM32duino/cores/maple/hooks.c
+	STM32duino/cores/maple/itoa.c
+
 #	STM32duino/cores/maple/stm32f1/util_hooks.c
 #	STM32duino/cores/maple/stm32f1/wiring_pulse_f1.cpp
 	STM32duino/cores/maple/stm32f1/wirish_debug.cpp
