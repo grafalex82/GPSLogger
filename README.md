@@ -39,10 +39,24 @@ The project is using Arduino sketches concept. Atmel Studio + Visual Micro plugi
 
 # Project Structure
 
+* cmake - CMake toolchain files and project wide compiler settings
 * Docs - various useful docs for project components. Just to keep them at a single location
-* Libs - Used libraries. Using originals at the moment, but they could be altered in future in terms of optimization
+* Libs - Used libraries. Used mostly a copy of original libraries, but have some minor tweaks and configuration changes
 * Fonts - sources for fonts used in the project
 * Src - logger sources
+* Test - unit test and other testing related stuff
+
+
+# How to build
+
+CMake is used as a build system. Here is an example how to generate MinGW makefiles
+
+```
+mkdir <Builddir>
+cd <Builddir>
+cmake "-DTOOLCHAIN_PREFIX=<PathToArmGccCompiler>" -G "MinGW Makefiles" <PathToProject>
+mingw32-make GPSLogger.bin
+```
 
 # UI structure
 
@@ -79,4 +93,7 @@ Main screens are:
 
 # Links and misc stuff
 
-* Build log with detailed description of goals, achievements, HW and SW solutions, etc. (in Russian)  - [Part1](https://geektimes.ru/post/286348/), other parts are coming
+* Build log with detailed description of goals, achievements, HW and SW solutions, etc. (in Russian):
+  * [Part1](https://geektimes.ru/post/286348/)
+  * [Part2](https://geektimes.ru/post/287666/)
+  * other parts are coming
