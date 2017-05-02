@@ -43,12 +43,12 @@ Screen * Screen::addScreen(Screen * screen)
 
 const char * Screen::getSelButtonText() const
 {
-	static const char text[] PROGMEM = "MODE";
+	static const char text[] = "MODE";
 	return text;
 }
 
 const char * Screen::getOkButtonText() const
 {
-	static const char text[] PROGMEM = "ENTER";
+	static const char text[] = "ENTER";
 	return text;
 }

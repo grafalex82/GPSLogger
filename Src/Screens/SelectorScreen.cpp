@@ -48,12 +48,12 @@ void SelectorScreen::onOkButton()
 
 const char * SelectorScreen::getSelButtonText() const
 {
-	static const char text[] PROGMEM = "NEXT";
+	static const char text[] = "NEXT";
 	return text;
 }
 
 const char * SelectorScreen::getOkButtonText() const
 {
-	static const char text[] PROGMEM = "OK";
+	static const char text[] = "OK";
 	return text;
 }

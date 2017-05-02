@@ -90,6 +90,6 @@ const char * SpeedScreen::headingAsLetter(uint16 heading)
 
 const char * SpeedScreen::getOkButtonText() const
 {
-	static const char text[] PROGMEM = "ALTITUDE";
+	static const char text[] = "ALTITUDE";
 	return text;
 }

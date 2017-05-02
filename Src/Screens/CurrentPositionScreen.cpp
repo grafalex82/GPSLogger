@@ -49,12 +49,12 @@ void CurrentPositionScreen::drawScreen() const
 
 const char * CurrentPositionScreen::getOkButtonText() const
 {
-	static const char text[] PROGMEM = "POI";
+	static const char text[] = "POI";
 	return text;
 }
 
 void CurrentPositionScreen::onOkButton()
 {
-	static const char text[] PROGMEM = "Waypoint Saved!";
+	static const char text[] = "Waypoint Saved!";
 	showMessageBox(text);
 }

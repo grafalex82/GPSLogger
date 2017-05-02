@@ -4,7 +4,7 @@
 
 // A simple 8x12 font (slightly modifier XWindow 8x12 font found on internet)
 
-const uint8_t Monospace8x12Bitmaps[] PROGMEM = {
+const uint8_t Monospace8x12Bitmaps[] = {
 	0x00,    //0x20 ' '
 	0xff, 0xf4, 0x90, 0x1d, 0x00,    //0x21 '!'
 	0xde, 0xd3, 0x20,    //0x22 '"'
@@ -103,7 +103,7 @@ const uint8_t Monospace8x12Bitmaps[] PROGMEM = {
 	0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5, 0xa5,     //0x7f ''
 }; //723 bytes
 
-const GFXglyph Monospace8x12Glyphs[] PROGMEM =
+const GFXglyph Monospace8x12Glyphs[] =
 {
 	0, 1, 1, 8, 2, -10,    //0x20 ' '
 	1, 3, 11, 8, 2, -11,    //0x21 '!'

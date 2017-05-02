@@ -66,12 +66,12 @@ void DebugScreen::onOkButton()
 	
 const char * DebugScreen::getSelButtonText() const
 {
-	static const char text[] PROGMEM = "NEXT";
+	static const char text[] = "NEXT";
 	return text;
 }
 
 const char * DebugScreen::getOkButtonText() const
 {
-	static const char text[] PROGMEM = "OK";
+	static const char text[] = "OK";
 	return text;
 }

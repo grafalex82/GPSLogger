@@ -57,12 +57,12 @@ void AltitudeScreen::onOkButton()
 
 const char * AltitudeScreen::getSelButtonText() const
 {
-	static const char text[] PROGMEM = "";
+	static const char text[] = "";
 	return text;
 }
 
 const char * AltitudeScreen::getOkButtonText() const
 {
-	static const char text[] PROGMEM = "BACK";
+	static const char text[] = "BACK";
 	return text;
 }

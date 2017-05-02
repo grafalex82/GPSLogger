@@ -116,13 +116,13 @@ void TimeZoneScreen::onOkButton()
 
 const char * TimeZoneScreen::getSelButtonText() const
 {
-	static const char text[] PROGMEM = "SELECT";
+	static const char text[] = "SELECT";
 	return text;
 }
 
 const char * TimeZoneScreen::getOkButtonText() const
 {
-	static const char text[] PROGMEM = "OK";
+	static const char text[] = "OK";
 	return text;
 }
 

@@ -55,7 +55,7 @@
 
 struct font_and_name
 {
-	const char * PROGMEM name;
+	const char * name;
 	const GFXfont * font;
 };
 
