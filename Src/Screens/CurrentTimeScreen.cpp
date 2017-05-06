@@ -14,7 +14,7 @@ TimeZoneScreen timeZoneScreen; //TODO Move it to CurrentTimeScreen class
 void CurrentTimeScreen::drawScreen() const
 {
 	// Get the date/time adjusted by selected timezone value
-	gps_fix gpsFix = gpsDataModel.getGPSFix();
+	gps_fix gpsFix = GPSDataModel::instance().getGPSFix();
 	NeoGPS::time_t dateTime = gpsFix.dateTime + timeZoneScreen.getCurrentTimeZone() * 60; //timeZone is in minutes
 
 	// TODO: display approximate time even if GPS is not available

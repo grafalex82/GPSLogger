@@ -57,7 +57,7 @@ TimeZoneScreen::TimeZoneScreen()
 void TimeZoneScreen::drawScreen() const
 {
 	// Get the date/time adjusted by selected timezone value
-	gps_fix gpsFix = gpsDataModel.getGPSFix();
+	gps_fix gpsFix = GPSDataModel::instance().getGPSFix();
 	int16 timeZone = getCurrentTimeZone();
 	NeoGPS::time_t dateTime = gpsFix.dateTime + timeZone * 60; //timeZone is in minutes
 

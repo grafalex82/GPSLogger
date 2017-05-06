@@ -21,8 +21,9 @@ const uint8 ODOMERTERS_COUNT = 3;
 class GPSDataModel
 {
 public:
-	GPSDataModel();
-	
+	/// A single instance of the model
+	static GPSDataModel & instance();
+
 	void processNewGPSFix(const gps_fix & fix);
 	void processNewSatellitesData(NMEAGPS::satellite_view_t * sattelites, uint8_t count);
 	gps_fix getGPSFix() const;
@@ -49,11 +50,9 @@ private:
 	
 	SemaphoreHandle_t xGPSDataMutex;
 	
+	GPSDataModel();
 	GPSDataModel( const GPSDataModel &c );
 	GPSDataModel& operator=( const GPSDataModel &c );	
 }; //GPSDataModel
-
-/// A single instance of GPS data model
-extern GPSDataModel gpsDataModel;
 
 #endif //__GPSDATA_H__

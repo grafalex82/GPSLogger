@@ -29,7 +29,7 @@ void OdometerScreen::drawScreen() const
 
 void OdometerScreen::drawBriefScreen() const
 {
-	GPSOdometerData odometer = gpsDataModel.getOdometerData(odometerIdx);
+	GPSOdometerData odometer = GPSDataModel::instance().getOdometerData(odometerIdx);
 	
 	display.setFont(&TimeFont);
 	display.setCursor(0,31);
@@ -53,7 +53,7 @@ void OdometerScreen::drawBriefScreen() const
 
 void OdometerScreen::drawDetailsScreen() const
 {
-	GPSOdometerData odometer = gpsDataModel.getOdometerData(odometerIdx);
+	GPSOdometerData odometer = GPSDataModel::instance().getOdometerData(odometerIdx);
 
 	display.setFont(NULL);
 

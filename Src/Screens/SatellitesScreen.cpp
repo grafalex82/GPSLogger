@@ -20,7 +20,7 @@ SatellitesScreen::SatellitesScreen()
 
 void SatellitesScreen::drawScreen() const
 {	
-	GPSSatellitesData satellites = gpsDataModel.getSattelitesData();	
+	GPSSatellitesData satellites = GPSDataModel::instance().getSattelitesData();
 	
 	// Draw a bar on each satellites in the list
 	uint8 width = 3;
@@ -45,7 +45,7 @@ void SatellitesScreen::drawScreen() const
 
 	// other stuff
 	uint8 sat_count_local = sat_count;
-	gps_fix gpsFix = gpsDataModel.getGPSFix(); 
+	gps_fix gpsFix = GPSDataModel::instance().getGPSFix();
 	gps_fix::status_t status = gpsFix.status;
 
 	// Drawing stats

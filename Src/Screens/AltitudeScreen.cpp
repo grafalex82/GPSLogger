@@ -17,8 +17,8 @@ AltitudeScreen::AltitudeScreen()
 void AltitudeScreen::drawScreen() const
 {
 	// Get the gps fix data
-	gps_fix gpsFix = gpsDataModel.getGPSFix();
-	
+	gps_fix gpsFix = GPSDataModel::instance().getGPSFix();
+
 	// Draw Altitude
 	// TODO draw '----' if no GPS signal found. Requires new character in font
 	char buf[7]; // 6 symbols + trailing zero
@@ -40,7 +40,7 @@ void AltitudeScreen::drawScreen() const
 	display.print("m");
 
 	// Draw vertical speed
-	float vspeed = gpsDataModel.getVerticalSpeed();
+	float vspeed = GPSDataModel::instance().getVerticalSpeed();
 	if(!isnan(vspeed))
 	{
 		display.setFont(NULL);

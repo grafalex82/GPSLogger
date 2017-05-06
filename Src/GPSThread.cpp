@@ -28,8 +28,8 @@ void vGPSTask(void *pvParameters)
 		
 		if(gpsParser.available())
 		{
-			gpsDataModel.processNewGPSFix(gpsParser.read());
-			gpsDataModel.processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
+			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
+			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
 		}			
 			
 		vTaskDelay(10);

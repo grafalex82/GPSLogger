@@ -13,7 +13,7 @@ extern Adafruit_SSD1306 display;
 void CurrentPositionScreen::drawScreen() const
 {
 	// Get the current Fix data
-	gps_fix gpsFix = gpsDataModel.getGPSFix();
+	gps_fix gpsFix = GPSDataModel::instance().getGPSFix();
 	
 	static char latitudeString[17]; // 16 symbols + terminating zerno
 	static char longtitudeString[17];

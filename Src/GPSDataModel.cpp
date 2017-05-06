@@ -5,7 +5,7 @@
 #include "GPSDataModel.h"
 #include "GPSOdometer.h"
 
-GPSDataModel gpsDataModel;
+#include "HardwareSerial.h"
 
 GPSOdometer odometer0;
 GPSOdometer odometer1;
@@ -146,3 +146,8 @@ void GPSDataModel::resetAllOdometers()
 	odometerWasActive[2] = false;
 }
 
+GPSDataModel & GPSDataModel::instance()
+{
+	static GPSDataModel s;
+	return s;
+}

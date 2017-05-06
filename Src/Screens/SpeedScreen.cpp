@@ -20,7 +20,7 @@ SpeedScreen::SpeedScreen()
 void SpeedScreen::drawScreen() const
 {
 	// Get the gps fix data
-	gps_fix gpsFix = gpsDataModel.getGPSFix();
+	gps_fix gpsFix = GPSDataModel::instance().getGPSFix();
 	
 	// Draw speed
 	// TODO draw '----' if no GPS signal found. Requires new character in font
