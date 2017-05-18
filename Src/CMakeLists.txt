@@ -65,7 +65,8 @@ TARGET_LINK_LIBRARIES(GPSLogger
 	AdafruitGFX
 	AdafruitSSD1306
 	ArduinoLibs
-	STM32duino
+#	STM32duino
+	STM32generic
 )
 
 STM32_SET_TARGET_PROPERTIES(GPSLogger)

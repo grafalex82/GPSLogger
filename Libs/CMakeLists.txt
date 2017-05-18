@@ -173,3 +173,67 @@ TARGET_COMPILE_DEFINITIONS(STM32duino PRIVATE
 	-DGENERIC_BOOTLOADER 
 	-DBOARD_maple
 )
+
+
+
+###################
+# STM32 generic - HAL based Arduino API implementation
+###################
+
+SET(STM32GENERIC_SRC
+#	STM32generic/cores/arduino/abi.cpp
+	STM32generic/cores/arduino/Arduino.h
+#	STM32generic/cores/arduino/hooks.c
+#	STM32generic/cores/arduino/itoa.c
+#	STM32generic/cores/arduino/itoa.h
+	STM32generic/cores/arduino/main.cpp
+#	STM32generic/cores/arduino/new.cpp
+#	STM32generic/cores/arduino/new.h
+	STM32generic/cores/arduino/pins_arduino.h
+	STM32generic/cores/arduino/Print.cpp
+	STM32generic/cores/arduino/Print.h
+	STM32generic/cores/arduino/Printable.h
+	STM32generic/cores/arduino/Stream.cpp
+	STM32generic/cores/arduino/Stream.h
+#	STM32generic/cores/arduino/syscalls.c
+#	STM32generic/cores/arduino/syscalls.h
+#	STM32generic/cores/arduino/wiring_private.h
+#	STM32generic/cores/arduino/WMath.cpp
+#	STM32generic/cores/arduino/WString.cpp
+#	STM32generic/cores/arduino/WString.h
+
+	STM32generic/cores/arduino/stm32/SerialUART.cpp
+	STM32generic/cores/arduino/stm32/SerialUART.h
+	STM32generic/cores/arduino/stm32/SerialUSB.cpp
+	STM32generic/cores/arduino/stm32/SerialUSB.h
+#	STM32generic/cores/arduino/stm32/stm32_ADC.c
+#	STM32generic/cores/arduino/stm32/stm32_build_defines.h
+	STM32generic/cores/arduino/stm32/stm32_clock.h
+#	STM32generic/cores/arduino/stm32/stm32_def.h
+	STM32generic/cores/arduino/stm32/stm32_gpio.c
+	STM32generic/cores/arduino/stm32/stm32_gpio.h
+#	STM32generic/cores/arduino/stm32/stm32_gpio_af.c
+#	STM32generic/cores/arduino/stm32/stm32_gpio_af.h
+#	STM32generic/cores/arduino/stm32/stm32_gpio_af_F0F2F3F4F7L0L1L4.c
+#	STM32generic/cores/arduino/stm32/stm32_gpio_af_F1.c
+	STM32generic/cores/arduino/stm32/stm32_gpio_exti.c
+	STM32generic/cores/arduino/stm32/stm32_init.c
+#	STM32generic/cores/arduino/stm32/stm32_PWM.c
+#	STM32generic/cores/arduino/stm32/USBDevice.cpp
+#	STM32generic/cores/arduino/stm32/USBDevice.h
+
+)
+
+ADD_LIBRARY(STM32generic STATIC ${STM32GENERIC_SRC})
+
+#TARGET_INCLUDE_DIRECTORIES(STM32generic PRIVATE
+#	STM32duino/system/libmaple/usb/stm32f1
+#	STM32duino/system/libmaple/usb/usb_lib
+#)
+
+#TARGET_COMPILE_DEFINITIONS(STM32duino PRIVATE 
+#	-DVECT_TAB_ADDR=${VECT_TAB_ADDR} 
+#	-DGENERIC_BOOTLOADER 
+#	-DBOARD_maple
+#)
+
