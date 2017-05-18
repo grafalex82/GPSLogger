@@ -356,7 +356,7 @@ void SPIClass::write(const uint8 *data, uint32 length) {
 	while (spi_is_busy(_currentSetting->spi_d) != 0); // "... then wait until BSY=0, this indicates that the transmission of the last data is complete."
 	// taken from SdSpiSTM32F1.cpp - Victor's lib, and adapted to support device selection
 	if (spi_is_rx_nonempty(_currentSetting->spi_d)) {
-		uint8_t b = spi_rx_reg(_currentSetting->spi_d);
+		/*uint8_t b = */ spi_rx_reg(_currentSetting->spi_d);
 	}
 }
 
@@ -377,6 +377,8 @@ uint8 SPIClass::transfer(uint8 byte) const {
   	while (spi_is_busy(_currentSetting->spi_d) != 0); // "... and then wait until BSY=0 before disabling the SPI."
     return b;
 }
+
+#if 0
 /*  Roger Clark and Victor Perez, 2015
 *	Performs a DMA SPI transfer with at least a receive buffer.
 *	If a TX buffer is not provided, FF is sent over and over for the lenght of the transfer. 
@@ -501,6 +503,7 @@ uint8 SPIClass::dmaSend(uint16 *transmitBuf, uint16 length, bool minc) {
 	}
     return b;
 }
+#endif //0
 
 
 void SPIClass::attachInterrupt(void) {
@@ -620,12 +623,13 @@ static const spi_baud_rate baud_rates[8] __FLASH__ = {
 static spi_baud_rate determine_baud_rate(spi_dev *dev, uint32_t freq) {
 	uint32_t clock = 0, i;
 	#ifdef SPI_DEBUG
-	Serial.print("determine_baud_rate("); Serial.print(freq); Serial.println(")");
+	//Serial.print("determine_baud_rate("); Serial.print(freq); Serial.println(")");
 	#endif
     switch (rcc_dev_clk(dev->clk_id))
     {
     	case RCC_APB2: clock = STM32_PCLK2; break; // 72 Mhz
     	case RCC_APB1: clock = STM32_PCLK1; break; // 36 Mhz
+		default: clock = STM32_PCLK1; break; // TODO Make a better warning fix
     }
     clock /= 2;
     i = 0;

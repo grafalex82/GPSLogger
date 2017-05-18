@@ -435,6 +435,10 @@ File SDClass::open(const char *filepath, uint8_t mode) {
 
    */
 
+Serial.print("Opening file: ");
+Serial.print(filepath);
+Serial.println("");
+
   int pathidx;
 
   // do the interative search
@@ -443,9 +447,11 @@ File SDClass::open(const char *filepath, uint8_t mode) {
 
   filepath += pathidx;
 
-  if (! filepath[0]) {
+  if (! filepath[0])
+  {
     // it was the directory itself!
-    return File(parentdir, "/");
+ Serial.println("Exiting at 1");
+	return File(parentdir, "/");
   }
 
   // Open the file itself
@@ -453,18 +459,24 @@ File SDClass::open(const char *filepath, uint8_t mode) {
 
   // failed to open a subdir!
   if (!parentdir.isOpen())
+  {
+Serial.println("Exiting at 2");
     return File();
+
+  }
 
   // there is a special case for the Root directory since its a static dir
   if (parentdir.isRoot()) {
     if ( ! file.open(root, filepath, mode)) {
       // failed to open the file :(
-      return File();
+Serial.println("Exiting at 3");
+	  return File();
     }
     // dont close the root!
   } else {
     if ( ! file.open(parentdir, filepath, mode)) {
-      return File();
+Serial.println("Exiting at 4");
+	  return File();
     }
     // close the parent
     parentdir.close();
@@ -472,6 +484,8 @@ File SDClass::open(const char *filepath, uint8_t mode) {
 
   if (mode & (O_APPEND | O_WRITE)) 
     file.seekSet(file.fileSize());
+
+Serial.println("Exiting at 5");
   return File(file, filepath);
 }
 
@@ -575,7 +589,7 @@ File File::openNextFile(uint8_t mode) {
   dir_t p;
 
   //Serial.print("\t\treading dir...");
-  while (_file->readDir(&p) > 0) {
+  while (_file.readDir(&p) > 0) {
 
     // done if past last used entry
     if (p.name[0] == DIR_NAME_FREE) {
@@ -598,7 +612,7 @@ File File::openNextFile(uint8_t mode) {
     // print file name with possible blank fill
     SdFile f;
     char name[13];
-    _file->dirName(p, name);
+	_file.dirName(p, name);
     //Serial.print("try to open file ");
     //Serial.println(name);
 
@@ -617,7 +631,7 @@ File File::openNextFile(uint8_t mode) {
 
 void File::rewindDirectory(void) {  
   if (isDirectory())
-    _file->rewind();
+	_file.rewind();
 }
 
 SDClass SD;

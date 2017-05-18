@@ -18,6 +18,34 @@ SET(NEOGPS_SRC
 ADD_LIBRARY(NeoGPS STATIC ${NEOGPS_SRC})
 
 
+###################
+# SD card library
+###################
+
+SET(SD_SRC
+	SD/File.cpp
+	SD/SD.cpp
+	SD/SD.h
+
+	SD/utility/FatStructs.h
+	SD/utility/Sd2Card.cpp
+	SD/utility/Sd2Card.h
+	SD/utility/Sd2PinMap.h
+	SD/utility/SdFat.h
+	SD/utility/SdFatmainpage.h
+	SD/utility/SdFatUtil.h
+	SD/utility/SdFile.cpp
+	SD/utility/SdInfo.h
+	SD/utility/SdVolume.cpp
+)
+ADD_LIBRARY(SD STATIC ${SD_SRC})
+
+TARGET_INCLUDE_DIRECTORIES(SD PRIVATE
+	SD
+	STM32duino/libraries/SPI/src
+)
+
+
 
 ###################
 # FreeRTOS
@@ -59,7 +87,6 @@ TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
 	STM32duino/libraries/Wire
 	STM32duino/libraries/SPI/src  	#In fact it should not depend on it
 	AdafruitGFX
-	
 )
 
 
@@ -72,9 +99,16 @@ SET(ARDUINO_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32duino/libraries)
 SET(ARDUINO_LIBS_SRC
 	${ARDUINO_LIBS_DIR}/Wire/HardWire.cpp
 	${ARDUINO_LIBS_DIR}/Wire/WireBase.cpp
+	${ARDUINO_LIBS_DIR}/SPI/src/SPI.cpp
+	${ARDUINO_LIBS_DIR}/SPI/src/SPI.h
 )
 
 ADD_LIBRARY(ArduinoLibs STATIC ${ARDUINO_LIBS_SRC})
+
+TARGET_INCLUDE_DIRECTORIES(ArduinoLibs PRIVATE
+	STM32duino/libraries/SPI/src
+)
+
 
 
 ###################
@@ -122,8 +156,8 @@ SET(LIBMAPLE_SRC
 	STM32duino/cores/maple/libmaple/adc_f1.c
 #	STM32duino/cores/maple/libmaple/bkp_f1.c
 #	STM32duino/cores/maple/libmaple/dac.c
-#	STM32duino/cores/maple/libmaple/dma.c
-#	STM32duino/cores/maple/libmaple/dma_f1.c
+	STM32duino/cores/maple/libmaple/dma.c
+	STM32duino/cores/maple/libmaple/dma_f1.c
 #	STM32duino/cores/maple/libmaple/exc.S
 #	STM32duino/cores/maple/libmaple/exti.c
 #	STM32duino/cores/maple/libmaple/exti_f1.c
@@ -138,8 +172,8 @@ SET(LIBMAPLE_SRC
 #	STM32duino/cores/maple/libmaple/pwr.c
 	STM32duino/cores/maple/libmaple/rcc.c
 	STM32duino/cores/maple/libmaple/rcc_f1.c
-#	STM32duino/cores/maple/libmaple/spi.c
-#	STM32duino/cores/maple/libmaple/spi_f1.c
+	STM32duino/cores/maple/libmaple/spi.c
+	STM32duino/cores/maple/libmaple/spi_f1.c
 	STM32duino/cores/maple/libmaple/systick.c
 	STM32duino/cores/maple/libmaple/timer.c
 #	STM32duino/cores/maple/libmaple/timer_f1.c

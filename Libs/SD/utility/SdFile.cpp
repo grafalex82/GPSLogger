@@ -204,17 +204,19 @@ void SdFile::ls(uint8_t flags, uint8_t indent) {
   dir_t* p;
 
   rewind();
+
   while ((p = readDirCache())) {
-    // done if past last used entry
+
+	// done if past last used entry
     if (p->name[0] == DIR_NAME_FREE) break;
 
     // skip deleted entry and entries for . and  ..
     if (p->name[0] == DIR_NAME_DELETED || p->name[0] == '.') continue;
 
-    // only list subdirectories and files
+	// only list subdirectories and files
     if (!DIR_IS_FILE_OR_SUBDIR(p)) continue;
 
-    // print any indent spaces
+	// print any indent spaces
     for (int8_t i = 0; i < indent; i++) Serial.print(' ');
 
     // print file name with possible blank fill

@@ -213,7 +213,7 @@ class SdFile : public Print {
   /** \return True if this is a SdFile for a file else false. */
   uint8_t isFile(void) const {return type_ == FAT_FILE_TYPE_NORMAL;}
   /** \return True if this is a SdFile for an open file/directory else false. */
-  uint8_t isOpen(void) const {return type_ != FAT_FILE_TYPE_CLOSED;}
+  bool isOpen(void) const {return type_ != FAT_FILE_TYPE_CLOSED;}
   /** \return True if this is a SdFile for a subdirectory else false. */
   uint8_t isSubDir(void) const {return type_ == FAT_FILE_TYPE_SUBDIR;}
   /** \return True if this is a SdFile for the root directory. */
