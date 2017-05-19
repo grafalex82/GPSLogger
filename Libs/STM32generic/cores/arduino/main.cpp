@@ -31,6 +31,7 @@ void initVariant() { }
 void setupUSB() __attribute__((weak));
 void setupUSB() { }
 
+
 int main(void)
 {
     //Used by FreeRTOS, see http://www.freertos.org/RTOS-Cortex-M3-M4.html

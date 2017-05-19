@@ -344,8 +344,8 @@ BaseType_t xPortStartScheduler( void )
   // !!! Maple
 	/* Start the timer that generates the tick ISR.  Interrupts are disabled
 	here already. */
-	//vPortSetupTimerInterrupt();
-	systick_attach_callback(&xPortSysTickHandler);
+	vPortSetupTimerInterrupt();
+	//systick_attach_callback(&xPortSysTickHandler);
   // !!! Maple
 
 	/* Initialise the critical nesting count ready for the first task. */

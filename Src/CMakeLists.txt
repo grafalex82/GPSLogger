@@ -43,6 +43,8 @@ SET(SOURCE_FILES
 	IdleThread.cpp
 	TimeFont.cpp
 	Utils.cpp
+
+	../Libs/STM32generic/cores/arduino/syscalls.c
 )
 
 INCLUDE_DIRECTORIES(
@@ -50,13 +52,13 @@ INCLUDE_DIRECTORIES(
 	${GPSLOGGER_LIBS_DIR}/AdafruitGFX
 	${GPSLOGGER_LIBS_DIR}/NeoGPS
 	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/Adafruit_SSD1306
-	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/SPI/src
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
 	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/FreeRTOS821
 	)
 
 
 # Do not link to libc or newlib-nano - we are not using anything from that
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nosys.specs")
+#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nosys.specs")
 
 ADD_EXECUTABLE(GPSLogger ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(GPSLogger

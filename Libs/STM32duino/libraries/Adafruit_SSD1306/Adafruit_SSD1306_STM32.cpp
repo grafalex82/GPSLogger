@@ -23,8 +23,9 @@ All text above, and the splash screen below must be included in any redistributi
 #include <stdlib.h>
 
 //#include <HWIRE.h>
-#include <HardWire.h>
-HardWire HWIRE(1, I2C_FAST_MODE); // I2c1
+#include <Wire.h>
+TwoWire HWIRE(I2C1);
+//HardWire HWIRE(1, I2C_FAST_MODE); // I2c1
 //HardWire HWIRE(2, I2C_FAST_MODE); // I2c2
 #include "Adafruit_GFX.h"
 #include "Adafruit_SSD1306_STM32.h"
@@ -137,6 +138,7 @@ void Adafruit_SSD1306::drawPixel(int16_t x, int16_t y, uint16_t color) {
     
 }
 
+/*
 Adafruit_SSD1306::Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
   cs = CS;
   rst = RST;
@@ -152,7 +154,7 @@ Adafruit_SSD1306::Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS) : Adafruit_
   rst = RST;
   cs = CS;
   hwSPI = true;
-}
+} */
 
 // initializer for I2C - we only indicate the reset pin!
 Adafruit_SSD1306::Adafruit_SSD1306(int8_t reset) :
@@ -342,6 +344,7 @@ void Adafruit_SSD1306::invertDisplay(uint8_t i) {
 }
 
 void Adafruit_SSD1306::ssd1306_command(uint8_t c) { 
+/*
   if (sid != -1)
   {
     // SPI
@@ -357,13 +360,14 @@ void Adafruit_SSD1306::ssd1306_command(uint8_t c) {
   }
   else
   {
+*/
     // I2C
     uint8_t control = 0x00;   // Co = 0, D/C = 0
     HWIRE.beginTransmission(_i2caddr);
     WIRE_WRITE(control);
     WIRE_WRITE(c);
     HWIRE.endTransmission();
-  }
+//  }
 }
 
 // startscrollright
@@ -455,7 +459,9 @@ void Adafruit_SSD1306::dim(boolean dim) {
   ssd1306_command(contrast);
 }
 
-void Adafruit_SSD1306::ssd1306_data(uint8_t c) {
+void Adafruit_SSD1306::ssd1306_data(uint8_t c) 
+{
+/*
   if (sid != -1)
   {
     // SPI
@@ -471,13 +477,14 @@ void Adafruit_SSD1306::ssd1306_data(uint8_t c) {
   }
   else
   {
+*/
     // I2C
     uint8_t control = 0x40;   // Co = 0, D/C = 1
     HWIRE.beginTransmission(_i2caddr);
     WIRE_WRITE(control);
     WIRE_WRITE(c);
     HWIRE.endTransmission();
-  }
+//  }
 }
 
 void Adafruit_SSD1306::display(void) {
@@ -497,6 +504,7 @@ void Adafruit_SSD1306::display(void) {
     ssd1306_command(1); // Page end address
   #endif
 
+/*
   if (sid != -1)
   {
     // SPI
@@ -512,6 +520,7 @@ void Adafruit_SSD1306::display(void) {
   }
   else
   {
+*/
     // save I2C bitrate
       /*
 #ifndef __SAM3X8E__
@@ -539,7 +548,7 @@ void Adafruit_SSD1306::display(void) {
     TWBR = twbrbackup;
 #endif
  */
-  }
+//  }
 }
 
 // clear everything
@@ -548,6 +557,7 @@ void Adafruit_SSD1306::clearDisplay(void) {
 }
 
 
+#if 0
 inline void Adafruit_SSD1306::fastSPIwrite(uint8_t d) {
 #if 0
   if(hwSPI) {
@@ -563,6 +573,7 @@ inline void Adafruit_SSD1306::fastSPIwrite(uint8_t d) {
 //  }
   //*csport |= cspinmask;
 }
+#endif
 
 void Adafruit_SSD1306::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color) {
   boolean bSwap = false;

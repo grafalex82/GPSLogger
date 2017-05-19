@@ -4,6 +4,11 @@
 #include "Buttons.h"
 #include "GPSThread.h"
 
+#include "Arduino.h"
+
+extern "C" void _init(void)  {}
+int __errno = 0;
+
 void vLEDFlashTask(void *pvParameters) 
 {
 	for (;;) 
@@ -21,7 +26,7 @@ void setup()
 {
 	pinMode(PC13, OUTPUT);
 	
-	Serial.begin(115200);
+	SerialUSB.begin(115200);
 
 	initDisplay();
 	initButtons();
