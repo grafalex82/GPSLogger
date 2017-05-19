@@ -4,3 +4,4 @@ Src/Release
 Src/.vs
 Build
 .metadata
+CMakeLists.txt.user
