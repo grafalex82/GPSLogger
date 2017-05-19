@@ -1,24 +1,25 @@
 #include <MapleFreeRTOS821.h>
 #include "Buttons.h"
+#include "Arduino.h"
 
 // TODO: perhaps it would be reasonable to detect button press via pin change interrupt
 
 // Pins assignment
-const uint8 SEL_BUTTON_PIN = PC14;
-const uint8 OK_BUTTON_PIN = PC15;
+const uint8_t SEL_BUTTON_PIN = PC14;
+const uint8_t OK_BUTTON_PIN = PC15;
 
 // Timing constants
-const uint32 DEBOUNCE_DURATION = 1 / portTICK_PERIOD_MS;
-const uint32 LONG_PRESS_DURATION = 500 / portTICK_PERIOD_MS;
-const uint32 VERY_LONG_PRESS_DURATION = 1000 / portTICK_PERIOD_MS;
-const uint32 POWER_OFF_POLL_PERIOD = 1000 / portTICK_PERIOD_MS; // Polling very rare when power is off
-const uint32 IDLE_POLL_PERIOD = 100 / portTICK_PERIOD_MS;		// And little more frequent if we are on
-const uint32 ACTIVE_POLL_PERIOD = 10 / portTICK_PERIOD_MS;		// And very often when user actively pressing buttons
+const uint32_t DEBOUNCE_DURATION = 1 / portTICK_PERIOD_MS;
+const uint32_t LONG_PRESS_DURATION = 500 / portTICK_PERIOD_MS;
+const uint32_t VERY_LONG_PRESS_DURATION = 1000 / portTICK_PERIOD_MS;
+const uint32_t POWER_OFF_POLL_PERIOD = 1000 / portTICK_PERIOD_MS; // Polling very rare when power is off
+const uint32_t IDLE_POLL_PERIOD = 100 / portTICK_PERIOD_MS;		// And little more frequent if we are on
+const uint32_t ACTIVE_POLL_PERIOD = 10 / portTICK_PERIOD_MS;		// And very often when user actively pressing buttons
 
 QueueHandle_t buttonsQueue;
 
 // Reading button state (perform debounce first)
-inline bool getButtonState(uint8 pin)
+inline bool getButtonState(uint8_t pin)
 {
 	if(digitalRead(pin))
 	{

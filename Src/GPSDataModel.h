@@ -13,7 +13,7 @@ typedef QueueHandle_t SemaphoreHandle_t;
 class GPSOdometer;
 class GPSOdometerData;
 
-const uint8 ODOMERTERS_COUNT = 3;
+const uint8_t ODOMERTERS_COUNT = 3;
 
 /**
  * GPS data model. Encapsulates all the knowledge about various GPS related data in the device
@@ -33,10 +33,10 @@ public:
 	int timeDifference() const;
 	
 	// Odometers
-	GPSOdometerData getOdometerData(uint8 idx) const;
-	void resumeOdometer(uint8 idx);
-	void pauseOdometer(uint8 idx);
-	void resetOdometer(uint8 idx);
+	GPSOdometerData getOdometerData(uint8_t idx) const;
+	void resumeOdometer(uint8_t idx);
+	void pauseOdometer(uint8_t idx);
+	void resetOdometer(uint8_t idx);
 	void resumeAllOdometers();
 	void pauseAllOdometers();
 	void resetAllOdometers();

@@ -18,8 +18,8 @@ class GPSOdometerData
 	NeoGPS::Location_t lastLocation;
 	
 	float odometer;
-	int16 startAltitude;
-	int16 curAltitude;
+	int16_t startAltitude;
+	int16_t curAltitude;
 	
 	clock_t startTime;				///! When odometer was turned on for the first time
 	clock_t sessionStartTime;		///! When odometer was resumed for the current session
@@ -36,7 +36,7 @@ public:
 	// getters
 	bool isActive() const {return active;}
 	float getOdometerValue() const {return odometer;}
-	int16 getAltitudeDifference() const {return (curAltitude - startAltitude) / 100.;} // altitude is in cm
+	int16_t getAltitudeDifference() const {return (curAltitude - startAltitude) / 100.;} // altitude is in cm
 	clock_t getTotalTime() const {return totalTime;}
 	clock_t getActiveTime() const {return activeTimeAccumulator + activeTime;}
 	float getMaxSpeed() const {return maxSpeed;}

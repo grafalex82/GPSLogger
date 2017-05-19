@@ -20,9 +20,9 @@ void SelectorScreen::drawScreen() const
 		drawCentered("Back", 26);
 }
 
-void SelectorScreen::drawCentered(const char * str, uint8 y) const
+void SelectorScreen::drawCentered(const char * str, uint8_t y) const
 {
-	uint8 x = display.width() / 2 - strlen(str) * 8 / 2;
+	uint8_t x = display.width() / 2 - strlen(str) * 8 / 2;
 	display.setCursor(x, y);
 	display.print(str);
 }

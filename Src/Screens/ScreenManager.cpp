@@ -24,8 +24,8 @@ Adafruit_SSD1306 display(-1);
 #endif
 
 // Timeouts
-const uint16 DISPLAY_CYCLE = 100 / portTICK_PERIOD_MS;
-const uint16 MESSAGE_BOX_DURATION = 1000 / portTICK_PERIOD_MS;
+const uint16_t DISPLAY_CYCLE = 100 / portTICK_PERIOD_MS;
+const uint16_t MESSAGE_BOX_DURATION = 1000 / portTICK_PERIOD_MS;
 
 // Stack of nested screens
 Screen * screenStack[5];

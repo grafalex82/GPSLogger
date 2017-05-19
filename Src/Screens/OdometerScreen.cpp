@@ -12,7 +12,7 @@
 
 extern Adafruit_SSD1306 display;
 
-OdometerScreen::OdometerScreen(uint8 idx)
+OdometerScreen::OdometerScreen(uint8_t idx)
 	: actionSelector(idx)
 {
 	odometerIdx = idx;
