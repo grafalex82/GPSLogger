@@ -41,19 +41,11 @@ ADD_DEFINITIONS(
 
 # Project wide include directories
 INCLUDE_DIRECTORIES(
-	# Arduino core
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/cores/maple
-
-	# Libmaple/HAL	
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/system/libmaple
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/system/libmaple/include
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/variants/generic_stm32f103c
-
 	#Arduino
-	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino
-	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/stm32
-	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/usb
-	${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL
+#	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino
+#	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/stm32
+#	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/usb
+#	${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL
 
 	# HAL and CMSIS
 	${GPSLOGGER_LIBS_DIR}/STM32generic/system/CMSIS
