@@ -12,7 +12,7 @@ SET(STM32_LINKER_SCRIPT ${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/lds
 LINK_DIRECTORIES(${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/)
 
 # Flash offset due to bootloader
-SET(VECT_TAB_ADDR "0x08002000")
+SET(VECT_TAB_ADDR "0x2000")
 SET(STM32_FLASH_ORIGIN "0x08002000")
 
 # Load the toolchain file that uses vars above

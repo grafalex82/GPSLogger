@@ -1,4 +1,5 @@
 #include <stm32f1xx_hal.h>
+#include <stm32f1xx_hal_gpio.h>
 #include <stm32f1xx_hal_rcc.h>
 #include <stm32f1xx_hal_rcc_ex.h>
 #include <stm32f1xx_hal_flash.h>
@@ -72,7 +73,7 @@ void SystemClock_Config(void)
 	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
 	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
 	RCC_OscInitStruct.LSEState = RCC_LSE_OFF;
-	RCC_OscInitStruct.HSIState = RCC_HSI_OFF;
+	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
 	RCC_OscInitStruct.HSICalibrationValue = 16;
 	RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -89,13 +90,13 @@ void SystemClock_Config(void)
 	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
 	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 	HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
-
+/*
 	// Set up USB clock
 	RCC_PeriphCLKInitTypeDef PeriphClkInit;
 	PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USB; 
 	PeriphClkInit.UsbClockSelection = RCC_USBCLKSOURCE_PLL_DIV1_5; 
 	HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit);
-
+*/
 	// Set up SysTTick to 1 ms
 	// TODO: Do we really need this? SysTick is initialized multiple times in HAL
 	HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
@@ -105,12 +106,50 @@ void SystemClock_Config(void)
 	HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
 }
 
+/**
+* @brief This function handles System tick timer.
+*/
+void SysTick_Handler(void)
+{
+  /* USER CODE BEGIN SysTick_IRQn 0 */
+
+  /* USER CODE END SysTick_IRQn 0 */
+  HAL_IncTick();
+  HAL_SYSTICK_IRQHandler();
+  /* USER CODE BEGIN SysTick_IRQn 1 */
+
+  /* USER CODE END SysTick_IRQn 1 */
+}
+
+
 int main(void)
 {
 	// Initialize board and HAL
         HAL_Init();
+	//NVIC_SetVectorTable(NVIC_VectTab_FLASH, 0x2000);
 	SystemClock_Config();
 	__HAL_RCC_AFIO_CLK_ENABLE();
 	
+	// enable clock to GPIOC
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+
+	// Initialize PC13 pin
+	GPIO_InitTypeDef ledPinInit;
+	ledPinInit.Pin = GPIO_PIN_13;
+	ledPinInit.Mode = GPIO_MODE_OUTPUT_PP;
+	ledPinInit.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOC, &ledPinInit);
+
+	// Main loop
+	for (;;) 
+	{
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+		HAL_Delay(1000);
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+		HAL_Delay(500);
+	}
+
 	return 0;
 }
