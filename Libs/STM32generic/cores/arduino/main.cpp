@@ -31,7 +31,6 @@ void initVariant() { }
 void setupUSB() __attribute__((weak));
 void setupUSB() { }
 
-
 int main(void)
 {
     //Used by FreeRTOS, see http://www.freertos.org/RTOS-Cortex-M3-M4.html
@@ -49,7 +48,13 @@ int main(void)
 	initVariant();
 
     #if defined(USB_BASE) || defined(USB_OTG_DEVICE_BASE)
-	USBDeviceFS.beginMenuSelection();
+
+    #ifdef MENU_USB_SERIAL
+        USBDeviceFS.beginCDC();
+    #elif MENU_USB_MASS_STORAGE
+        USBDeviceFS.beginMSC();
+    #endif
+
     #endif
 	
 	setup();
