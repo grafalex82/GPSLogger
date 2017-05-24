@@ -33,16 +33,29 @@ SET(SOURCE_FILES
 #	Screens/TimeZoneScreen.h
 
 #	8x12Font.cpp
+#	8x12Font.h
+	BoardInit.cpp
+	BoardInit.h
 #	Buttons.cpp
+#	Buttons.h
 #	FontTest.cpp
+#	FontTest.h
+#	FreeRTOSHelpers.h
 #	GPSDataModel.cpp
+#	GPSDataModel.h
 	GPSLogger.cpp
 #	GPSOdometer.cpp
+#	GPSOdometer.h
 #	GPSSatellitesData.cpp
+#	GPSSatellitesData.h
 #	GPSThread.cpp
+#	GPSThread.h
 #	IdleThread.cpp
+#	IdleThread.h
 #	TimeFont.cpp
+#	TimeFont.h
 #	Utils.cpp
+#	Utils.h
 )
 
 INCLUDE_DIRECTORIES(
