@@ -1,7 +1,4 @@
 #include <stm32f1xx_hal.h>
-#include <stm32f1xx_hal_rcc.h>
-#include <stm32f1xx_hal_gpio.h>
-
 //#include <MapleFreeRTOS821.h>
 
 //#include "Screens/ScreenManager.h"
@@ -9,12 +6,9 @@
 //#include "GPSThread.h"
 
 #include "BoardInit.h"
+#include "LEDDriver.h"
 
 //#include "Arduino.h"
-
-//extern "C" void _init(void)  {}
-//int __errno = 0;
-  
 
 /*
 void vLEDFlashTask(void *pvParameters) 
@@ -66,31 +60,22 @@ void loop()
 
 int main(void)
 {
-    InitBoard();
-	
-	// enable clock to GPIOC
-	__HAL_RCC_GPIOC_CLK_ENABLE();
-	__HAL_RCC_GPIOD_CLK_ENABLE();
+	InitBoard();
 
-	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
-
-	// Initialize PC13 pin
-	GPIO_InitTypeDef ledPinInit;
-	ledPinInit.Pin = GPIO_PIN_13;
-	ledPinInit.Mode = GPIO_MODE_OUTPUT_PP;
-	ledPinInit.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOC, &ledPinInit);
+	LEDDriver led;
 
 	// Main loop
-	for (;;) 
+	for (;;)
 	{
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-        HAL_Delay(1500);
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-        HAL_Delay(200);
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-        HAL_Delay(200);
-    }
+		led.toggle();
+		HAL_Delay(1500);
+		led.toggle();
+		HAL_Delay(200);
+		led.toggle();
+		HAL_Delay(200);
+		led.toggle();
+		HAL_Delay(200);
+	}
 
 	return 0;
 }
