@@ -4,14 +4,15 @@
 #include "Buttons.h"
 #include "GPSThread.h"
 
-#include <SD.h>
+//#include <SD.h>
 
-Sd2Card card;
+//Sd2Card card;
 //SdVolume volume;
 //SdFile root;
 
 void vLEDFlashTask(void *pvParameters) 
 {
+	/*
 	vTaskDelay(2000);
 
 	Serial.println("Initializing card...");
@@ -48,7 +49,7 @@ void vLEDFlashTask(void *pvParameters)
 	  default:
 		Serial.println("Unknown");
 	}
-/*
+
 	// Now we will try to open the 'volume'/'partition' - it should be FAT16 or FAT32
 	if (!volume.init(card)) {
 	  Serial.println("Could not find FAT16/FAT32 partition.\nMake sure you've formatted the card");
@@ -109,9 +110,9 @@ void vLEDFlashTask(void *pvParameters)
 	{
 		Serial.println("error opening datalog.txt");
 	}
-*/
 exit:
 
+*/
 
 
 	for (;;)
