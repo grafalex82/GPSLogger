@@ -23,17 +23,27 @@
 # FreeRTOS
 ###################
 
-#SET(FREERTOS_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32duino/libraries/FreeRTOS821)
-#
-#SET(FREERTOS_SRC
-#	${FREERTOS_SRC_DIR}/MapleFreeRTOS821.cpp
-#	${FREERTOS_SRC_DIR}/utility/heap_1.c
-#	${FREERTOS_SRC_DIR}/utility/list.c
-#	${FREERTOS_SRC_DIR}/utility/port.c
-#	${FREERTOS_SRC_DIR}/utility/queue.c
-#	${FREERTOS_SRC_DIR}/utility/tasks.c
-#)
-#ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
+SET(FREERTOS_SRC
+	FreeRTOS/FreeRTOS.h
+	FreeRTOS/heap_1.c
+	FreeRTOS/list.c
+	FreeRTOS/list.h
+	FreeRTOS/mpu_prototypes.h
+	FreeRTOS/mpu_wrappers.h
+	FreeRTOS/port.c
+	FreeRTOS/portable.h
+	FreeRTOS/portmacro.h
+	FreeRTOS/projdefs.h
+	FreeRTOS/queue.c
+	FreeRTOS/queue.h
+	FreeRTOS/semphr.h
+	FreeRTOS/StackMacros.h
+	FreeRTOS/task.h
+	FreeRTOS/tasks.c
+	FreeRTOS/timers.c
+	FreeRTOS/timers.h
+)
+ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 
 
 
