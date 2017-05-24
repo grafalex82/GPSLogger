@@ -259,7 +259,7 @@ void vPortSVCHandler( void )
 					"	orr r14, #0xd					\n"
 					"	bx r14							\n"
 					"									\n"
-					"	.align 4						\n"
+					"	.align 2						\n"
 					"pxCurrentTCBConst2: .word pxCurrentTCB				\n"
 				);
 }
@@ -426,7 +426,7 @@ void xPortPendSVHandler( void )
 	"	isb									\n"
 	"	bx r14								\n"
 	"										\n"
-	"	.align 4							\n"
+	"	.align 2							\n"
 	"pxCurrentTCBConst: .word pxCurrentTCB	\n"
 	::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY)
 	);
