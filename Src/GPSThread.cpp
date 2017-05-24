@@ -36,10 +36,15 @@ void vGPSTask(void *pvParameters)
 		while(Serial1.available())
 		{
 			int c = Serial1.read();
-			Serial.write(c);
+			//Serial.write(c);
 			gpsParser.handle(c);
 
-			dataFile.write(c);
+			Serial.print("Writing symbol: ");
+			Serial.write(c);
+			Serial.println();
+			size_t res = dataFile.write(c);
+			Serial.print("Result: ");
+			Serial.println(res);
 		}
 		
 		if(gpsParser.available())
