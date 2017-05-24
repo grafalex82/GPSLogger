@@ -23,16 +23,11 @@ File::File(const SdFile & f, const char *n)
 {
 	strncpy(_name, n, 12);
 	_name[12] = 0;
-
-	Serial.print("Created \"");
-	Serial.print(n);
-	Serial.println("");
 }
 
 File::File(void)
 {
 	_name[0] = 0;
-	Serial.print("Created empty file object");
 }
 
 // returns a pointer to the file name
@@ -136,8 +131,6 @@ void File::close() {
 	if (_file.isOpen())
 	{
 		_file.close();
-
-	Serial.print("Deleted ");
 	}
 }
 

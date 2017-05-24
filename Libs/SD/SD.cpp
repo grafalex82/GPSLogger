@@ -435,10 +435,6 @@ File SDClass::open(const char *filepath, uint8_t mode) {
 
    */
 
-Serial.print("Opening file: ");
-Serial.print(filepath);
-Serial.println("");
-
   int pathidx;
 
   // do the interative search
@@ -450,7 +446,6 @@ Serial.println("");
   if (! filepath[0])
   {
     // it was the directory itself!
- Serial.println("Exiting at 1");
 	return File(parentdir, "/");
   }
 
@@ -460,7 +455,6 @@ Serial.println("");
   // failed to open a subdir!
   if (!parentdir.isOpen())
   {
-Serial.println("Exiting at 2");
     return File();
 
   }
@@ -469,13 +463,11 @@ Serial.println("Exiting at 2");
   if (parentdir.isRoot()) {
     if ( ! file.open(root, filepath, mode)) {
       // failed to open the file :(
-Serial.println("Exiting at 3");
 	  return File();
     }
     // dont close the root!
   } else {
     if ( ! file.open(parentdir, filepath, mode)) {
-Serial.println("Exiting at 4");
 	  return File();
     }
     // close the parent
@@ -485,7 +477,6 @@ Serial.println("Exiting at 4");
   if (mode & (O_APPEND | O_WRITE)) 
     file.seekSet(file.fileSize());
 
-Serial.println("Exiting at 5");
   return File(file, filepath);
 }
 
