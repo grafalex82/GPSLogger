@@ -1,12 +1,15 @@
-#include <MapleFreeRTOS821.h>
-#include "Buttons.h"
-#include "Arduino.h"
+#include "FreeRTOS.h"
+#include "queue.h"
+#include "task.h"
+
+#include "ButtonsThread.h"
 
 // TODO: perhaps it would be reasonable to detect button press via pin change interrupt
 
 // Pins assignment
-const uint8_t SEL_BUTTON_PIN = PC14;
-const uint8_t OK_BUTTON_PIN = PC15;
+#define BUTTONS_PORT GPIOC
+const uint16_t SEL_BUTTON_PIN = GPIO_PIN_14;
+const uint16_t OK_BUTTON_PIN = GPIO_PIN_15;
 
 // Timing constants
 const uint32_t DEBOUNCE_DURATION = 1 / portTICK_PERIOD_MS;
@@ -18,19 +21,42 @@ const uint32_t ACTIVE_POLL_PERIOD = 10 / portTICK_PERIOD_MS;		// And very often 
 
 QueueHandle_t buttonsQueue;
 
-// Reading button state (perform debounce first)
-inline bool getButtonState(uint8_t pin)
+
+// Initialize buttons related stuff
+void initButtons()
 {
-	if(digitalRead(pin))
+	// enable clock to GPIOC
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+
+	// Initialize button pins
+	GPIO_InitTypeDef pinInit;
+	pinInit.Mode = GPIO_MODE_INPUT;
+	pinInit.Pull = GPIO_PULLDOWN;
+	pinInit.Speed = GPIO_SPEED_FREQ_LOW;
+	pinInit.Pin = SEL_BUTTON_PIN;
+	HAL_GPIO_Init(BUTTONS_PORT, &pinInit);
+	pinInit.Pin = OK_BUTTON_PIN;
+	HAL_GPIO_Init(BUTTONS_PORT, &pinInit);
+
+	// Initialize buttons queue
+	buttonsQueue = xQueueCreate(3, sizeof(ButtonMessage)); // 3 clicks more than enough
+}
+
+
+// Reading button state (perform debounce first)
+inline bool getButtonState(uint16_t pin)
+{
+	if(HAL_GPIO_ReadPin(BUTTONS_PORT, pin))
 	{
 		// dobouncing
 		vTaskDelay(DEBOUNCE_DURATION);
-		if(digitalRead(pin))
+		if(HAL_GPIO_ReadPin(BUTTONS_PORT, pin))
 			return true;
 	}
 	
 	return false;
 }
+
 
 /// Return ID of the pressed button (perform debounce first)
 ButtonID getPressedButtonID() 
@@ -44,19 +70,9 @@ ButtonID getPressedButtonID()
 	return NO_BUTTON;
 }
 
-// Initialize buttons related stuff
-void initButtons()
-{
-	// Set up button pins
-	pinMode(SEL_BUTTON_PIN, INPUT_PULLDOWN);
-	pinMode(OK_BUTTON_PIN, INPUT_PULLDOWN);
-	
-	// Initialize buttons queue
-	buttonsQueue = xQueueCreate(3, sizeof(ButtonMessage)); // 3 clicks more than enough
-}
 
 // Buttons polling thread function
-void vButtonsTask(void *pvParameters)
+void vButtonsThread(void *pvParameters)
 {
 	for (;;)
 	{
@@ -90,4 +106,10 @@ void vButtonsTask(void *pvParameters)
 		// TODO: Use different polling periods depending on global system state (off/idle/active)
 		vTaskDelay(ACTIVE_POLL_PERIOD);
 	}
+}
+
+
+bool waitForButtonMessage(ButtonMessage * msg, TickType_t xTicksToWait)
+{
+	return xQueueReceive(buttonsQueue, msg, xTicksToWait);
 }

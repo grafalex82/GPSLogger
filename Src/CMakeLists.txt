@@ -36,8 +36,8 @@ SET(SOURCE_FILES
 #	8x12Font.h
 	BoardInit.cpp
 	BoardInit.h
-#	Buttons.cpp
-#	Buttons.h
+	ButtonsThread.cpp
+	ButtonsThread.h
 #	FontTest.cpp
 #	FontTest.h
 #	FreeRTOSHelpers.h

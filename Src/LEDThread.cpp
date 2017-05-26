@@ -21,7 +21,6 @@ public:
 	{
 		// enable clock to GPIOC
 		__HAL_RCC_GPIOC_CLK_ENABLE();
-		__HAL_RCC_GPIOD_CLK_ENABLE();
 
 		// Turn off the LED by default
 		HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);
