@@ -52,8 +52,8 @@ SET(SOURCE_FILES
 #	GPSThread.h
 #	IdleThread.cpp
 #	IdleThread.h
-	LEDDriver.cpp
-	LEDDriver.h
+	LEDThread.cpp
+	LEDThread.h
 #	TimeFont.cpp
 #	TimeFont.h
 #	Utils.cpp
