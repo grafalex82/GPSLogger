@@ -968,25 +968,37 @@ uint8_t SdFile::sync(void) {
   // only allow open files and directories
   if (!isOpen()) return false;
 
+Serial.println("sync #1");
   if (flags_ & F_FILE_DIR_DIRTY) {
     dir_t* d = cacheDirEntry(SdVolume::CACHE_FOR_WRITE);
+Serial.println("sync #2");
     if (!d) return false;
+Serial.println("sync #3");
 
     // do not set filesize for dir files
     if (!isDir()) d->fileSize = fileSize_;
+Serial.println("sync #4");
 
     // update first cluster fields
     d->firstClusterLow = firstCluster_ & 0XFFFF;
     d->firstClusterHigh = firstCluster_ >> 16;
+
+Serial.println("sync #5");
 
     // set modify time if user supplied a callback date/time function
     if (dateTime_) {
       dateTime_(&d->lastWriteDate, &d->lastWriteTime);
       d->lastAccessDate = d->lastWriteDate;
     }
+
+Serial.println("sync #6");
+
     // clear directory dirty
     flags_ &= ~F_FILE_DIR_DIRTY;
   }
+
+Serial.println("sync #7");
+
   return SdVolume::cacheFlush();
 }
 //------------------------------------------------------------------------------
