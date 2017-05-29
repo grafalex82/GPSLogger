@@ -177,6 +177,35 @@ ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 #)
 
 
+###################
+# USB Core and classes
+###################
+
+SET(USB_SRC
+	USB/Core/usbd_conf.c
+	USB/Core/usbd_conf.h
+	USB/Core/usbd_core.c
+	USB/Core/usbd_core.h
+	USB/Core/usbd_ctlreq.c
+	USB/Core/usbd_ctlreq.h
+	USB/Core/usbd_def.h
+	USB/Core/usbd_desc.c
+	USB/Core/usbd_desc.h
+	USB/Core/usbd_ioreq.c
+	USB/Core/usbd_ioreq.h
+
+	USB/CDC/usbd_cdc.c
+	USB/CDC/usbd_cdc.h
+	USB/CDC/usbd_cdc_if.c
+	USB/CDC/usbd_cdc_if.h
+)
+ADD_LIBRARY(USB STATIC ${USB_SRC})
+
+TARGET_INCLUDE_DIRECTORIES(USB PRIVATE
+	USB/Core
+	USB/CDC
+)
+
 
 
 ###################
@@ -217,8 +246,8 @@ SET(HAL_SRC
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_nand.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_nor.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_pccard.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_pcd.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_pcd_ex.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_pcd.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_pcd_ex.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_pwr.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_rcc.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_rcc_ex.c
@@ -236,7 +265,7 @@ SET(HAL_SRC
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_wwdg.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_fsmc.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_sdmmc.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_usb.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_usb.c
 	STM32generic/system/STM32F1/HAL_Src/system_stm32f1xx.c
 )
 
