@@ -56,11 +56,6 @@ void initUSB()
 
 }
 
-extern "C" void USBSerial_Rx_Handler(uint8_t *data, uint16_t len)
-{
-	CDC_Transmit_FS(data, len);
-}
-
 extern PCD_HandleTypeDef hpcd_USB_FS;
 
 extern "C" void USB_LP_CAN1_RX0_IRQHandler(void) {

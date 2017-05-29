@@ -7,7 +7,7 @@
 #include <FreeRTOS.h>
 #include <task.h>
 
-#include "usbd_cdc_if.h"
+#include "SerialUSB.h"
 
 #define LED_PORT GPIOC
 const uint16_t LED_PIN = GPIO_PIN_13;
@@ -64,6 +64,6 @@ void vLEDThread(void *pvParameters)
 		vTaskDelay(100);
 		led.turnOff();
 
-		CDC_Transmit_FS((uint8_t*)"Ping\n", 5);
+		SerialUSB.println("Ping");
 	}
 }

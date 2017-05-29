@@ -166,8 +166,11 @@ ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 #ADD_LIBRARY(STM32generic STATIC ${STM32GENERIC_SRC})
 
 #TARGET_INCLUDE_DIRECTORIES(STM32generic PRIVATE
+#	STM32generic/cores/arduino
+#	STM32generic/cores/arduino/stm32
+#	STM32generic/cores/arduino/usb
 #	STM32generic/system/STM32F1/stm32_chip
-##	STM32duino/system/libmaple/usb/usb_lib
+#	STM32generic/variants/BLUEPILL
 #)
 
 #TARGET_COMPILE_DEFINITIONS(STM32generic PRIVATE 
@@ -175,6 +178,37 @@ ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 ##	-DGENERIC_BOOTLOADER 
 ##	-DBOARD_maple
 #)
+
+
+
+###################
+# Mini Arduino - a copy of several stm32generic classes to implement needed part of arduino API
+###################
+
+SET(MINIARDUINO_SRC
+	MiniArduino/itoa.c
+	MiniArduino/itoa.h
+	MiniArduino/Print.cpp
+	MiniArduino/Print.h
+	MiniArduino/Printable.h
+	MiniArduino/SerialUSB.cpp
+	MiniArduino/SerialUSB.h
+	MiniArduino/stm32_clock.h
+	MiniArduino/Stream.cpp
+	MiniArduino/Stream.h
+	MiniArduino/WString.cpp
+	MiniArduino/WString.h
+
+	MiniArduino/avr/pgmspace.h
+)
+ADD_LIBRARY(MiniArduino STATIC ${MINIARDUINO_SRC})
+
+TARGET_INCLUDE_DIRECTORIES(MiniArduino PRIVATE
+	MiniArduino
+	USB/Core
+	USB/CDC
+)
+
 
 
 ###################
@@ -276,8 +310,5 @@ TARGET_INCLUDE_DIRECTORIES(HAL PRIVATE
 )
 
 TARGET_COMPILE_DEFINITIONS(HAL PRIVATE 
-#	-DMENU_USB_SERIAL
 	-DVECT_TAB_OFFSET=${VECT_TAB_ADDR} 
-##	-DGENERIC_BOOTLOADER 
-##	-DBOARD_maple
 )
