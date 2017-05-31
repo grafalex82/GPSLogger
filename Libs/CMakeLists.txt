@@ -102,11 +102,11 @@ SET(STM32GENERIC_SRC
 ##	STM32generic/cores/arduino/new.cpp
 ##	STM32generic/cores/arduino/new.h
 #	STM32generic/cores/arduino/pins_arduino.h
-#	STM32generic/cores/arduino/Print.cpp
-#	STM32generic/cores/arduino/Print.h
-#	STM32generic/cores/arduino/Printable.h
-#	STM32generic/cores/arduino/Stream.cpp
-#	STM32generic/cores/arduino/Stream.h
+	STM32generic/cores/arduino/Print.cpp
+	STM32generic/cores/arduino/Print.h
+	STM32generic/cores/arduino/Printable.h
+	STM32generic/cores/arduino/Stream.cpp
+	STM32generic/cores/arduino/Stream.h
 #	STM32generic/cores/arduino/syscalls.c
 #	STM32generic/cores/arduino/syscalls.h
 ##	STM32generic/cores/arduino/wiring_private.h
@@ -116,8 +116,8 @@ SET(STM32GENERIC_SRC
 
 #	STM32generic/cores/arduino/stm32/SerialUART.cpp
 #	STM32generic/cores/arduino/stm32/SerialUART.h
-#	STM32generic/cores/arduino/stm32/SerialUSB.cpp
-#	STM32generic/cores/arduino/stm32/SerialUSB.h
+	STM32generic/cores/arduino/stm32/SerialUSB.cpp
+	STM32generic/cores/arduino/stm32/SerialUSB.h
 ##	STM32generic/cores/arduino/stm32/stm32_ADC.c
 ##	STM32generic/cores/arduino/stm32/stm32_build_defines.h
 #	STM32generic/cores/arduino/stm32/stm32_clock.h

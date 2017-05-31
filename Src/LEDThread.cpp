@@ -64,6 +64,6 @@ void vLEDThread(void *pvParameters)
 		vTaskDelay(100);
 		led.turnOff();
 
-		SerialUSB.println("Ping");
+		SerialUSB.println("Test");
 	}
 }
