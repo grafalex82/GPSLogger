@@ -90,7 +90,7 @@ class SerialUSBClass : public Stream{
     };
     ring_buffer rx_buffer;
     //ring_buffer tx_buffer;
-    GPIO_InitTypeDef GPIO_InitStruct;
+    //GPIO_InitTypeDef GPIO_InitStruct;
 };
 
 extern SerialUSBClass SerialUSB;
