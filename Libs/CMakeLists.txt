@@ -122,17 +122,17 @@ SET(STM32GENERIC_SRC
 ##	STM32generic/cores/arduino/stm32/stm32_build_defines.h
 #	STM32generic/cores/arduino/stm32/stm32_clock.h
 ##	STM32generic/cores/arduino/stm32/stm32_def.h
-#	STM32generic/cores/arduino/stm32/stm32_gpio.c
-#	STM32generic/cores/arduino/stm32/stm32_gpio.h
+	STM32generic/cores/arduino/stm32/stm32_gpio.c
+	STM32generic/cores/arduino/stm32/stm32_gpio.h
 #	STM32generic/cores/arduino/stm32/stm32_gpio_af.c
 #	STM32generic/cores/arduino/stm32/stm32_gpio_af.h
 ##	STM32generic/cores/arduino/stm32/stm32_gpio_af_F0F2F3F4F7L0L1L4.c
 #	STM32generic/cores/arduino/stm32/stm32_gpio_af_F1.c
 #	STM32generic/cores/arduino/stm32/stm32_gpio_exti.c
 #	STM32generic/cores/arduino/stm32/stm32_init.c
-#	STM32generic/cores/arduino/stm32/stm32_PWM.c
-#	STM32generic/cores/arduino/stm32/USBDevice.cpp
-#	STM32generic/cores/arduino/stm32/USBDevice.h
+	STM32generic/cores/arduino/stm32/stm32_PWM.c
+	STM32generic/cores/arduino/stm32/USBDevice.cpp
+	STM32generic/cores/arduino/stm32/USBDevice.h
  
 #	STM32generic/cores/arduino/usb/usb_device.c
 #	STM32generic/cores/arduino/usb/usb_device.h
@@ -159,8 +159,8 @@ SET(STM32GENERIC_SRC
 
 
 #	STM32generic/variants/BLUEPILL/systemclock_config.c
-#	STM32generic/variants/BLUEPILL/variant.cpp
-#	STM32generic/variants/BLUEPILL/variant.h
+	STM32generic/variants/BLUEPILL/variant.cpp
+	STM32generic/variants/BLUEPILL/variant.h
 )
 
 ADD_LIBRARY(STM32generic STATIC ${STM32GENERIC_SRC})
@@ -224,8 +224,8 @@ SET(HAL_SRC
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi_ex.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_sram.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_tim.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_tim_ex.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_tim.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_tim_ex.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_uart.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_usart.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_wwdg.c
