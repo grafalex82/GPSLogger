@@ -48,6 +48,12 @@
 PCD_HandleTypeDef hpcd_USB_FS;
 void Error_Handler(void);
 
+// Temporary put here
+void Error_Handler(void)
+{
+
+}
+
 /* USER CODE BEGIN 0 */
 /* USER CODE END 0 */
 

@@ -92,7 +92,7 @@ ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 # STM32 generic - HAL based Arduino API implementation
 ###################
 
-#SET(STM32GENERIC_SRC
+SET(STM32GENERIC_SRC
 #	STM32generic/cores/arduino/abi.cpp
 #	STM32generic/cores/arduino/Arduino.h
 ##	STM32generic/cores/arduino/hooks.c
@@ -134,78 +134,44 @@ ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 #	STM32generic/cores/arduino/stm32/USBDevice.cpp
 #	STM32generic/cores/arduino/stm32/USBDevice.h
  
-##	STM32generic/cores/arduino/usb/usb_device.c
-##	STM32generic/cores/arduino/usb/usb_device.h
-##	STM32generic/cores/arduino/usb/usbd_conf.h
-#	STM32generic/cores/arduino/usb/usbd_conf_F1.c
-##	STM32generic/cores/arduino/usb/usbd_conf_F4.c
-##	STM32generic/cores/arduino/usb/usbd_conf_F7.c
-##	STM32generic/cores/arduino/usb/usbd_conf_L0.c
-##	STM32generic/cores/arduino/usb/usbd_conf_L4.c
-#	STM32generic/cores/arduino/usb/usbd_core.c
-#	STM32generic/cores/arduino/usb/usbd_core.h
-#	STM32generic/cores/arduino/usb/usbd_ctlreq.c
-#	STM32generic/cores/arduino/usb/usbd_ctlreq.h
-##	STM32generic/cores/arduino/usb/usbd_def.h
-#	STM32generic/cores/arduino/usb/usbd_desc.c
-#	STM32generic/cores/arduino/usb/usbd_desc.h
-#	STM32generic/cores/arduino/usb/usbd_ioreq.c
-#	STM32generic/cores/arduino/usb/usbd_ioreq.h
+#	STM32generic/cores/arduino/usb/usb_device.c
+#	STM32generic/cores/arduino/usb/usb_device.h
+	STM32generic/cores/arduino/usb/usbd_conf.h
+	STM32generic/cores/arduino/usb/usbd_conf_F1.c
+#	STM32generic/cores/arduino/usb/usbd_conf_F4.c
+#	STM32generic/cores/arduino/usb/usbd_conf_F7.c
+#	STM32generic/cores/arduino/usb/usbd_conf_L0.c
+#	STM32generic/cores/arduino/usb/usbd_conf_L4.c
+	STM32generic/cores/arduino/usb/usbd_core.c
+	STM32generic/cores/arduino/usb/usbd_core.h
+	STM32generic/cores/arduino/usb/usbd_ctlreq.c
+	STM32generic/cores/arduino/usb/usbd_ctlreq.h
+	STM32generic/cores/arduino/usb/usbd_def.h
+	STM32generic/cores/arduino/usb/usbd_desc.c
+	STM32generic/cores/arduino/usb/usbd_desc.h
+	STM32generic/cores/arduino/usb/usbd_ioreq.c
+	STM32generic/cores/arduino/usb/usbd_ioreq.h
  
-#	STM32generic/cores/arduino/usb/cdc/usbd_cdc.c
-#	STM32generic/cores/arduino/usb/cdc/usbd_cdc.h
-#	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.c
-#	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.h
+	STM32generic/cores/arduino/usb/cdc/usbd_cdc.c
+	STM32generic/cores/arduino/usb/cdc/usbd_cdc.h
+	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.c
+	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.h
 
 
 #	STM32generic/variants/BLUEPILL/systemclock_config.c
 #	STM32generic/variants/BLUEPILL/variant.cpp
 #	STM32generic/variants/BLUEPILL/variant.h
-#)
+)
 
-#ADD_LIBRARY(STM32generic STATIC ${STM32GENERIC_SRC})
+ADD_LIBRARY(STM32generic STATIC ${STM32GENERIC_SRC})
 
-#TARGET_INCLUDE_DIRECTORIES(STM32generic PRIVATE
+TARGET_INCLUDE_DIRECTORIES(STM32generic PRIVATE
 #	STM32generic/system/STM32F1/stm32_chip
-##	STM32duino/system/libmaple/usb/usb_lib
-#)
-
-#TARGET_COMPILE_DEFINITIONS(STM32generic PRIVATE 
-#	-DMENU_USB_SERIAL
-##	-DGENERIC_BOOTLOADER 
-##	-DBOARD_maple
-#)
-
-
-###################
-# USB Core and classes
-###################
-
-SET(USB_SRC
-	USB/Core/usbd_conf.c
-	USB/Core/usbd_conf.h
-	USB/Core/usbd_core.c
-	USB/Core/usbd_core.h
-	USB/Core/usbd_ctlreq.c
-	USB/Core/usbd_ctlreq.h
-	USB/Core/usbd_def.h
-	USB/Core/usbd_desc.c
-	USB/Core/usbd_desc.h
-	USB/Core/usbd_ioreq.c
-	USB/Core/usbd_ioreq.h
-
-	USB/CDC/usbd_cdc.c
-	USB/CDC/usbd_cdc.h
-	USB/CDC/usbd_cdc_if.c
-	USB/CDC/usbd_cdc_if.h
-)
-ADD_LIBRARY(USB STATIC ${USB_SRC})
-
-TARGET_INCLUDE_DIRECTORIES(USB PRIVATE
-	USB/Core
-	USB/CDC
 )
 
+TARGET_COMPILE_DEFINITIONS(STM32generic PRIVATE 
+	-DMENU_USB_SERIAL
+)
 
 
 ###################
