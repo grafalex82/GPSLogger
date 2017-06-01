@@ -46,46 +46,10 @@ SerialUART::SerialUART(USART_TypeDef *instance) {
  */
 
 void SerialUART::begin(const uint32_t baud) {
-  if (txBuffer == NULL) {
-	static uint8_t tx[BUFFER_SIZE];
-	static uint8_t static_tx_used = 0;
-
-	if (!static_tx_used) {
-	  txBuffer = (uint8_t*)tx;
-		static_tx_used = true;
-	} else {
-	  txBuffer = (uint8_t*)malloc(BUFFER_SIZE);
-	}
-  }
-
-  if (rxBuffer == NULL) {
-  	static uint8_t rx[BUFFER_SIZE];
-  	static uint8_t static_rx_used = 0;
-
-  	if (!static_rx_used) {
-  	  rxBuffer = (uint8_t*)rx;
-  		static_rx_used = true;
-  	} else {
-  	  rxBuffer = (uint8_t*)malloc(BUFFER_SIZE);
-  	}
-  }
-
-  if (handle == NULL) {
-  	static UART_HandleTypeDef h = {};
-  	static uint8_t static_handle_used = 0;
-
-  	if (!static_handle_used) {
-  		handle = &h;
-  	static_handle_used = true;
-  	} else {
-  		handle = (UART_HandleTypeDef*)malloc(sizeof(UART_HandleTypeDef));
-  	}
-  }
-
-  handle->Instance = instance;
+  handle.Instance = instance;
   
   #ifdef USART1
-  if (handle->Instance == USART1) {
+  if (handle.Instance == USART1) {
     __HAL_RCC_USART1_CLK_ENABLE();
     HAL_NVIC_SetPriority(USART1_IRQn, 0, 0); 
     HAL_NVIC_EnableIRQ(USART1_IRQn); 
@@ -93,7 +57,7 @@ void SerialUART::begin(const uint32_t baud) {
   #endif
   
   #ifdef USART2
-  if (handle->Instance == USART2) {
+  if (handle.Instance == USART2) {
     __HAL_RCC_USART2_CLK_ENABLE();
     HAL_NVIC_SetPriority(USART2_IRQn, 0, 0); 
     HAL_NVIC_EnableIRQ(USART2_IRQn); 
@@ -101,7 +65,7 @@ void SerialUART::begin(const uint32_t baud) {
   #endif
   
   #ifdef USART3
-  if (handle->Instance == USART3) {
+  if (handle.Instance == USART3) {
     __HAL_RCC_USART3_CLK_ENABLE();
     HAL_NVIC_SetPriority(USART3_IRQn, 0, 0); 
     HAL_NVIC_EnableIRQ(USART3_IRQn); 
@@ -109,7 +73,7 @@ void SerialUART::begin(const uint32_t baud) {
   #endif
   
   #ifdef USART4
-  if (handle->Instance == USART4) {
+  if (handle.Instance == USART4) {
     __HAL_RCC_USART4_CLK_ENABLE();
     HAL_NVIC_SetPriority(USART4_IRQn, 0, 0); 
     HAL_NVIC_EnableIRQ(USART4_IRQn); 
@@ -118,17 +82,16 @@ void SerialUART::begin(const uint32_t baud) {
   
   stm32AfUARTInit(instance, rxPort, rxPin, txPort, txPin);
   
-  handle->Init.BaudRate = baud; 
-  handle->Init.WordLength = UART_WORDLENGTH_8B;
-  handle->Init.StopBits = UART_STOPBITS_1; 
-  handle->Init.Parity = UART_PARITY_NONE; 
-  handle->Init.Mode = UART_MODE_TX_RX; 
-  handle->Init.HwFlowCtl = UART_HWCONTROL_NONE; 
-  handle->Init.OverSampling = UART_OVERSAMPLING_16; 
-  HAL_UART_Init(handle);
+  handle.Init.BaudRate = baud;
+  handle.Init.WordLength = UART_WORDLENGTH_8B;
+  handle.Init.StopBits = UART_STOPBITS_1;
+  handle.Init.Parity = UART_PARITY_NONE;
+  handle.Init.Mode = UART_MODE_TX_RX;
+  handle.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  handle.Init.OverSampling = UART_OVERSAMPLING_16;
+  HAL_UART_Init(&handle);
 
-  HAL_UART_Receive_IT(handle, &receive_buffer, 1);
-    
+  HAL_UART_Receive_IT(&handle, &receive_buffer, 1);
 }
 
 int SerialUART::available() {
@@ -161,7 +124,7 @@ size_t SerialUART::write(const uint8_t c) {
   txBuffer[txEnd % BUFFER_SIZE] = c;
   txEnd++;
   if (txEnd % BUFFER_SIZE == (txStart + 1) % BUFFER_SIZE) {
-    HAL_UART_Transmit_IT(handle, &txBuffer[txStart % BUFFER_SIZE], 1);
+	HAL_UART_Transmit_IT(&handle, &txBuffer[txStart % BUFFER_SIZE], 1);
   }
   return 1;
 }
@@ -183,7 +146,7 @@ SerialUART *interruptUART;
 #ifdef USART1
 extern "C" void USART1_IRQHandler(void) {
   interruptUART = &SerialUART1;
-  HAL_UART_IRQHandler(interruptUART->handle);
+  HAL_UART_IRQHandler(&interruptUART->handle);
 }
 SerialUART SerialUART1(USART1);
 #endif
@@ -191,7 +154,7 @@ SerialUART SerialUART1(USART1);
 #ifdef USART2
 extern "C" void USART2_IRQHandler(void) {
   interruptUART = &SerialUART2;
-  HAL_UART_IRQHandler(interruptUART->handle);
+  HAL_UART_IRQHandler(&interruptUART->handle);
 }
 SerialUART SerialUART2(USART2);
 #endif
@@ -199,7 +162,7 @@ SerialUART SerialUART2(USART2);
 #ifdef USART3
 extern "C" void USART3_IRQHandler(void) {
   interruptUART = &SerialUART3;
-  HAL_UART_IRQHandler(interruptUART->handle);
+  HAL_UART_IRQHandler(&interruptUART->handle);
 }
 SerialUART SerialUART3(USART3);
 #endif
@@ -207,7 +170,7 @@ SerialUART SerialUART3(USART3);
 #ifdef USART4
 extern "C" void USART4_IRQHandler(void) {
   interruptUART = &SerialUART4;
-  HAL_UART_IRQHandler(interruptUART->handle);
+  HAL_UART_IRQHandler(&interruptUART->handle);
 }
 SerialUART SerialUART4(USART4);
 #endif
@@ -216,7 +179,7 @@ SerialUART SerialUART4(USART4);
 extern "C" void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
   interruptUART->txStart++;
   if (interruptUART->txStart != interruptUART->txEnd) {
-    HAL_UART_Transmit_IT(interruptUART->handle, &interruptUART->txBuffer[interruptUART->txStart % BUFFER_SIZE], 1);
+	HAL_UART_Transmit_IT(&interruptUART->handle, &interruptUART->txBuffer[interruptUART->txStart % BUFFER_SIZE], 1);
   }
 }
 
@@ -224,6 +187,6 @@ extern "C" void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
 extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
   interruptUART->rxBuffer[interruptUART->rxEnd % BUFFER_SIZE] = interruptUART->receive_buffer;
   interruptUART->rxEnd++;
-  HAL_UART_Receive_IT(interruptUART->handle, &interruptUART->receive_buffer, 1);
+  HAL_UART_Receive_IT(&interruptUART->handle, &interruptUART->receive_buffer, 1);
 }
 

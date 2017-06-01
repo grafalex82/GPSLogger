@@ -46,15 +46,15 @@ class SerialUART : public Stream  {
     void stm32SetTX(uint8_t tx);
     
     USART_TypeDef *instance = NULL;
-    UART_HandleTypeDef *handle = NULL;
+	UART_HandleTypeDef handle;
     
     uint8_t receive_buffer = 0;
 
-    uint8_t *txBuffer = NULL;
+	uint8_t txBuffer[BUFFER_SIZE];
     volatile uint8_t txStart = 0;
     volatile uint8_t txEnd = 0;
 
-    uint8_t *rxBuffer = NULL;
+	uint8_t rxBuffer[BUFFER_SIZE];
     volatile uint8_t rxStart = 0;
     volatile uint8_t rxEnd = 0;
 
