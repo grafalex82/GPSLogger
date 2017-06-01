@@ -6,7 +6,7 @@
 #include "USBDevice.h"
 
 //#include "Screens/ScreenManager.h"
-//#include "GPSThread.h"
+#include "GPSThread.h"
 
 #include "BoardInit.h"
 #include "LEDThread.h"
@@ -22,7 +22,7 @@ int main(void)
 	//initDisplay();
 	initButtons();
 	//initScreens();
-	//initGPS();
+	initGPS();
 
 	USBDeviceFS.reenumerate();
 	USBDeviceFS.beginCDC();
@@ -32,7 +32,7 @@ int main(void)
 	xTaskCreate(vLEDThread, "LED Thread",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	//xTaskCreate(vDisplayTask, "Display Task", 1024, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
-	//xTaskCreate(vGPSTask, "GPS Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, NULL);
+	xTaskCreate(vGPSTask, "GPS Task", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 3, NULL);
 
 	// Run scheduler and all the threads
 	vTaskStartScheduler();

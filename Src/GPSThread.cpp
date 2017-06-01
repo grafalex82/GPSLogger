@@ -1,13 +1,15 @@
 #include <SerialUART.h>
-#include <MapleFreeRTOS821.h>
-#include <NMEAGPS.h>
-#include "Streamers.h"
+#include <SerialUSB.h>
+#include <FreeRTOS.h>
+#include <task.h>
+//#include <NMEAGPS.h>
+//#include "Streamers.h"
 
-#include "GPSThread.h"
-#include "GPSDataModel.h"
+//#include "GPSThread.h"
+//#include "GPSDataModel.h"
 
 // A GPS parser
-NMEAGPS gpsParser;
+//NMEAGPS gpsParser;
 
 void initGPS()
 {
@@ -22,15 +24,15 @@ void vGPSTask(void *pvParameters)
 		while(SerialUART1.available())
 		{
 			int c = SerialUART1.read();
-//			Serial.write(c);
-			gpsParser.handle(c);
+			SerialUSB.write(c);
+//			gpsParser.handle(c);
 		}
 		
-		if(gpsParser.available())
-		{
-			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
-			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
-		}			
+//		if(gpsParser.available())
+//		{
+//			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
+//			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
+//		}
 			
 		vTaskDelay(10);
 	}

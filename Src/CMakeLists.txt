@@ -48,8 +48,8 @@ SET(SOURCE_FILES
 #	GPSOdometer.h
 #	GPSSatellitesData.cpp
 #	GPSSatellitesData.h
-#	GPSThread.cpp
-#	GPSThread.h
+	GPSThread.cpp
+	GPSThread.h
 #	IdleThread.cpp
 #	IdleThread.h
 	LEDThread.cpp
