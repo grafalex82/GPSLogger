@@ -1,7 +1,4 @@
-#include "FreeRTOS.h"
-#include "queue.h"
-#include "task.h"
-
+#include <Arduino_FreeRTOS.h>
 #include "ButtonsThread.h"
 
 // TODO: perhaps it would be reasonable to detect button press via pin change interrupt

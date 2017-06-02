@@ -1,6 +1,6 @@
 #include <stddef.h> //for NULL
 
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306_STM32.h>

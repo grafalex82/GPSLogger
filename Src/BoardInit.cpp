@@ -7,8 +7,7 @@
 
 #include "BoardInit.h"
 
-#include "FreeRTOS.h"
-#include "task.h"
+#include <Arduino_FreeRTOS.h>
 
 // Libc requires _init() to perform some initialization before global constructors run.
 // I would love if this symbol is defined as weak in newlib-nano (libc), but it is not.

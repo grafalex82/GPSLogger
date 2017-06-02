@@ -1,4 +1,4 @@
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 #include <NMEAGPS.h>
 
 #include "FreeRTOSHelpers.h"

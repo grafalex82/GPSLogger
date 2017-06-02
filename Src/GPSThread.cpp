@@ -1,7 +1,6 @@
 #include <SerialUART.h>
 #include <SerialUSB.h>
-#include <FreeRTOS.h>
-#include <task.h>
+#include <Arduino_FreeRTOS.h>
 #include <NMEAGPS.h>
 #include "Streamers.h"
 

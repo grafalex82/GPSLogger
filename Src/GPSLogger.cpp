@@ -1,7 +1,4 @@
-
-// FreeRTOS
-#include <FreeRTOS.h>
-#include "task.h"
+#include <Arduino_FreeRTOS.h>
 
 #include "USBDevice.h"
 

@@ -1,5 +1,5 @@
 #include <Adafruit_SSD1306_STM32.h>
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 #include <NMEAGPS.h>
 
 #include "SatellitesScreen.h"
