@@ -66,7 +66,7 @@ INCLUDE_DIRECTORIES(
 #	${GPSLOGGER_LIBS_DIR}/NeoGPS
 #	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/Adafruit_SSD1306
 #	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
-	${GPSLOGGER_LIBS_DIR}/FreeRTOS
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/FreeRTOS/src
 )
 
 
