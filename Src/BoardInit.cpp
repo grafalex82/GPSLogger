@@ -86,11 +86,6 @@ void vApplicationStackOverflowHook(xTaskHandle *pxTask,
 		;
 }
 
-// TODO: temporary living here. Will be removed when IdleThread is integrated back
-extern "C" void vApplicationIdleHook( void )
-{
-}
-
 extern "C" void vApplicationMallocFailedHook( void )
 {
 	/* vApplicationMallocFailedHook() will only be called if

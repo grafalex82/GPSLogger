@@ -50,8 +50,8 @@ SET(SOURCE_FILES
 #	GPSSatellitesData.h
 	GPSThread.cpp
 	GPSThread.h
-#	IdleThread.cpp
-#	IdleThread.h
+	IdleThread.cpp
+	IdleThread.h
 	LEDThread.cpp
 	LEDThread.h
 #	TimeFont.cpp
