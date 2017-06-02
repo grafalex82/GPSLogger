@@ -2,14 +2,14 @@
 #include <SerialUSB.h>
 #include <FreeRTOS.h>
 #include <task.h>
-//#include <NMEAGPS.h>
-//#include "Streamers.h"
+#include <NMEAGPS.h>
+#include "Streamers.h"
 
-//#include "GPSThread.h"
+#include "GPSThread.h"
 //#include "GPSDataModel.h"
 
 // A GPS parser
-//NMEAGPS gpsParser;
+NMEAGPS gpsParser;
 
 void initGPS()
 {
@@ -25,14 +25,14 @@ void vGPSTask(void *pvParameters)
 		{
 			int c = SerialUART1.read();
 			SerialUSB.write(c);
-//			gpsParser.handle(c);
+			gpsParser.handle(c);
 		}
 		
-//		if(gpsParser.available())
-//		{
+		if(gpsParser.available())
+		{
 //			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
 //			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
-//		}
+		}
 			
 		vTaskDelay(10);
 	}

@@ -8,14 +8,14 @@
 # NeoGPS
 ###################
 
-#SET(NEOGPS_SRC
-#	NeoGPS/DMS.cpp
-#	NeoGPS/GPSTime.cpp
-#	NeoGPS/Location.cpp
-#	NeoGPS/NeoTime.cpp
-#	NeoGPS/NMEAGPS.cpp
-#)
-#ADD_LIBRARY(NeoGPS STATIC ${NEOGPS_SRC})
+SET(NEOGPS_SRC
+	NeoGPS/DMS.cpp
+	NeoGPS/GPSTime.cpp
+	NeoGPS/Location.cpp
+	NeoGPS/NeoTime.cpp
+	NeoGPS/NMEAGPS.cpp
+)
+ADD_LIBRARY(NeoGPS STATIC ${NEOGPS_SRC})
 
 
 
