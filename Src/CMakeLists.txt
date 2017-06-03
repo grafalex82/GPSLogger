@@ -40,14 +40,14 @@ SET(SOURCE_FILES
 	ButtonsThread.h
 #	FontTest.cpp
 #	FontTest.h
-#	FreeRTOSHelpers.h
-#	GPSDataModel.cpp
-#	GPSDataModel.h
+	FreeRTOSHelpers.h
+	GPSDataModel.cpp
+	GPSDataModel.h
 	GPSLogger.cpp
-#	GPSOdometer.cpp
-#	GPSOdometer.h
-#	GPSSatellitesData.cpp
-#	GPSSatellitesData.h
+	GPSOdometer.cpp
+	GPSOdometer.h
+	GPSSatellitesData.cpp
+	GPSSatellitesData.h
 	GPSThread.cpp
 	GPSThread.h
 	IdleThread.cpp
@@ -83,6 +83,7 @@ TARGET_LINK_LIBRARIES(GPSLogger
 #	STM32duino
 	STM32generic
 	HAL
+	m
 )
 
 STM32_SET_TARGET_PROPERTIES(GPSLogger)

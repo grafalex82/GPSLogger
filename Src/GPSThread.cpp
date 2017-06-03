@@ -5,7 +5,7 @@
 #include "Streamers.h"
 
 #include "GPSThread.h"
-//#include "GPSDataModel.h"
+#include "GPSDataModel.h"
 
 // A GPS parser
 NMEAGPS gpsParser;
@@ -29,8 +29,8 @@ void vGPSTask(void *pvParameters)
 		
 		if(gpsParser.available())
 		{
-//			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
-//			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
+			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
+			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
 		}
 			
 		vTaskDelay(10);
