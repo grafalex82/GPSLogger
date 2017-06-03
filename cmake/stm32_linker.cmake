@@ -48,7 +48,7 @@ SET(STM32_LINKER_SCRIPT_TEXT
   "    *(.eh_frame)\n"
   "    KEEP (*(.init))\n"
   "    KEEP (*(.fini))\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(8)\;\n"
   "    _etext = .\;\n"
   "  } >FLASH\n"
   "  .rodata :\n"
