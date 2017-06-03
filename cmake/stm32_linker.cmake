@@ -36,7 +36,7 @@ SET(STM32_LINKER_SCRIPT_TEXT
   "  {\n"
   "    . = ALIGN(4)\;\n"
   "    KEEP(*(.isr_vector))\n"
-  "    . = ALIGN(4)\;\n"
+  "    . = ALIGN(8)\;\n"
   "  } >FLASH\n"
   "  .text :\n"
   "  {\n"
