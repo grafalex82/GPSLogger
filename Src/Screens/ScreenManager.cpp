@@ -34,11 +34,11 @@ int screenIdx = 0;
 
 // Statically allocated screens
 CurrentTimeScreen timeScreen;
-//CurrentPositionScreen positionScreen;
-//SpeedScreen speedScreen;
+CurrentPositionScreen positionScreen;
+SpeedScreen speedScreen;
+OdometerScreen odometerScreen(0);
 //SatellitesScreen satellitesScreen;
 //SettingsGroupScreen rootSettingsScreen;
-//OdometerScreen odometerScreen(0);
 
 void setCurrentScreen(Screen * screen)
 {
@@ -72,11 +72,11 @@ void initDisplay()
 void initScreens()
 {
 	setCurrentScreen(&timeScreen);
-	//timeScreen.addScreen(&positionScreen);
-	//positionScreen.addScreen(&speedScreen);
-	//speedScreen.addScreen(&odometerScreen);
-	//odometerScreen.addScreen(&satellitesScreen);
-	//satellitesScreen.addScreen(&rootSettingsScreen);
+	timeScreen.addScreen(&positionScreen);
+	positionScreen.addScreen(&speedScreen);
+	speedScreen.addScreen(&odometerScreen);
+//	odometerScreen.addScreen(&satellitesScreen);
+//	satellitesScreen.addScreen(&rootSettingsScreen);
 }
 
 // Display information according to current state and screen
