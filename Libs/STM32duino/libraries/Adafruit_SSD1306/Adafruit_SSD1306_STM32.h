@@ -34,7 +34,7 @@ All text above, and the splash screen must be included in any redistribution
 */
 //typedef volatile RwReg PortReg;
 // typedef uint32_t PortMask;
-#include <SPI.h>
+//#include <SPI.h>
 #include <Adafruit_GFX.h>
 
 #define BLACK 0
@@ -59,8 +59,8 @@ All text above, and the splash screen must be included in any redistribution
     SSD1306_96_16
 
     -----------------------------------------------------------------------*/
-//   #define SSD1306_128_64
-   #define SSD1306_128_32
+   #define SSD1306_128_64
+//   #define SSD1306_128_32
 //   #define SSD1306_96_16
 /*=========================================================================*/
 

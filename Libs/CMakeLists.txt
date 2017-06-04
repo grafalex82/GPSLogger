@@ -54,9 +54,9 @@ ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 # Adafruit GFX library
 ###################
 
-#ADD_LIBRARY(AdafruitGFX STATIC 
-#	AdafruitGFX/Adafruit_GFX.cpp 
-#)
+ADD_LIBRARY(AdafruitGFX STATIC
+	AdafruitGFX/Adafruit_GFX.cpp
+)
 
 
 
@@ -64,30 +64,29 @@ ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 # Adafruit SSD1306 library
 ###################
 
-#ADD_LIBRARY(AdafruitSSD1306 STATIC 
-#	STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.cpp
-#	STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.h
-#)
-#TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
-##	STM32duino/libraries/Wire
-##	STM32duino/libraries/SPI/src  	#In fact it should not depend on it
-#	STM32generic/libraries/Wire/src
-#	STM32generic/libraries/SPI/src
-#	AdafruitGFX	
-#)
+ADD_LIBRARY(AdafruitSSD1306 STATIC
+	STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.cpp
+	STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.h
+)
+
+TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
+	STM32generic/libraries/Wire/src
+	AdafruitGFX
+)
 
 
 ###################
 # Various Arduino libraries
 ###################
 
-#SET(ARDUINO_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32generic/libraries)
+SET(ARDUINO_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32generic/libraries)
 
-#SET(ARDUINO_LIBS_SRC
-#	${ARDUINO_LIBS_DIR}/Wire/src/Wire.cpp
-#)
+SET(ARDUINO_LIBS_SRC
+	${ARDUINO_LIBS_DIR}/Wire/src/Wire.cpp
+	${ARDUINO_LIBS_DIR}/Wire/src/Wire.h
+)
 
-#ADD_LIBRARY(ArduinoLibs STATIC ${ARDUINO_LIBS_SRC})
+ADD_LIBRARY(ArduinoLibs STATIC ${ARDUINO_LIBS_SRC})
 
 
 
@@ -96,7 +95,7 @@ ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 ###################
 
 SET(STM32GENERIC_SRC
-#	STM32generic/cores/arduino/abi.cpp
+	STM32generic/cores/arduino/abi.cpp
 #	STM32generic/cores/arduino/Arduino.h
 ##	STM32generic/cores/arduino/hooks.c
 ##	STM32generic/cores/arduino/itoa.c

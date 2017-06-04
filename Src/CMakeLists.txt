@@ -62,10 +62,11 @@ SET(SOURCE_FILES
 
 INCLUDE_DIRECTORIES(
 	.
-#	${GPSLOGGER_LIBS_DIR}/AdafruitGFX
+	${GPSLOGGER_LIBS_DIR}/AdafruitGFX
 	${GPSLOGGER_LIBS_DIR}/NeoGPS
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/Adafruit_SSD1306
-#	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
+	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/Adafruit_SSD1306
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/Wire/src
 	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/FreeRTOS/src
 )
 
@@ -77,10 +78,9 @@ ADD_EXECUTABLE(GPSLogger ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(GPSLogger
 	NeoGPS
 	FreeRTOS
-#	AdafruitGFX
-#	AdafruitSSD1306
-#	ArduinoLibs
-#	STM32duino
+	AdafruitGFX
+	AdafruitSSD1306
+	ArduinoLibs
 	STM32generic
 	HAL
 	m
