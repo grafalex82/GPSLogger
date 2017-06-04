@@ -23,7 +23,7 @@ void vGPSTask(void *pvParameters)
 		while(SerialUART1.available())
 		{
 			int c = SerialUART1.read();
-			SerialUSB.write(c);
+			//SerialUSB.write(c);
 			gpsParser.handle(c);
 		}
 		
