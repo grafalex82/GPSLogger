@@ -57,7 +57,7 @@ void TwoWire::begin(void) {
     handle.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
     handle.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
 
-    setClock(100000);
+	setClock(400000);
 }
 
 void TwoWire::begin(uint8_t address) {

@@ -9,16 +9,16 @@ SET(SOURCE_FILES
 	Screens/CurrentPositionScreen.h
 	Screens/CurrentTimeScreen.cpp
 	Screens/CurrentTimeScreen.h
-#	Screens/DebugScreen.cpp
-#	Screens/DebugScreen.h
+	Screens/DebugScreen.cpp
+	Screens/DebugScreen.h
 	Screens/OdometerActionScreen.cpp
 	Screens/OdometerActionScreen.h
 	Screens/OdometerScreen.cpp
 	Screens/OdometerScreen.h
 	Screens/ParentScreen.cpp
 	Screens/ParentScreen.h
-#	Screens/SatellitesScreen.cpp
-#	Screens/SatellitesScreen.h
+	Screens/SatellitesScreen.cpp
+	Screens/SatellitesScreen.h
 	Screens/Screen.cpp
 	Screens/Screen.h
 	Screens/ScreenManager.cpp

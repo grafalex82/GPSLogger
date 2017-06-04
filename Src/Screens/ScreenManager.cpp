@@ -37,8 +37,8 @@ CurrentTimeScreen timeScreen;
 CurrentPositionScreen positionScreen;
 SpeedScreen speedScreen;
 OdometerScreen odometerScreen(0);
-//SatellitesScreen satellitesScreen;
-//SettingsGroupScreen rootSettingsScreen;
+SatellitesScreen satellitesScreen;
+SettingsGroupScreen rootSettingsScreen;
 
 void setCurrentScreen(Screen * screen)
 {
@@ -75,8 +75,8 @@ void initScreens()
 	timeScreen.addScreen(&positionScreen);
 	positionScreen.addScreen(&speedScreen);
 	speedScreen.addScreen(&odometerScreen);
-//	odometerScreen.addScreen(&satellitesScreen);
-//	satellitesScreen.addScreen(&rootSettingsScreen);
+	odometerScreen.addScreen(&satellitesScreen);
+	satellitesScreen.addScreen(&rootSettingsScreen);
 }
 
 // Display information according to current state and screen

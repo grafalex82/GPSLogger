@@ -44,8 +44,8 @@ void DebugScreen::drawScreen() const
 			display.setCursor(0, 19);
 			display.print("Max Stack:");
 			
-			display.setCursor(0, 32);
-			display.print(uxTaskGetStackHighWaterMark(NULL));
+			//display.setCursor(0, 32);
+			//display.print(uxTaskGetStackHighWaterMark(NULL));
 			break;
 			
 		default:
