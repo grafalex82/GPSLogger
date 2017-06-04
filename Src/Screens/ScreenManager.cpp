@@ -8,7 +8,7 @@
 #include "8x12Font.h"
 #include "Screen.h"
 #include "ScreenManager.h"
-#include "Buttons.h"
+#include "ButtonsThread.h"
 
 #include "CurrentPositionScreen.h"
 #include "CurrentTimeScreen.h"
@@ -19,7 +19,7 @@
 
 Adafruit_SSD1306 display(-1);
 
-#if (SSD1306_LCDHEIGHT != 32)
+#if (SSD1306_LCDHEIGHT != 64)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 
@@ -34,11 +34,11 @@ int screenIdx = 0;
 
 // Statically allocated screens
 CurrentTimeScreen timeScreen;
-CurrentPositionScreen positionScreen;
-SpeedScreen speedScreen;
-SatellitesScreen satellitesScreen;
-SettingsGroupScreen rootSettingsScreen;
-OdometerScreen odometerScreen(0);
+//CurrentPositionScreen positionScreen;
+//SpeedScreen speedScreen;
+//SatellitesScreen satellitesScreen;
+//SettingsGroupScreen rootSettingsScreen;
+//OdometerScreen odometerScreen(0);
 
 void setCurrentScreen(Screen * screen)
 {
@@ -72,11 +72,11 @@ void initDisplay()
 void initScreens()
 {
 	setCurrentScreen(&timeScreen);
-	timeScreen.addScreen(&positionScreen);
-	positionScreen.addScreen(&speedScreen);
-	speedScreen.addScreen(&odometerScreen);
-	odometerScreen.addScreen(&satellitesScreen);
-	satellitesScreen.addScreen(&rootSettingsScreen);
+	//timeScreen.addScreen(&positionScreen);
+	//positionScreen.addScreen(&speedScreen);
+	//speedScreen.addScreen(&odometerScreen);
+	//odometerScreen.addScreen(&satellitesScreen);
+	//satellitesScreen.addScreen(&rootSettingsScreen);
 }
 
 // Display information according to current state and screen
@@ -119,13 +119,16 @@ void processButton(const ButtonMessage &msg)
 
 void vDisplayTask(void *pvParameters) 
 {
+	initDisplay();
+	initScreens();
+
 	TickType_t lastActionTicks = xTaskGetTickCount();
 	
 	for (;;)
 	{
 		// Poll the buttons queue for an event. Process button if pressed, or show current screen as usual if no button pressed
 		ButtonMessage msg;
-		if(xQueueReceive(buttonsQueue, &msg, DISPLAY_CYCLE))
+		if(waitForButtonMessage(&msg, DISPLAY_CYCLE))
 		{
 			processButton(msg);
 			
@@ -140,7 +143,7 @@ void vDisplayTask(void *pvParameters)
 			display.ssd1306_command(SSD1306_DISPLAYOFF);
 			
 			// Wait for a button
-			xQueueReceive(buttonsQueue, &msg, portMAX_DELAY);
+			waitForButtonMessage(&msg, portMAX_DELAY);
 			
 			// Resume
 			display.ssd1306_command(SSD1306_DISPLAYON);
