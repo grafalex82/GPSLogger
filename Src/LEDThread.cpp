@@ -8,8 +8,6 @@
 
 #include "SerialUSB.h"
 
-#define LED_PORT GPIOC
-const uint16_t LED_PIN = GPIO_PIN_13;
 
 // Class to encapsulate working with onboard LED(s)
 //
@@ -20,33 +18,22 @@ class LEDDriver
 public:
 	LEDDriver()
 	{
-		// enable clock to GPIOC
-		__HAL_RCC_GPIOC_CLK_ENABLE();
-
-		// Turn off the LED by default
-		HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);
-
-		// Initialize PC13 pin
-		GPIO_InitTypeDef ledPinInit;
-		ledPinInit.Pin = LED_PIN;
-		ledPinInit.Mode = GPIO_MODE_OUTPUT_PP;
-		ledPinInit.Speed = GPIO_SPEED_FREQ_LOW;
-		HAL_GPIO_Init(LED_PORT, &ledPinInit);
+		pinMode(PC13, OUTPUT);
 	}
 
 	void turnOn()
 	{
-		HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_RESET);
+		digitalWrite(PC13, LOW);
 	}
 
 	void turnOff()
 	{
-		HAL_GPIO_WritePin(LED_PORT, LED_PIN, GPIO_PIN_SET);
+		digitalWrite(PC13, HIGH);
 	}
 
 	void toggle()
 	{
-		HAL_GPIO_TogglePin(LED_PORT, LED_PIN);
+		digitalWrite(PC13, !digitalRead(PC13));
 	}
 };
 
