@@ -5,15 +5,15 @@
 
 class OdometerActionScreen: public SelectorScreen
 {
-	uint8 odometerID;
+	uint8_t odometerID;
 	
 public:
-	OdometerActionScreen(uint8 odometer);
+	OdometerActionScreen(uint8_t odometer);
 
 protected:
-	virtual const char * getItemText(uint8 idx) const;
-	virtual uint8 getItemsCount() const;
-	virtual void applySelection(uint8 idx);
+	virtual const char * getItemText(uint8_t idx) const;
+	virtual uint8_t getItemsCount() const;
+	virtual void applySelection(uint8_t idx);
 
 private:
 	OdometerActionScreen( const OdometerActionScreen &c );

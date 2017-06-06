@@ -6,12 +6,12 @@
 
 class OdometerScreen : public Screen
 {
-	uint8 odometerIdx;
+	uint8_t odometerIdx;
 	bool inDetailsMode;
 	OdometerActionScreen actionSelector;
 	
 public:
-	OdometerScreen(uint8 idx);
+	OdometerScreen(uint8_t idx);
 
 	virtual void drawScreen() const;
 	

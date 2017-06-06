@@ -1,5 +1,5 @@
 #include <Adafruit_SSD1306_STM32.h>
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 
 #include "DebugScreen.h"
 #include "Utils.h"
@@ -44,8 +44,8 @@ void DebugScreen::drawScreen() const
 			display.setCursor(0, 19);
 			display.print("Max Stack:");
 			
-			display.setCursor(0, 32);
-			display.print(uxTaskGetStackHighWaterMark(NULL));
+			//display.setCursor(0, 32);
+			//display.print(uxTaskGetStackHighWaterMark(NULL));
 			break;
 			
 		default:

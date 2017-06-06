@@ -12,7 +12,7 @@ public:
 	
 	virtual const char * getOkButtonText() const;
 
-	static const char * headingAsLetter(uint16 heading);
+	static const char * headingAsLetter(uint16_t heading);
 
 private:
 	SpeedScreen( const SpeedScreen &c );

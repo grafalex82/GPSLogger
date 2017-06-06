@@ -341,14 +341,14 @@ public:
 
     void lock() const
       {
-        if (processing_style == PS_INTERRUPT)
-          noInterrupts();
+//        if (processing_style == PS_INTERRUPT)
+//          noInterrupts();
       }
 
     void unlock() const
       {
-        if (processing_style == PS_INTERRUPT)
-          interrupts();
+//        if (processing_style == PS_INTERRUPT)
+//          interrupts();
       }
 
 protected:

@@ -1,8 +1,8 @@
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 
 #include "IdleThread.h"
 
-static const uint8 periodLen = 9; // 2^periodLen ticks
+static const uint8_t periodLen = 9; // 2^periodLen ticks
 
 volatile TickType_t curIdleTicks = 0;
 volatile TickType_t lastCountedTick = 0;

@@ -33,16 +33,31 @@ SET(SOURCE_FILES
 	Screens/TimeZoneScreen.h
 
 	8x12Font.cpp
-	Buttons.cpp
-	FontTest.cpp
+	8x12Font.h
+	BoardInit.cpp
+	BoardInit.h
+	ButtonsThread.cpp
+	ButtonsThread.h
+#	FontTest.cpp
+#	FontTest.h
+	FreeRTOSHelpers.h
 	GPSDataModel.cpp
+	GPSDataModel.h
 	GPSLogger.cpp
 	GPSOdometer.cpp
+	GPSOdometer.h
 	GPSSatellitesData.cpp
+	GPSSatellitesData.h
 	GPSThread.cpp
+	GPSThread.h
 	IdleThread.cpp
+	IdleThread.h
+	LEDThread.cpp
+	LEDThread.h
 	TimeFont.cpp
+	TimeFont.h
 	Utils.cpp
+	Utils.h
 )
 
 INCLUDE_DIRECTORIES(
@@ -50,9 +65,10 @@ INCLUDE_DIRECTORIES(
 	${GPSLOGGER_LIBS_DIR}/AdafruitGFX
 	${GPSLOGGER_LIBS_DIR}/NeoGPS
 	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/Adafruit_SSD1306
-	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/SPI/src
-	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/FreeRTOS821
-	)
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/Wire/src
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/FreeRTOS/src
+)
 
 
 # Do not link to libc or newlib-nano - we are not using anything from that
@@ -65,9 +81,12 @@ TARGET_LINK_LIBRARIES(GPSLogger
 	AdafruitGFX
 	AdafruitSSD1306
 	ArduinoLibs
-	STM32duino
+	STM32generic
+	HAL
+	m
 )
 
+STM32_GENERATE_MAP_FILE(GPSLogger)
 STM32_SET_TARGET_PROPERTIES(GPSLogger)
 STM32_PRINT_SIZE_OF_TARGETS(GPSLogger)
 

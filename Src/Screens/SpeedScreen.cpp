@@ -66,7 +66,7 @@ void SpeedScreen::drawScreen() const
 	display.print(buf);
 }
 
-const char * SpeedScreen::headingAsLetter(uint16 heading)
+const char * SpeedScreen::headingAsLetter(uint16_t heading)
 {
 	if(heading < 22)
 		return "N";

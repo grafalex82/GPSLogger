@@ -37,10 +37,10 @@ size_t TimePrinter::printTo(Print& p) const
 	return p.print(buf);
 }
 
-FloatPrinter::FloatPrinter(float value, uint8 width, bool leadingZeros, bool alwaysPrintSign)
+FloatPrinter::FloatPrinter(float value, uint8_t width, bool leadingZeros, bool alwaysPrintSign)
 {
     // reserve a space for sign
-    uint8 minpos = 0;
+    uint8_t minpos = 0;
     if(alwaysPrintSign || value < 0)
 		minpos++;
 
@@ -50,7 +50,7 @@ FloatPrinter::FloatPrinter(float value, uint8 width, bool leadingZeros, bool alw
 		v = 0. - v;
     
     // floating point position will depend on the value
-    uint8 precision = 0;
+    uint8_t precision = 0;
     if(v < 100)
     {
 	    v *= 10;
@@ -62,7 +62,7 @@ FloatPrinter::FloatPrinter(float value, uint8 width, bool leadingZeros, bool alw
 	    precision++;
     }
 
-    uint32 iv = v + 0.5; // we will be operating with integers
+    uint32_t iv = v + 0.5; // we will be operating with integers
 
     // Filling the buffer starting from the right
     pos = width;

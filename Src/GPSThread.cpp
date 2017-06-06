@@ -1,5 +1,6 @@
-#include <HardwareSerial.h>
-#include <MapleFreeRTOS821.h>
+#include <SerialUART.h>
+#include <SerialUSB.h>
+#include <Arduino_FreeRTOS.h>
 #include <NMEAGPS.h>
 #include "Streamers.h"
 
@@ -12,17 +13,17 @@ NMEAGPS gpsParser;
 void initGPS()
 {
 	// GPS is attached to Serial1
-	Serial1.begin(9600);
+	SerialUART1.begin(9600);
 }
 
 void vGPSTask(void *pvParameters)
 {
 	for (;;)
 	{
-		while(Serial1.available())
+		while(SerialUART1.available())
 		{
-			int c = Serial1.read();
-//			Serial.write(c);
+			int c = SerialUART1.read();
+			//SerialUSB.write(c);
 			gpsParser.handle(c);
 		}
 		
@@ -30,7 +31,7 @@ void vGPSTask(void *pvParameters)
 		{
 			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
 			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
-		}			
+		}
 			
 		vTaskDelay(10);
 	}

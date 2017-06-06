@@ -23,7 +23,7 @@ class TimePrinter : public Printable
 public:
 	//TimePrinter(clock_t time);
 	TimePrinter(const NeoGPS::time_t & time);
-	//TimePrinter(uint8 h, uint8 m, uint8 s);
+	//TimePrinter(uint8_t h, uint8_t m, uint8_t s);
 	
 	virtual size_t printTo(Print& p) const;
 };
@@ -33,10 +33,10 @@ public:
 class FloatPrinter : public Printable
 {
 	char buf[8]; // Print numbers no longer than 7 digits including sign and point symbols
-	uint8 pos; // position in the buffer with the first meaningful char
+	uint8_t pos; // position in the buffer with the first meaningful char
 	
 public:
-	FloatPrinter(float value, uint8 width, bool leadingZeros = false, bool alwaysPrintSign = false);
+	FloatPrinter(float value, uint8_t width, bool leadingZeros = false, bool alwaysPrintSign = false);
 	
 	virtual size_t printTo(Print& p) const;
 };

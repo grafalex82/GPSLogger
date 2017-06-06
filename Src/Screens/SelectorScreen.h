@@ -8,7 +8,7 @@
 /// That is because items may be generated in runtime by a class-ancestor
 class SelectorScreen: public Screen
 {
-	uint8 currentIdx;
+	uint8_t currentIdx;
 
 public:
 	SelectorScreen();
@@ -22,15 +22,15 @@ public:
 	virtual void onOkButton();
 
 protected:
-	virtual const char * getItemText(uint8 idx) const = 0;
-	virtual uint8 getItemsCount() const = 0;
-	virtual void applySelection(uint8 idx) = 0;	
+	virtual const char * getItemText(uint8_t idx) const = 0;
+	virtual uint8_t getItemsCount() const = 0;
+	virtual void applySelection(uint8_t idx) = 0;	
 
 private:
 	SelectorScreen( const SelectorScreen &c );
 	SelectorScreen& operator=( const SelectorScreen &c );
 
-	void drawCentered(const char * str, uint8 y) const;
+	void drawCentered(const char * str, uint8_t y) const;
 
 }; //SelectorScreen
 

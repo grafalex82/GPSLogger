@@ -1,11 +1,9 @@
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 #include <NMEAGPS.h>
 
 #include "FreeRTOSHelpers.h"
 #include "GPSDataModel.h"
 #include "GPSOdometer.h"
-
-#include "HardwareSerial.h"
 
 GPSOdometer odometer0;
 GPSOdometer odometer1;
@@ -82,7 +80,7 @@ int GPSDataModel::timeDifference() const
 	return cur_fix.dateTime - prev_fix.dateTime;
 }
 
-GPSOdometerData GPSDataModel::getOdometerData(uint8 idx) const
+GPSOdometerData GPSDataModel::getOdometerData(uint8_t idx) const
 {
 	MutexLocker lock(xGPSDataMutex);
 	
@@ -90,19 +88,19 @@ GPSOdometerData GPSDataModel::getOdometerData(uint8 idx) const
 	return odometers[idx]->getData();
 }
 
-void GPSDataModel::resumeOdometer(uint8 idx)
+void GPSDataModel::resumeOdometer(uint8_t idx)
 {
 	MutexLocker lock(xGPSDataMutex);
 	odometers[idx]->startOdometer();
 }
 
-void GPSDataModel::pauseOdometer(uint8 idx)
+void GPSDataModel::pauseOdometer(uint8_t idx)
 {
 	MutexLocker lock(xGPSDataMutex);
 	odometers[idx]->pauseOdometer();
 }
 
-void GPSDataModel::resetOdometer(uint8 idx)
+void GPSDataModel::resetOdometer(uint8_t idx)
 {
 	MutexLocker lock(xGPSDataMutex);
 	odometers[idx]->resetOdometer();
