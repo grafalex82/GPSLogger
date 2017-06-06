@@ -3,7 +3,7 @@
 #include <Arduino_FreeRTOS.h>
 
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 
 #include "8x12Font.h"
 #include "Screen.h"

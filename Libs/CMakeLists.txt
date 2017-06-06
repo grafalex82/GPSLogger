@@ -65,12 +65,13 @@ ADD_LIBRARY(AdafruitGFX STATIC
 ###################
 
 ADD_LIBRARY(AdafruitSSD1306 STATIC
-	STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.cpp
-	STM32duino/libraries/Adafruit_SSD1306/Adafruit_SSD1306_STM32.h
+	Adafruit_SSD1306/Adafruit_SSD1306.cpp
+	Adafruit_SSD1306/Adafruit_SSD1306.h
 )
 
 TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
 	STM32generic/libraries/Wire/src
+	STM32generic/libraries/SPI/src
 	AdafruitGFX
 )
 
