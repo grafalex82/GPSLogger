@@ -200,7 +200,7 @@ class SPIClass {
     void begin();
     void end();
 
-    void beginTransaction(SPISettings settings);
+	void beginTransaction(const SPISettings & settings);
 	void endTransaction();
 
 	void setBitOrder(uint8_t);

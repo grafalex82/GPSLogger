@@ -158,7 +158,7 @@ void SPIClass::begin() {
 
 }
 
-void SPIClass::beginTransaction(SPISettings settings) {
+void SPIClass::beginTransaction(const SPISettings & settings) {
 	if (this->settings.clock == settings.clock
 			&& this->settings.bitOrder == settings.bitOrder
 			&& this->settings.dataMode == settings.dataMode) {

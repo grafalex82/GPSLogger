@@ -187,7 +187,7 @@ void SdFile::dirName(const dir_t& dir, char* name) {
   name[j] = 0;
 }
 //------------------------------------------------------------------------------
-/** List directory contents to Serial.
+/** List directory contents to SerialUSB.
  *
  * \param[in] flags The inclusive OR of
  *
@@ -217,7 +217,7 @@ void SdFile::ls(uint8_t flags, uint8_t indent) {
     if (!DIR_IS_FILE_OR_SUBDIR(p)) continue;
 
 	// print any indent spaces
-    for (int8_t i = 0; i < indent; i++) Serial.print(' ');
+	for (int8_t i = 0; i < indent; i++) SerialUSB.print(' ');
 
     // print file name with possible blank fill
     printDirName(*p, flags & (LS_DATE | LS_SIZE) ? 14 : 0);
@@ -225,15 +225,15 @@ void SdFile::ls(uint8_t flags, uint8_t indent) {
     // print modify date/time if requested
     if (flags & LS_DATE) {
        printFatDate(p->lastWriteDate);
-       Serial.print(' ');
+	   SerialUSB.print(' ');
        printFatTime(p->lastWriteTime);
     }
     // print size if requested
     if (!DIR_IS_SUBDIR(p) && (flags & LS_SIZE)) {
-      Serial.print(' ');
-      Serial.print(p->fileSize);
+	  SerialUSB.print(' ');
+	  SerialUSB.print(p->fileSize);
     }
-    Serial.println();
+	SerialUSB.println();
 
     // list subdirectory content if requested
     if ((flags & LS_R) && DIR_IS_SUBDIR(p)) {
@@ -587,7 +587,7 @@ uint8_t SdFile::openRoot(SdVolume* vol) {
   return true;
 }
 //------------------------------------------------------------------------------
-/** %Print the name field of a directory entry in 8.3 format to Serial.
+/** %Print the name field of a directory entry in 8.3 format to SerialUSB.
  *
  * \param[in] dir The directory structure containing the name.
  * \param[in] width Blank fill name if length is less than \a width.
@@ -597,37 +597,37 @@ void SdFile::printDirName(const dir_t& dir, uint8_t width) {
   for (uint8_t i = 0; i < 11; i++) {
     if (dir.name[i] == ' ')continue;
     if (i == 8) {
-      Serial.print('.');
+	  SerialUSB.print('.');
       w++;
     }
-    Serial.write(dir.name[i]);
+	SerialUSB.write(dir.name[i]);
     w++;
   }
   if (DIR_IS_SUBDIR(&dir)) {
-    Serial.print('/');
+	SerialUSB.print('/');
     w++;
   }
   while (w < width) {
-    Serial.print(' ');
+	SerialUSB.print(' ');
     w++;
   }
 }
 //------------------------------------------------------------------------------
-/** %Print a directory date field to Serial.
+/** %Print a directory date field to SerialUSB.
  *
  *  Format is yyyy-mm-dd.
  *
  * \param[in] fatDate The date field from a directory entry.
  */
 void SdFile::printFatDate(uint16_t fatDate) {
-  Serial.print(FAT_YEAR(fatDate));
-  Serial.print('-');
+  SerialUSB.print(FAT_YEAR(fatDate));
+  SerialUSB.print('-');
   printTwoDigits(FAT_MONTH(fatDate));
-  Serial.print('-');
+  SerialUSB.print('-');
   printTwoDigits(FAT_DAY(fatDate));
 }
 //------------------------------------------------------------------------------
-/** %Print a directory time field to Serial.
+/** %Print a directory time field to SerialUSB.
  *
  * Format is hh:mm:ss.
  *
@@ -635,13 +635,13 @@ void SdFile::printFatDate(uint16_t fatDate) {
  */
 void SdFile::printFatTime(uint16_t fatTime) {
   printTwoDigits(FAT_HOUR(fatTime));
-  Serial.print(':');
+  SerialUSB.print(':');
   printTwoDigits(FAT_MINUTE(fatTime));
-  Serial.print(':');
+  SerialUSB.print(':');
   printTwoDigits(FAT_SECOND(fatTime));
 }
 //------------------------------------------------------------------------------
-/** %Print a value as two digits to Serial.
+/** %Print a value as two digits to SerialUSB.
  *
  * \param[in] v Value to be printed, 0 <= \a v <= 99
  */
@@ -650,7 +650,7 @@ void SdFile::printTwoDigits(uint8_t v) {
   str[0] = '0' + v/10;
   str[1] = '0' + v % 10;
   str[2] = 0;
-  Serial.print(str);
+  SerialUSB.print(str);
 }
 //------------------------------------------------------------------------------
 /**
@@ -968,22 +968,22 @@ uint8_t SdFile::sync(void) {
   // only allow open files and directories
   if (!isOpen()) return false;
 
-Serial.println("sync #1");
+SerialUSB.println("sync #1");
   if (flags_ & F_FILE_DIR_DIRTY) {
     dir_t* d = cacheDirEntry(SdVolume::CACHE_FOR_WRITE);
-Serial.println("sync #2");
+SerialUSB.println("sync #2");
     if (!d) return false;
-Serial.println("sync #3");
+SerialUSB.println("sync #3");
 
     // do not set filesize for dir files
     if (!isDir()) d->fileSize = fileSize_;
-Serial.println("sync #4");
+SerialUSB.println("sync #4");
 
     // update first cluster fields
     d->firstClusterLow = firstCluster_ & 0XFFFF;
     d->firstClusterHigh = firstCluster_ >> 16;
 
-Serial.println("sync #5");
+SerialUSB.println("sync #5");
 
     // set modify time if user supplied a callback date/time function
     if (dateTime_) {
@@ -991,13 +991,13 @@ Serial.println("sync #5");
       d->lastAccessDate = d->lastWriteDate;
     }
 
-Serial.println("sync #6");
+SerialUSB.println("sync #6");
 
     // clear directory dirty
     flags_ &= ~F_FILE_DIR_DIRTY;
   }
 
-Serial.println("sync #7");
+SerialUSB.println("sync #7");
 
   return SdVolume::cacheFlush();
 }

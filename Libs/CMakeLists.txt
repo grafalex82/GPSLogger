@@ -42,7 +42,7 @@ ADD_LIBRARY(SD STATIC ${SD_SRC})
 
 TARGET_INCLUDE_DIRECTORIES(SD PRIVATE
 	SD
-	STM32duino/libraries/SPI/src
+	STM32generic/libraries/SPI/src
 )
 
 
@@ -259,7 +259,7 @@ SET(HAL_SRC
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_rtc_ex.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_sd.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_smartcard.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi_ex.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_sram.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_tim.c

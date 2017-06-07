@@ -109,11 +109,11 @@ void spiSend(uint8_t data) {
 //------------------------------------------------------------------------------
 // send command and return error code.  Return zero for OK
 uint8_t Sd2Card::cardCommand(uint8_t cmd, uint32_t arg) {
-  Serial.print("Sending command:");
-  Serial.print(cmd);
-  Serial.print(", Argument:");
-  Serial.print(arg, 16);
-  Serial.println("");
+  SerialUSB.print("Sending command:");
+  SerialUSB.print(cmd);
+  SerialUSB.print(", Argument:");
+  SerialUSB.print(arg, 16);
+  SerialUSB.println("");
 
   // end read if in partialBlockRead mode
   readEnd();
@@ -140,9 +140,9 @@ uint8_t Sd2Card::cardCommand(uint8_t cmd, uint32_t arg) {
   for (uint8_t i = 0; ((status_ = spiRec()) & 0X80) && i != 0XFF; i++)
     ;
 
-  Serial.print("Resonse:");
-  Serial.print(status_);
-  Serial.println("");
+  SerialUSB.print("Resonse:");
+  SerialUSB.print(status_);
+  SerialUSB.println("");
 
   return status_;
 }
