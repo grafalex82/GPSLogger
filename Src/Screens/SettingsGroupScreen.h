@@ -15,7 +15,7 @@ private:
 	SettingsGroupScreen( const SettingsGroupScreen &c );
 	SettingsGroupScreen& operator=( const SettingsGroupScreen &c );
 
-	void drawCentered(const char * str, uint8 y) const;
+	void drawCentered(const char * str, uint8_t y) const;
 
 }; //SettingsGroupScreen
 

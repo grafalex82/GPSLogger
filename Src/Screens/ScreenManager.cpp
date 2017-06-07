@@ -1,14 +1,14 @@
 #include <stddef.h> //for NULL
 
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 
 #include "8x12Font.h"
 #include "Screen.h"
 #include "ScreenManager.h"
-#include "Buttons.h"
+#include "ButtonsThread.h"
 
 #include "CurrentPositionScreen.h"
 #include "CurrentTimeScreen.h"
@@ -24,8 +24,8 @@ Adafruit_SSD1306 display(-1);
 #endif
 
 // Timeouts
-const uint16 DISPLAY_CYCLE = 100 / portTICK_PERIOD_MS;
-const uint16 MESSAGE_BOX_DURATION = 1000 / portTICK_PERIOD_MS;
+const uint16_t DISPLAY_CYCLE = 100 / portTICK_PERIOD_MS;
+const uint16_t MESSAGE_BOX_DURATION = 1000 / portTICK_PERIOD_MS;
 
 // Stack of nested screens
 Screen * screenStack[5];
@@ -36,9 +36,9 @@ int screenIdx = 0;
 CurrentTimeScreen timeScreen;
 CurrentPositionScreen positionScreen;
 SpeedScreen speedScreen;
+OdometerScreen odometerScreen(0);
 SatellitesScreen satellitesScreen;
 SettingsGroupScreen rootSettingsScreen;
-OdometerScreen odometerScreen(0);
 
 void setCurrentScreen(Screen * screen)
 {
@@ -119,13 +119,16 @@ void processButton(const ButtonMessage &msg)
 
 void vDisplayTask(void *pvParameters) 
 {
+	initDisplay();
+	initScreens();
+
 	TickType_t lastActionTicks = xTaskGetTickCount();
 	
 	for (;;)
 	{
 		// Poll the buttons queue for an event. Process button if pressed, or show current screen as usual if no button pressed
 		ButtonMessage msg;
-		if(xQueueReceive(buttonsQueue, &msg, DISPLAY_CYCLE))
+		if(waitForButtonMessage(&msg, DISPLAY_CYCLE))
 		{
 			processButton(msg);
 			
@@ -140,7 +143,7 @@ void vDisplayTask(void *pvParameters)
 			display.ssd1306_command(SSD1306_DISPLAYOFF);
 			
 			// Wait for a button
-			xQueueReceive(buttonsQueue, &msg, portMAX_DELAY);
+			waitForButtonMessage(&msg, portMAX_DELAY);
 			
 			// Resume
 			display.ssd1306_command(SSD1306_DISPLAYON);

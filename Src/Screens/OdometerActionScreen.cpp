@@ -1,14 +1,14 @@
-#include "GPSOdometer.h"
+#include "GPS/GPSOdometer.h"
+#include "GPS/GPSDataModel.h"
 #include "OdometerActionScreen.h"
 #include "ScreenManager.h"
-#include "GPSDataModel.h"
 
-OdometerActionScreen::OdometerActionScreen(uint8 odometer)
+OdometerActionScreen::OdometerActionScreen(uint8_t odometer)
 {
 	odometerID = odometer;
 }
 
-const char * OdometerActionScreen::getItemText(uint8 idx) const
+const char * OdometerActionScreen::getItemText(uint8_t idx) const
 {
 	if(idx == 1)
 		return "Reset";
@@ -27,12 +27,12 @@ const char * OdometerActionScreen::getItemText(uint8 idx) const
 	return "Start";
 }
 
-uint8 OdometerActionScreen::getItemsCount() const
+uint8_t OdometerActionScreen::getItemsCount() const
 {
 	return 2;
 }
 
-void OdometerActionScreen::applySelection(uint8 idx)
+void OdometerActionScreen::applySelection(uint8_t idx)
 {
 	GPSDataModel & gpsDataModel = GPSDataModel::instance();
 

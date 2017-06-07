@@ -1,18 +1,19 @@
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 #include <NMEAGPS.h>
+
+#include "GPS/GPSOdometer.h"
+#include "GPS/GPSDataModel.h"
 
 #include "OdometerScreen.h"
 #include "SelectorScreen.h"
 #include "ScreenManager.h"
-#include "GPSOdometer.h"
 #include "TimeFont.h"
 #include "8x12Font.h"
-#include "GPSDataModel.h"
 #include "Utils.h"
 
 extern Adafruit_SSD1306 display;
 
-OdometerScreen::OdometerScreen(uint8 idx)
+OdometerScreen::OdometerScreen(uint8_t idx)
 	: actionSelector(idx)
 {
 	odometerIdx = idx;

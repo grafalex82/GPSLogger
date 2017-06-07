@@ -1,6 +1,6 @@
 #include <avr/pgmspace.h>
 
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 
 #include "Screen.h"
 #include "ScreenManager.h"

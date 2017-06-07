@@ -19,7 +19,7 @@ private:
 	DebugScreen( const DebugScreen &c );
 	DebugScreen& operator=( const DebugScreen &c );
 	
-	uint8 currentPage;
+	uint8_t currentPage;
 }; //DebugScreen
 
 #endif //__DEBUGSCREEN_H__

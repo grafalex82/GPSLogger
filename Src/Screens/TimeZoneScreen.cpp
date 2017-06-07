@@ -1,15 +1,16 @@
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 #include <NMEAGPS.h>
 
 #include "TimeZoneScreen.h"
 #include "ScreenManager.h"
 #include "TimeFont.h"
-#include "GPSDataModel.h"
 #include "Utils.h"
+
+#include "GPS/GPSDataModel.h"
 
 extern Adafruit_SSD1306 display;
 
-const int16 timeZones[] = 
+const int16_t timeZones[] = 
 {
 	0 * 60 + 00,	// +00:00
 	1 * 60 + 00,	// +01:00
@@ -58,7 +59,7 @@ void TimeZoneScreen::drawScreen() const
 {
 	// Get the date/time adjusted by selected timezone value
 	gps_fix gpsFix = GPSDataModel::instance().getGPSFix();
-	int16 timeZone = getCurrentTimeZone();
+	int16_t timeZone = getCurrentTimeZone();
 	NeoGPS::time_t dateTime = gpsFix.dateTime + timeZone * 60; //timeZone is in minutes
 
 	// Prepare current time string
@@ -126,7 +127,7 @@ const char * TimeZoneScreen::getOkButtonText() const
 	return text;
 }
 
-int16 TimeZoneScreen::getCurrentTimeZone() const
+int16_t TimeZoneScreen::getCurrentTimeZone() const
 {
 	return timeZones[timeZoneIdx];
 }
