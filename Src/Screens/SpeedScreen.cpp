@@ -5,8 +5,10 @@
 #include "AltitudeScreen.h"
 #include "TimeFont.h"
 #include "8x12Font.h"
-#include "GPSDataModel.h"
 #include "Utils.h"
+
+#include "GPS/GPSDataModel.h"
+
 
 extern Adafruit_SSD1306 display;
 

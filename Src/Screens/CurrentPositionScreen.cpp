@@ -6,7 +6,7 @@
 #include "Utils.h"
 #include "ScreenManager.h"
 #include "CurrentPositionScreen.h"
-#include "GPSDataModel.h"
+#include "GPS/GPSDataModel.h"
 
 extern Adafruit_SSD1306 display;
 

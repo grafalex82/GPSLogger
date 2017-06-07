@@ -32,6 +32,15 @@ SET(SOURCE_FILES
 	Screens/TimeZoneScreen.cpp
 	Screens/TimeZoneScreen.h
 
+	GPS/GPSDataModel.cpp
+	GPS/GPSDataModel.h
+	GPS/GPSOdometer.cpp
+	GPS/GPSOdometer.h
+	GPS/GPSSatellitesData.cpp
+	GPS/GPSSatellitesData.h
+	GPS/GPSThread.cpp
+	GPS/GPSThread.h
+
 	8x12Font.cpp
 	8x12Font.h
 	BoardInit.cpp
@@ -41,15 +50,7 @@ SET(SOURCE_FILES
 #	FontTest.cpp
 #	FontTest.h
 	FreeRTOSHelpers.h
-	GPSDataModel.cpp
-	GPSDataModel.h
 	GPSLogger.cpp
-	GPSOdometer.cpp
-	GPSOdometer.h
-	GPSSatellitesData.cpp
-	GPSSatellitesData.h
-	GPSThread.cpp
-	GPSThread.h
 	IdleThread.cpp
 	IdleThread.h
 	LEDThread.cpp

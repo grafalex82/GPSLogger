@@ -4,7 +4,7 @@
 #include "SerialUSB.h"
 
 #include "Screens/ScreenManager.h"
-#include "GPSThread.h"
+#include "GPS/GPSThread.h"
 
 #include "BoardInit.h"
 #include "LEDThread.h"
