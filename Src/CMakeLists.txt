@@ -55,6 +55,8 @@ SET(SOURCE_FILES
 	IdleThread.h
 	LEDThread.cpp
 	LEDThread.h
+	SDThread.cpp
+	SDThread.h
 	TimeFont.cpp
 	TimeFont.h
 	Utils.cpp
