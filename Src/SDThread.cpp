@@ -8,14 +8,13 @@ Sd2Card card;
 SdVolume volume;
 SdFile root;
 
+
 void vSDThread(void *pvParameters)
 {
 	vTaskDelay(2000);
-
+/*
 	SerialUSB.println("Initializing card...");
 
-	//bool res = SD.begin(PA4);
-	//SerialUSB.print(card.type());
 	uint8_t r = card.init(SPI_HALF_SPEED, PA4);
 
 
@@ -79,8 +78,10 @@ void vSDThread(void *pvParameters)
 
 	// list all files in the card with date and size
 	root.ls(LS_R | LS_DATE | LS_SIZE);
+exit:
 
-	/*
+*/
+/*
 	SerialUSB.print("Initializing SD card...");
 
 	// see if the card is present and can be initialized:
@@ -107,10 +108,39 @@ void vSDThread(void *pvParameters)
 	{
 		SerialUSB.println("error opening datalog.txt");
 	}
-
 */
 
-exit:
+/*
+	SerialUSB.print("Initializing SD card...");
+
+	// see if the card is present and can be initialized:
+	if (!SD.begin(PA4)) {
+	  SerialUSB.println("Card failed, or not present");
+	  // don't do anything more:
+	  return;
+	}
+	SerialUSB.println("card initialized.");
+
+	File dataFile = SD.open("TEST.DAT", FILE_WRITE);
+	if (dataFile)
+	{
+		SerialUSB.println("File opened");
+		for(int i=0; i<100; i++)
+		{
+			SerialUSB.print("Printing a message #");
+			SerialUSB.println(i);
+			dataFile.print("Printing a message #");
+			dataFile.println(i);
+		}
+		dataFile.close();
+	}
+	// if the file isn't open, pop up an error:
+	else
+	{
+		SerialUSB.println("error opening TEST.DAT");
+	}
+*/
+
 
 	for (;;)
 	{
