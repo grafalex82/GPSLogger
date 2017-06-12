@@ -7,6 +7,8 @@
 #include "GPSThread.h"
 #include "GPSDataModel.h"
 
+#include "SDThread.h"
+
 // A GPS parser
 NMEAGPS gpsParser;
 
@@ -18,21 +20,56 @@ void initGPS()
 
 void vGPSTask(void *pvParameters)
 {
+	uint8_t maxLen = 0;
+
 	for (;;)
 	{
-		while(SerialUART1.available())
+		//Receive one line from GPS
+		char * buf = requestRawGPSBuffer();
+		uint8_t len = 0;
+
+		while(true)
 		{
+			// Wait for a symbol
+			while(!SerialUART1.available())
+				vTaskDelay(3);
+
 			int c = SerialUART1.read();
-			//SerialUSB.write(c);
+
+			// Handle received byte
 			gpsParser.handle(c);
+			//SerialUSB.write(c);
+			buf[len++] = c;
+
+			// Reached end of line
+			if(c == '\n')
+				break;
+
+			// Buffer overrun protection
+			if(len == maxRawGPSDataLen)
+			{
+				buf[len] = '\n';
+				break;
+			}
 		}
 		
+		if(len > maxLen)
+		{
+			maxLen = len;
+			SerialUSB.print("=== New max len detected: ");
+			SerialUSB.println(maxLen);
+		}
+
+		//Send received raw data to SD thread
+		ackRawGPSData(len);
+
+		// Update GPS model data
 		if(gpsParser.available())
 		{
 			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
 			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
 		}
-			
+
 		vTaskDelay(10);
 	}
 }

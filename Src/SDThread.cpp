@@ -4,14 +4,133 @@
 #include "SDThread.h"
 
 
-Sd2Card card;
-SdVolume volume;
-SdFile root;
+//Sd2Card card;
+//SdVolume volume;
+//SdFile root;
 
+File rawDataFile;
+
+enum SDMessageType
+{
+	RAW_GPS_DATA,
+	CURRENT_POSITION_DATA,
+	USER_WAY_POINT_DATA
+};
+
+struct RawGPSData
+{
+	uint8_t len;
+	char rawDataBuf[maxRawGPSDataLen + 1];
+};
+
+struct SDMessage
+{
+	SDMessageType messageType;
+	uint16_t msgIdx;
+
+	union
+	{
+		RawGPSData rawData;
+	};
+};
+
+QueueHandle_t sdQueue;
+
+
+// To same some RAM I am using a single buffer to accumulate war GPS data and then send it to
+// SD thread. Alternative would be accumulating data in a separate buffer in GPS thread, then
+// assembly the message and therefore copy the buffer to message object.
+SDMessage rawGPSDataBuf;
+uint16_t msgIdx = 0;
+
+char * requestRawGPSBuffer()
+{
+	return rawGPSDataBuf.rawData.rawDataBuf;
+}
+
+void ackRawGPSData(uint8_t len)
+{
+	rawGPSDataBuf.messageType = RAW_GPS_DATA;
+	rawGPSDataBuf.rawData.len = len;
+	rawGPSDataBuf.msgIdx = msgIdx++;
+
+//	SerialUSB.print("Senging GPS message ");
+//	SerialUSB.print(rawGPSDataBuf.msgIdx);
+//	SerialUSB.print(": ");
+//	SerialUSB.write(rawGPSDataBuf.rawData.rawDataBuf, rawGPSDataBuf.rawData.len);
+
+	xQueueSend(sdQueue, &rawGPSDataBuf, 10);
+}
+
+bool initSDCard()
+{
+	//TODO Perhaps we should uninitialize SD card first
+
+	SerialUSB.println("Initializing SD card...");
+
+	// see if the card is present and can be initialized:
+	if (!SD.begin(PA4))
+	{
+		SerialUSB.println("Card failed, or not present");
+		// don't do anything more:
+		return false;
+	}
+	SerialUSB.println("card initialized.");
+
+	rawDataFile = SD.open("RAW_GPS.TXT", FILE_WRITE | O_APPEND);
+
+	return true;
+}
+
+void saveRawData(const SDMessage & msg)
+{
+//	SerialUSB.print("Dumping GPS message ");
+//	SerialUSB.print(msg.msgIdx);
+//	SerialUSB.print(": ");
+//	SerialUSB.write(rawGPSDataBuf.rawData.rawDataBuf, rawGPSDataBuf.rawData.len);
+
+	rawDataFile.write(rawGPSDataBuf.rawData.rawDataBuf, rawGPSDataBuf.rawData.len);
+	rawDataFile.flush();
+}
+
+void runSDMessageLoop()
+{
+	while(true)
+	{
+		SDMessage msg;
+		if(xQueueReceive(sdQueue, &msg, 50)) // TODO: fix hardcode
+		{
+			switch(msg.messageType)
+			{
+			case RAW_GPS_DATA:
+				saveRawData(msg);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+}
+
+void initSDThread()
+{
+	// Initialize buttons queue
+	sdQueue = xQueueCreate(5, sizeof(SDMessage)); // hope 5 messages would be enough
+}
 
 void vSDThread(void *pvParameters)
 {
-	vTaskDelay(2000);
+	while(true)
+	{
+		vTaskDelay(2000);
+
+		if(initSDCard())
+			runSDMessageLoop();
+	}
+}
+
+
+
 /*
 	SerialUSB.println("Initializing card...");
 
@@ -140,12 +259,4 @@ exit:
 		SerialUSB.println("error opening TEST.DAT");
 	}
 */
-
-
-	for (;;)
-	{
-		vTaskDelay(2000);
-		SerialUSB.println("Test");
-	}
-}
 
