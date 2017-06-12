@@ -968,22 +968,22 @@ uint8_t SdFile::sync(void) {
   // only allow open files and directories
   if (!isOpen()) return false;
 
-SerialUSB.println("sync #1");
+//SerialUSB.println("sync #1");
   if (flags_ & F_FILE_DIR_DIRTY) {
     dir_t* d = cacheDirEntry(SdVolume::CACHE_FOR_WRITE);
-SerialUSB.println("sync #2");
+//SerialUSB.println("sync #2");
     if (!d) return false;
-SerialUSB.println("sync #3");
+//SerialUSB.println("sync #3");
 
     // do not set filesize for dir files
     if (!isDir()) d->fileSize = fileSize_;
-SerialUSB.println("sync #4");
+//SerialUSB.println("sync #4");
 
     // update first cluster fields
     d->firstClusterLow = firstCluster_ & 0XFFFF;
     d->firstClusterHigh = firstCluster_ >> 16;
 
-SerialUSB.println("sync #5");
+//SerialUSB.println("sync #5");
 
     // set modify time if user supplied a callback date/time function
     if (dateTime_) {
@@ -991,13 +991,13 @@ SerialUSB.println("sync #5");
       d->lastAccessDate = d->lastWriteDate;
     }
 
-SerialUSB.println("sync #6");
+//SerialUSB.println("sync #6");
 
     // clear directory dirty
     flags_ &= ~F_FILE_DIR_DIRTY;
   }
 
-SerialUSB.println("sync #7");
+//SerialUSB.println("sync #7");
 
   return SdVolume::cacheFlush();
 }
