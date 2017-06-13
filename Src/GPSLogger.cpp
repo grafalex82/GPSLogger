@@ -15,7 +15,6 @@ int main(void)
 {
 	InitBoard();
 
-	//SerialUSB.begin(115200);
 	USBDeviceFS.reenumerate();
 	USBDeviceFS.beginCDC();
 

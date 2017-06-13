@@ -117,8 +117,8 @@ SET(STM32GENERIC_SRC
 ##	STM32generic/cores/arduino/WString.cpp
 ##	STM32generic/cores/arduino/WString.h
 
-	STM32generic/cores/arduino/stm32/SerialUART.cpp
-	STM32generic/cores/arduino/stm32/SerialUART.h
+#	STM32generic/cores/arduino/stm32/SerialUART.cpp
+#	STM32generic/cores/arduino/stm32/SerialUART.h
 	STM32generic/cores/arduino/stm32/SerialUSB.cpp
 	STM32generic/cores/arduino/stm32/SerialUSB.h
 ##	STM32generic/cores/arduino/stm32/stm32_ADC.c
