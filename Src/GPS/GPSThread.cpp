@@ -15,10 +15,17 @@ const uint8_t gpsBufferSize = 128;
 // This class handles UART interface that receive chars from GPS and stores them to a buffer
 class GPS_UART
 {
+	// UART hardware handle
+	UART_HandleTypeDef uartHandle;
+
+	// Receive ring buffer
 	uint8_t rxBuffer[gpsBufferSize];
 	uint8_t lastReadIndex = 0;
 	uint8_t lastReceivedIndex = 0;
-	UART_HandleTypeDef uartHandle;
+
+	// Semaphore to sleep until whole line is received
+	SemaphoreHandle_t xSemaphore = NULL;
+	//StaticSemaphore_t xSemaphoreBuffer; //TODO: Implement static allocation for semaphore and other RTOS objects
 
 public:
 	void init()
@@ -26,6 +33,10 @@ public:
 		// Reset pointers (just in case someone calls init() multiple times)
 		lastReadIndex = 0;
 		lastReceivedIndex = 0;
+
+		// Initialize semaphore
+		//xSemaphore = xSemaphoreCreateBinary();
+		xSemaphore = xSemaphoreCreateCounting(100, 0);
 
 		// Enable clocking of corresponding periperhal
 		__HAL_RCC_GPIOA_CLK_ENABLE();
@@ -77,6 +88,12 @@ public:
 			return '\0';
 	}
 
+	// Wait until whole line is received
+	void waitForString()
+	{
+		xSemaphoreTake(xSemaphore, portMAX_DELAY);
+	}
+
 	// Helper function, returns UART handler
 	inline UART_HandleTypeDef * getUartHandle()
 	{
@@ -86,6 +103,9 @@ public:
 	// Char received, prepare for next one
 	inline void charReceivedCB()
 	{
+		if(rxBuffer[lastReceivedIndex % gpsBufferSize] == '\n')
+			xSemaphoreGiveFromISR(&xSemaphore, NULL);
+
 		lastReceivedIndex++;
 		HAL_UART_Receive_IT(&uartHandle, rxBuffer + (lastReceivedIndex % gpsBufferSize), 1);
 	}
@@ -117,6 +137,8 @@ void vGPSTask(void *pvParameters)
 {
 	for (;;)
 	{
+		gpsUart.waitForString();
+
 		while(gpsUart.available())
 		{
 			int c = gpsUart.readChar();
