@@ -51,16 +51,16 @@ void SystemClock_Config(void)
 	HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
 	// SysTick_IRQn interrupt configuration
-	HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+	HAL_NVIC_SetPriority(SysTick_IRQn, 4, 0);
 }
 
 void InitBoard()
 {
+	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
+
 	// Initialize board and HAL
 	HAL_Init();
 	SystemClock_Config();
-
-	HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 }
 
 extern "C"

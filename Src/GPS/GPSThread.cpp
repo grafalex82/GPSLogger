@@ -20,12 +20,14 @@ class GPS_UART
 
 	// Receive ring buffer
 	uint8_t rxBuffer[gpsBufferSize];
-	uint8_t lastReadIndex = 0;
-	uint8_t lastReceivedIndex = 0;
+	volatile uint8_t lastReadIndex = 0;
+	volatile uint8_t lastReceivedIndex = 0;
 
 	// Semaphore to sleep until whole line is received
 	SemaphoreHandle_t xSemaphore = NULL;
 	//StaticSemaphore_t xSemaphoreBuffer; //TODO: Implement static allocation for semaphore and other RTOS objects
+
+	TaskHandle_t xGPSThread = NULL;
 
 public:
 	void init()
@@ -36,7 +38,8 @@ public:
 
 		// Initialize semaphore
 		//xSemaphore = xSemaphoreCreateBinary();
-		xSemaphore = xSemaphoreCreateCounting(100, 0);
+		//xSemaphore = xSemaphoreCreateCounting(100, 0);
+		xGPSThread = xTaskGetCurrentTaskHandle();
 
 		// Enable clocking of corresponding periperhal
 		__HAL_RCC_GPIOA_CLK_ENABLE();
@@ -66,7 +69,7 @@ public:
 		HAL_UART_Init(&uartHandle);
 
 		// We will be using UART interrupt to get data
-		HAL_NVIC_SetPriority(USART1_IRQn, 0, 0);
+		HAL_NVIC_SetPriority(USART1_IRQn, 2, 0);
 		HAL_NVIC_EnableIRQ(USART1_IRQn);
 
 		// We will be waiting for a single char right received right to the buffer
@@ -89,9 +92,10 @@ public:
 	}
 
 	// Wait until whole line is received
-	void waitForString()
+	bool waitForString()
 	{
-		xSemaphoreTake(xSemaphore, portMAX_DELAY);
+		return ulTaskNotifyTake(pdTRUE, 10);
+		//return xSemaphoreTake(xSemaphore, 10) == pdTRUE;
 	}
 
 	// Helper function, returns UART handler
@@ -103,11 +107,20 @@ public:
 	// Char received, prepare for next one
 	inline void charReceivedCB()
 	{
-		if(rxBuffer[lastReceivedIndex % gpsBufferSize] == '\n')
-			xSemaphoreGiveFromISR(&xSemaphore, NULL);
+		char lastReceivedChar = rxBuffer[lastReceivedIndex % gpsBufferSize];
 
 		lastReceivedIndex++;
 		HAL_UART_Receive_IT(&uartHandle, rxBuffer + (lastReceivedIndex % gpsBufferSize), 1);
+
+		BaseType_t xHigherPriorityTaskWoken;
+
+		if(lastReceivedChar == '\n')
+			vTaskNotifyGiveFromISR(xGPSThread, NULL);
+		//xTaskNotifyGive(xGPSThread);
+		//if(rxBuffer[lastReceivedIndex % gpsBufferSize] == '\n')
+		//	xSemaphoreGiveFromISR(xSemaphore, &xHigherPriorityTaskWoken);
+
+//		portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 	}
 
 
@@ -130,14 +143,38 @@ extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uartHandle)
 
 void initGPS()
 {
+	vTaskDelay(2000);
+	SerialUSB.println("Initializing GPS thread");
+	vTaskDelay(200);
+
 	gpsUart.init();
+
+	SerialUSB.println("GPS thread initialized");
+	vTaskDelay(200);
 }
 
 void vGPSTask(void *pvParameters)
 {
+	initGPS();
+
+	SerialUSB.println("Starting GPS thread");
+	vTaskDelay(200);
+
 	for (;;)
 	{
-		gpsUart.waitForString();
+
+		SerialUSB.println("Waiting for string");
+		vTaskDelay(200);
+
+		if(!gpsUart.waitForString())
+		{
+			SerialUSB.println("Nothing received");
+			vTaskDelay(200);
+			continue;
+		}
+		SerialUSB.println("String received");
+		vTaskDelay(200);
+
 
 		while(gpsUart.available())
 		{
