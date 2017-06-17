@@ -50,8 +50,8 @@ void SystemClock_Config(void)
 	HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 	HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
 
-	// SysTick_IRQn interrupt configuration
-	HAL_NVIC_SetPriority(SysTick_IRQn, 0, 0);
+	// SysTick_IRQn interrupt configuration - setting SysTick as lower priority to satisfy FreeRTOS requirements
+	HAL_NVIC_SetPriority(SysTick_IRQn, 15, 0);
 }
 
 void InitBoard()
