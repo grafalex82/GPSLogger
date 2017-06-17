@@ -90,7 +90,6 @@ public:
 	bool waitForString()
 	{
 		return ulTaskNotifyTake(pdTRUE, 10);
-		//return xSemaphoreTake(xSemaphore, 10) == pdTRUE;
 	}
 
 	// Helper function, returns UART handler
@@ -107,11 +106,10 @@ public:
 		lastReceivedIndex++;
 		HAL_UART_Receive_IT(&uartHandle, rxBuffer + (lastReceivedIndex % gpsBufferSize), 1);
 
+		// If a EOL symbol received, notify GPS thread that line is avaialble to read
 		if(lastReceivedChar == '\n')
 			vTaskNotifyGiveFromISR(xGPSThread, NULL);
 	}
-
-
 } gpsUart; // An instance of UART handler
 
 
@@ -135,9 +133,11 @@ void vGPSTask(void *pvParameters)
 
 	for (;;)
 	{
+		// Wait until whole string is received
 		if(!gpsUart.waitForString())
 			continue;
 
+		// Read received string and parse GPS stream char by char
 		while(gpsUart.available())
 		{
 			int c = gpsUart.readChar();
