@@ -21,7 +21,7 @@ int main(void)
 	//initDisplay();
 	initButtons();
 	//initScreens();
-	initGPS();
+	//initGPS();
 
 	// Set up threads
 	// TODO: Consider encapsulating init and task functions into a class(es)

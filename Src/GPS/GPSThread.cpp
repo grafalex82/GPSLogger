@@ -23,10 +23,7 @@ class GPS_UART
 	volatile uint8_t lastReadIndex = 0;
 	volatile uint8_t lastReceivedIndex = 0;
 
-	// Semaphore to sleep until whole line is received
-	SemaphoreHandle_t xSemaphore = NULL;
-	//StaticSemaphore_t xSemaphoreBuffer; //TODO: Implement static allocation for semaphore and other RTOS objects
-
+	// GPS thread handle
 	TaskHandle_t xGPSThread = NULL;
 
 public:
@@ -36,9 +33,7 @@ public:
 		lastReadIndex = 0;
 		lastReceivedIndex = 0;
 
-		// Initialize semaphore
-		//xSemaphore = xSemaphoreCreateBinary();
-		//xSemaphore = xSemaphoreCreateCounting(100, 0);
+		// Initialize GPS Thread handle
 		xGPSThread = xTaskGetCurrentTaskHandle();
 
 		// Enable clocking of corresponding periperhal
@@ -69,7 +64,7 @@ public:
 		HAL_UART_Init(&uartHandle);
 
 		// We will be using UART interrupt to get data
-		HAL_NVIC_SetPriority(USART1_IRQn, 2, 0);
+		HAL_NVIC_SetPriority(USART1_IRQn, 6, 0);
 		HAL_NVIC_EnableIRQ(USART1_IRQn);
 
 		// We will be waiting for a single char right received right to the buffer
@@ -112,15 +107,8 @@ public:
 		lastReceivedIndex++;
 		HAL_UART_Receive_IT(&uartHandle, rxBuffer + (lastReceivedIndex % gpsBufferSize), 1);
 
-		BaseType_t xHigherPriorityTaskWoken;
-
 		if(lastReceivedChar == '\n')
 			vTaskNotifyGiveFromISR(xGPSThread, NULL);
-		//xTaskNotifyGive(xGPSThread);
-		//if(rxBuffer[lastReceivedIndex % gpsBufferSize] == '\n')
-		//	xSemaphoreGiveFromISR(xSemaphore, &xHigherPriorityTaskWoken);
-
-//		portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 	}
 
 
@@ -139,47 +127,21 @@ extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uartHandle)
 	gpsUart.charReceivedCB();
 }
 
-
-
-void initGPS()
-{
-	vTaskDelay(2000);
-	SerialUSB.println("Initializing GPS thread");
-	vTaskDelay(200);
-
-	gpsUart.init();
-
-	SerialUSB.println("GPS thread initialized");
-	vTaskDelay(200);
-}
-
 void vGPSTask(void *pvParameters)
 {
-	initGPS();
-
-	SerialUSB.println("Starting GPS thread");
-	vTaskDelay(200);
+	// GPS initialization must be done withing GPS thread as thread handle is stored
+	// and used later for synchronization purposes
+	gpsUart.init();
 
 	for (;;)
 	{
-
-		SerialUSB.println("Waiting for string");
-		vTaskDelay(200);
-
 		if(!gpsUart.waitForString())
-		{
-			SerialUSB.println("Nothing received");
-			vTaskDelay(200);
 			continue;
-		}
-		SerialUSB.println("String received");
-		vTaskDelay(200);
-
 
 		while(gpsUart.available())
 		{
 			int c = gpsUart.readChar();
-			SerialUSB.write(c);
+			//SerialUSB.write(c);
 			gpsParser.handle(c);
 		}
 		
