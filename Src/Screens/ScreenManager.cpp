@@ -4,6 +4,7 @@
 
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <ssd1306_i2c_driver.h>
 
 #include "8x12Font.h"
 #include "Screen.h"
@@ -17,7 +18,8 @@
 #include "OdometerScreen.h"
 #include "SettingsGroupScreen.h"
 
-Adafruit_SSD1306 display(-1);
+SSD1306_I2C_Driver i2c_driver;
+Adafruit_SSD1306 display(&i2c_driver, -1);
 
 #if (SSD1306_LCDHEIGHT != 32)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");

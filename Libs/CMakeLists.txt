@@ -67,6 +67,8 @@ ADD_LIBRARY(AdafruitGFX STATIC
 ADD_LIBRARY(AdafruitSSD1306 STATIC
 	Adafruit_SSD1306/Adafruit_SSD1306.cpp
 	Adafruit_SSD1306/Adafruit_SSD1306.h
+	Adafruit_SSD1306/ssd1306_i2c_driver.cpp
+	Adafruit_SSD1306/ssd1306_i2c_driver.h
 )
 
 TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE

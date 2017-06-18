@@ -631,7 +631,7 @@ void Adafruit_SSD1306::drawFastVLineInternal(int16_t x, int16_t __y, int16_t __h
   // and offset x columns in
   pBuf += x;
 
-  // do the fi_rst partial byte, if necessary - this requires some masking
+  // do the first partial byte, if necessary - this requires some masking
   register uint8_t mod = (y&7);
   if(mod) {
     // mask off the high n bits we want to set

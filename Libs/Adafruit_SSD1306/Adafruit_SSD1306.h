@@ -158,15 +158,22 @@ All text above, and the splash screen must be included in any redistribution
 #define SSD1306_VERTICAL_AND_RIGHT_HORIZONTAL_SCROLL 0x29
 #define SSD1306_VERTICAL_AND_LEFT_HORIZONTAL_SCROLL 0x2A
 
+class ISSD1306Driver
+{
+public:
+	virtual void begin() = 0;
+	virtual void sendCommand(uint8_t cmd) = 0;
+	virtual void sendData(uint8_t * data, size_t size) = 0;
+};
+
 class Adafruit_SSD1306 : public Adafruit_GFX {
  public:
 #if defined ADAFRUIT_SSD1306_SPI
   Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS);
 #elif defined ADAFRUIT_SSD1306_HW_SPI
   Adafruit_SSD1306(int8_t DC, int8_t RST, int8_t CS);
-#elif defined ADAFRUIT_SSD1306_I2C
-  Adafruit_SSD1306(int8_t RST = -1);
 #endif
+  Adafruit_SSD1306(ISSD1306Driver * driver, int8_t RST = -1);
 
   void begin(uint8_t switchvcc = SSD1306_SWITCHCAPVCC, uint8_t i2caddr = SSD1306_I2C_ADDRESS, bool reset=true);
   void ssd1306_command(uint8_t c);
@@ -189,14 +196,12 @@ class Adafruit_SSD1306 : public Adafruit_GFX {
   virtual void drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color);
   virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
 
- private:
+private:
+
+  ISSD1306Driver * _driver;
 
   int8_t _vccstate;
-  int8_t rst;
-
-#ifdef ADAFRUIT_SSD1306_I2C
-  int8_t _i2caddr; // address of the display on I2C bus
-#endif //ADAFRUIT_SSD1306_I2C
+  int8_t _rst;
 
 #if defined ADAFRUIT_SSD1306_SPI || defined ADAFRUIT_SSD1306_HW_SPI
   int8_t sid, sclk, dc, cs;
