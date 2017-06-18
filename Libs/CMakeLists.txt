@@ -69,11 +69,15 @@ ADD_LIBRARY(AdafruitSSD1306 STATIC
 	Adafruit_SSD1306/Adafruit_SSD1306.h
 	Adafruit_SSD1306/ssd1306_i2c_driver.cpp
 	Adafruit_SSD1306/ssd1306_i2c_driver.h
+#	Adafruit_SSD1306/ssd1306_spi_driver.cpp
+#	Adafruit_SSD1306/ssd1306_spi_driver.h
+#	Adafruit_SSD1306/ssd1306_sw_spi_driver.cpp
+#	Adafruit_SSD1306/ssd1306_sw_spi_driver.h
 )
 
 TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
 	STM32generic/libraries/Wire/src
-	STM32generic/libraries/SPI/src
+#	STM32generic/libraries/SPI/src
 	AdafruitGFX
 )
 
@@ -87,6 +91,8 @@ SET(ARDUINO_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32generic/libraries)
 SET(ARDUINO_LIBS_SRC
 	${ARDUINO_LIBS_DIR}/Wire/src/Wire.cpp
 	${ARDUINO_LIBS_DIR}/Wire/src/Wire.h
+#	${ARDUINO_LIBS_DIR}/SPI/src/SPI.cpp
+#	${ARDUINO_LIBS_DIR}/SPI/src/SPI.h
 )
 
 ADD_LIBRARY(ArduinoLibs STATIC ${ARDUINO_LIBS_SRC})
@@ -226,7 +232,7 @@ SET(HAL_SRC
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_rtc_ex.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_sd.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_smartcard.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi_ex.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_sram.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_tim.c

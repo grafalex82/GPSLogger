@@ -34,11 +34,6 @@ All text above, and the splash screen below must be included in any redistributi
 #include "Adafruit_SSD1306.h"
 
 
-#if defined ADAFRUIT_SSD1306_SPI || defined ADAFRUIT_SSD1306_HW_SPI
-#include <SPI.h>
-#endif //ADAFRUIT_SSD1306_SPI
-
-
 // the memory buffer for the LCD
 
 static uint8_t buffer[SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH / 8] = {
@@ -145,27 +140,6 @@ void Adafruit_SSD1306::drawPixel(int16_t x, int16_t y, uint16_t color) {
 
 }
 
-#ifdef ADAFRUIT_SSD1306_SPI
-Adafruit_SSD1306::Adafruit_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t _rst, int8_t CS) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
-  cs = CS;
-  _rst = _rst;
-  dc = DC;
-  sclk = SCLK;
-  sid = SID;
-}
-#endif //ADAFRUIT_SSD1306_SPI
-
-#ifdef ADAFRUIT_SSD1306_HW_SPI
-// constructor for hardware SPI - we indicate DataCommand, ChipSelect, Reset
-Adafruit_SSD1306::Adafruit_SSD1306(int8_t DC, int8_t _rst, int8_t CS) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
-  dc = DC;
-  _rst = _rst;
-  cs = CS;
-}
-#endif //ADAFRUIT_SSD1306_HW_SPI
-
-#ifdef ADAFRUIT_SSD1306_I2C
-
 // initializer for I2C - we only indicate the reset pin!
 Adafruit_SSD1306::Adafruit_SSD1306(ISSD1306Driver * driver, int8_t reset) :
 	Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT)
@@ -173,67 +147,27 @@ Adafruit_SSD1306::Adafruit_SSD1306(ISSD1306Driver * driver, int8_t reset) :
   _driver = driver;
   _rst = reset;
 }
-#endif //ADAFRUIT_SSD1306_I2C
 
-
-void Adafruit_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr, bool reset)
+void Adafruit_SSD1306::begin(uint8_t vccstate, bool reset)
 {
   _vccstate = vccstate;
 
   // Initialize communication driver
   _driver->begin();
 
-// SPI specific initialization
-#if defined ADAFRUIT_SSD1306_SPI || defined ADAFRUIT_SSD1306_HW_SPI
-  (void)i2caddr; // suppress unused var warning
-
-  // set pin directions
-  pinMode(dc, OUTPUT);
-  pinMode(cs, OUTPUT);
-#ifdef HAVE_PORTREG
-  csport      = portOutputRegister(digitalPinToPort(cs));
-  cspinmask   = digitalPinToBitMask(cs);
-  dcport      = portOutputRegister(digitalPinToPort(dc));
-  dcpinmask   = digitalPinToBitMask(dc);
-#endif
-
-#if defined ADAFRUIT_SSD1306_SPI
-  // set pins for software-SPI
-  pinMode(sid, OUTPUT);
-  pinMode(sclk, OUTPUT);
-#ifdef HAVE_PORTREG
-  clkport     = portOutputRegister(digitalPinToPort(sclk));
-  clkpinmask  = digitalPinToBitMask(sclk);
-  mosiport    = portOutputRegister(digitalPinToPort(sid));
-  mosipinmask = digitalPinToBitMask(sid);
-#endif
-#endif //ADAFRUIT_SSD1306_SPI
-
-#if defined ADAFRUIT_SSD1306_HW_SPI
-  SPI.begin();
-#ifdef SPI_HAS_TRANSACTION
-  SPI.beginTransaction(SPISettings(8000000, MSBFIRST, SPI_MODE0));
-#else
-  SPI.setClockDivider (4);
-#endif
-#endif //ADAFRUIT_SSD1306_HW_SPI
-
-#endif //defined ADAFRUIT_SSD1306_SPI || defined ADAFRUIT_SSD1306_HW_SPI
-
-
   if ((reset) && (_rst >= 0))
   {
     // Setup reset pin direction (used by both SPI and I2C)
-	pinMode(_rst, OUTPUT);
-	digitalWrite(_rst, HIGH);
+    pinMode(_rst, OUTPUT);
+    digitalWrite(_rst, HIGH);
     // VDD (3.3V) goes high at start, lets just chill for a ms
     delay(1);
     // bring reset low
-	digitalWrite(_rst, LOW);
+    digitalWrite(_rst, LOW);
     // wait 10ms
     delay(10);
     // bring out of reset
-	digitalWrite(_rst, HIGH);
+    digitalWrite(_rst, HIGH);
     // turn on VCC (9V?)
   }
 
@@ -310,25 +244,7 @@ void Adafruit_SSD1306::invertDisplay(uint8_t i) {
 
 void Adafruit_SSD1306::ssd1306_command(uint8_t c)
 {
-#if defined ADAFRUIT_SSD1306_SPI || defined ADAFRUIT_SSD1306_HW_SPI
-#ifdef HAVE_PORTREG
-    *csport |= cspinmask;
-    *dcport &= ~dcpinmask;
-    *csport &= ~cspinmask;
-#else
-    digitalWrite(cs, HIGH);
-    digitalWrite(dc, LOW);
-    digitalWrite(cs, LOW);
-#endif
-	fastSPIwrite(c);
-#ifdef HAVE_PORTREG
-    *csport |= cspinmask;
-#else
-    digitalWrite(cs, HIGH);
-#endif
-#endif //defined ADAFRUIT_SSD1306_SPI || defined ADAFRUIT_SSD1306_HW_SPI
-
-	_driver->sendCommand(c);
+  _driver->sendCommand(c);
 }
 
 // startscrollright
@@ -437,61 +353,14 @@ void Adafruit_SSD1306::display(void) {
     ssd1306_command(1); // Page end address
   #endif
 
-#if defined ADAFRUIT_SSD1306_SPI || defined ADAFRUIT_SSD1306_HW_SPI
-	// SPI
-#ifdef HAVE_PORTREG
-    *csport |= cspinmask;
-    *dcport |= dcpinmask;
-    *csport &= ~cspinmask;
-#else
-    digitalWrite(cs, HIGH);
-    digitalWrite(dc, HIGH);
-    digitalWrite(cs, LOW);
-#endif
-
-    for (uint16_t i=0; i<(SSD1306_LCDWIDTH*SSD1306_LCDHEIGHT/8); i++) {
-      fastSPIwrite(buffer[i]);
-    }
-#ifdef HAVE_PORTREG
-    *csport |= cspinmask;
-#else
-    digitalWrite(cs, HIGH);
-#endif
-#endif //defined ADAFRUIT_SSD1306_SPI || defined ADAFRUIT_SSD1306_HW_SPI
-
-	// Send the buffer data over the driver
-	_driver->sendData(buffer, SSD1306_LCDWIDTH * SSD1306_LCDHEIGHT / 8);
+  // Send the buffer data over the driver
+  _driver->sendData(buffer, SSD1306_LCDWIDTH * SSD1306_LCDHEIGHT / 8);
 }
 
 // clear everything
 void Adafruit_SSD1306::clearDisplay(void) {
   memset(buffer, 0, (SSD1306_LCDWIDTH*SSD1306_LCDHEIGHT/8));
 }
-
-#ifdef ADAFRUIT_SSD1306_SPI
-inline void Adafruit_SSD1306::fastSPIwrite(uint8_t d) {
-    for(uint8_t bit = 0x80; bit; bit >>= 1) {
-#ifdef HAVE_PORTREG
-      *clkport &= ~clkpinmask;
-      if(d & bit) *mosiport |=  mosipinmask;
-      else        *mosiport &= ~mosipinmask;
-      *clkport |=  clkpinmask;
-#else
-      digitalWrite(sclk, LOW);
-      if(d & bit) digitalWrite(sid, HIGH);
-      else        digitalWrite(sid, LOW);
-      digitalWrite(sclk, HIGH);
-#endif
-    }
-}
-#endif //ADAFRUIT_SSD1306_SPI
-
-#ifdef ADAFRUIT_SSD1306_HW_SPI
-inline void Adafruit_SSD1306::fastSPIwrite(uint8_t d) {
-	(void)SPI.transfer(d);
-}
-#endif// ADAFRUIT_SSD1306_HW_SPI
-
 
 void Adafruit_SSD1306::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color) {
   boolean bSwap = false;
