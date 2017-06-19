@@ -18,7 +18,7 @@
 #include "OdometerScreen.h"
 #include "SettingsGroupScreen.h"
 
-DisplayDriver displayDriver;
+extern DisplayDriver displayDriver;
 Adafruit_SSD1306 display(&displayDriver, -1);
 
 #if (SSD1306_LCDHEIGHT != 64)
