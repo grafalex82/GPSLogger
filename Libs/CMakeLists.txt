@@ -67,8 +67,8 @@ ADD_LIBRARY(AdafruitGFX STATIC
 ADD_LIBRARY(AdafruitSSD1306 STATIC
 	Adafruit_SSD1306/Adafruit_SSD1306.cpp
 	Adafruit_SSD1306/Adafruit_SSD1306.h
-	Adafruit_SSD1306/ssd1306_i2c_driver.cpp
-	Adafruit_SSD1306/ssd1306_i2c_driver.h
+#	Adafruit_SSD1306/ssd1306_i2c_driver.cpp
+#	Adafruit_SSD1306/ssd1306_i2c_driver.h
 #	Adafruit_SSD1306/ssd1306_spi_driver.cpp
 #	Adafruit_SSD1306/ssd1306_spi_driver.h
 #	Adafruit_SSD1306/ssd1306_sw_spi_driver.cpp
@@ -76,7 +76,7 @@ ADD_LIBRARY(AdafruitSSD1306 STATIC
 )
 
 TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
-	STM32generic/libraries/Wire/src
+#	STM32generic/libraries/Wire/src
 #	STM32generic/libraries/SPI/src
 	AdafruitGFX
 )
@@ -208,7 +208,7 @@ SET(HAL_SRC
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_crc.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_dac.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_dac_ex.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_dma.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_dma.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_eth.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_flash.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_flash_ex.c

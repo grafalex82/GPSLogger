@@ -11,6 +11,8 @@ SET(SOURCE_FILES
 	Screens/CurrentTimeScreen.h
 	Screens/DebugScreen.cpp
 	Screens/DebugScreen.h
+	Screens/DisplayDriver.cpp
+	Screens/DisplayDriver.h
 	Screens/OdometerActionScreen.cpp
 	Screens/OdometerActionScreen.h
 	Screens/OdometerScreen.cpp
@@ -80,7 +82,7 @@ TARGET_LINK_LIBRARIES(GPSLogger
 	FreeRTOS
 	AdafruitGFX
 	AdafruitSSD1306
-	ArduinoLibs
+#	ArduinoLibs
 	STM32generic
 	HAL
 	m
