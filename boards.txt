@@ -4,6 +4,7 @@ menu.serial=Serial communication
 menu.subboard=Specific Board
 menu.upload_method=Upload method
 menu.usb=USB
+menu.jtag_swd=JTAG/SWD debugging
 
 
 ################################################################################
@@ -76,6 +77,12 @@ MapleMini_F103CB.menu.serial.SerialUSB.build.extra_flags_serial=-DMENU_SERIAL=Se
 MapleMini_F103CB.menu.serial.SerialUART1=SerialUART1
 MapleMini_F103CB.menu.serial.SerialUART1.build.extra_flags_serial=-DMENU_SERIAL=SerialUART1
 
+MapleMini_F103CB.menu.jtag_swd.Disabled=Disabled [debug pins free]
+MapleMini_F103CB.menu.jtag_swd.Disabled.build.extra_flags_jtag=-DMENU_DEBUG_DISABLED
+MapleMini_F103CB.menu.jtag_swd.SWD=SWD [debug pins reserved: 21(PA14), 22(PA13)]
+MapleMini_F103CB.menu.jtag_swd.SWD.build.extra_flags_jtag=-DMENU_DEBUG_SWD
+MapleMini_F103CB.menu.jtag_swd.JTAG=JTAG [debug pins reserved: 18(PB4), 19(PB3), 20(PA15), 21(PA14), 22(PA13)]
+MapleMini_F103CB.menu.jtag_swd.JTAG.build.extra_flags_jtag=-DMENU_DEBUG_JTAG
 
 ################################################################################
 # BluePill board
@@ -134,6 +141,13 @@ BluePill.menu.serial.SerialUSB=SerialUSB
 BluePill.menu.serial.SerialUSB.build.extra_flags_serial=-DMENU_SERIAL=SerialUSB
 BluePill.menu.serial.SerialUART1=SerialUART1
 BluePill.menu.serial.SerialUART1.build.extra_flags_serial=-DMENU_SERIAL=SerialUART1
+
+BluePill.menu.jtag_swd.SWD=SWD [debug pins reserved: IO(PA13), CLK(PA14)]
+BluePill.menu.jtag_swd.SWD.build.extra_flags_jtag=-DMENU_DEBUG_SWD
+BluePill.menu.jtag_swd.JTAG=JTAG [debug pins reserved: IO(PA13), CLK(PA14), PA15, PB3, PB4]
+BluePill.menu.jtag_swd.JTAG.build.extra_flags_jtag=-DMENU_DEBUG_JTAG
+BluePill.menu.jtag_swd.Disabled=Disabled [debug pins free]
+BluePill.menu.jtag_swd.Disabled.build.extra_flags_jtag=-DMENU_DEBUG_DISABLED
 
 ################################################################################
 # Generic F103RF board
@@ -338,13 +352,13 @@ NUCLEO_64.menu.subboard.Nucleo_L476RG.build.extra_flags=-DSTM32L476RG
 NUCLEO_64.menu.subboard.Nucleo_L476RG.massstorage_drive=NODE_L476RG
 NUCLEO_64.menu.subboard.Nucleo_L476RG.build.f_cpu=80000000L
 
-NUCLEO_64.menu.upload_method.MassStorageMethod=Mass Storage
-NUCLEO_64.menu.upload_method.MassStorageMethod.upload.protocol=
-NUCLEO_64.menu.upload_method.MassStorageMethod.upload.tool=nucleoFlasher
-
 NUCLEO_64.menu.upload_method.STLinkMethod=STLink
 NUCLEO_64.menu.upload_method.STLinkMethod.upload.protocol=STLink
 NUCLEO_64.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
+
+NUCLEO_64.menu.upload_method.MassStorageMethod=Mass Storage
+NUCLEO_64.menu.upload_method.MassStorageMethod.upload.protocol=
+NUCLEO_64.menu.upload_method.MassStorageMethod.upload.tool=nucleoFlasher
 
 
 ################################################################################
@@ -367,14 +381,14 @@ DISCOVERY_L053C8.build.f_cpu=32000000L
 DISCOVERY_L053C8.upload.protocol=STLink
 DISCOVERY_L053C8.upload.tool=stlink_upload
 
+DISCOVERY_L053C8.menu.upload_method.STLinkMethod=STLink
+DISCOVERY_L053C8.menu.upload_method.STLinkMethod.upload.protocol=STLink
+DISCOVERY_L053C8.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
+
 DISCOVERY_L053C8.menu.upload_method.MassStorageMethod=Mass Storage
 DISCOVERY_L053C8.menu.upload_method.MassStorageMethod.upload.protocol=
 DISCOVERY_L053C8.menu.upload_method.MassStorageMethod.upload.tool=nucleoFlasher
 DISCOVERY_L053C8.menu.upload_method.MassStorageMethod.massstorage_drive=DISCOVERY
-
-DISCOVERY_L053C8.menu.upload_method.STLinkMethod=STLink
-DISCOVERY_L053C8.menu.upload_method.STLinkMethod.upload.protocol=STLink
-DISCOVERY_L053C8.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
 
 DISCOVERY_L053C8.menu.usb.SerialUSB=Serial [Virtual COM port, PA11/PA12 pins]
 DISCOVERY_L053C8.menu.usb.SerialUSB.build.extra_flags_usb=-DMENU_USB_SERIAL
@@ -464,7 +478,7 @@ DISCOVERY_F746NG.upload.maximum_data_size=327680
 DISCOVERY_F746NG.build.core=arduino
 DISCOVERY_F746NG.build.board=DISCOVERY_F746NG
 
-DISCOVERY_F746NG.build.mcu=cortex-m7
+DISCOVERY_F746NG.build.mcu=cortex-m7 -mfpu=fpv4-sp-d16 -mfloat-abi=hard
 DISCOVERY_F746NG.build.series=STM32F7
 DISCOVERY_F746NG.build.variant=DISCOVERY_F746NG
 DISCOVERY_F746NG.build.extra_flags=-DSTM32F746NG -DDATA_IN_ExtSDRAM
@@ -473,14 +487,14 @@ DISCOVERY_F746NG.build.f_cpu=218000000L
 DISCOVERY_F746NG.upload.protocol=STLink
 DISCOVERY_F746NG.upload.tool=stlink_upload
 
+DISCOVERY_F746NG.menu.upload_method.STLinkMethod=STLink
+DISCOVERY_F746NG.menu.upload_method.STLinkMethod.upload.protocol=STLink
+DISCOVERY_F746NG.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
+
 DISCOVERY_F746NG.menu.upload_method.MassStorageMethod=Mass Storage
 DISCOVERY_F746NG.menu.upload_method.MassStorageMethod.upload.protocol=
 DISCOVERY_F746NG.menu.upload_method.MassStorageMethod.upload.tool=nucleoFlasher
 DISCOVERY_F746NG.menu.upload_method.MassStorageMethod.massstorage_drive=DIS_F746NG
-
-DISCOVERY_F746NG.menu.upload_method.STLinkMethod=STLink
-DISCOVERY_F746NG.menu.upload_method.STLinkMethod.upload.protocol=STLink
-DISCOVERY_F746NG.menu.upload_method.STLinkMethod.upload.tool=stlink_upload
 
 DISCOVERY_F746NG.menu.usb.SerialUSB=Serial [Virtual COM port, PA11/PA12 pins]
 DISCOVERY_F746NG.menu.usb.SerialUSB.build.extra_flags_usb=-DMENU_USB_SERIAL

@@ -4,6 +4,23 @@
 #include <Arduino.h>
 #include "stm32_gpio_af.h"
 
+#include "stm32_HAL/stm32XXxx_ll_spi.h"
+
+#if defined(STM32F1) || defined(STM32F4)
+#define SPI_HAS_OLD_DMATRANSFER
+#endif
+
+// SPI_HAS_EXTENDED_TRANSFER means SPI has
+//   - transfer(uint8_t data, uint8_t *rxBuffer, size_t count)
+//   - transfer(uint8_t *txBuffer, uint8_t *rxBuffer, size_t count)
+#define SPI_HAS_EXTENDED_TRANSFER
+
+// SPI_HAS_EXTENDED_NONBLOCKING_TRANSFER means SPI has
+//   - implies SPI_HAS_EXTENDED_TRANSFER
+//   - transfer(uint8_t data, uint8_t *rxBuffer, size_t count, callback)
+//   - transfer(uint8_t *txBuffer, uint8_t *rxBuffer, size_t count, callback)
+#define SPI_HAS_EXTENDED_NONBLOCKING_TRANSFER
+
 // SPI_HAS_TRANSACTION means SPI has
 //   - beginTransaction()
 //   - endTransaction()
@@ -38,132 +55,15 @@
 #define SPI_MODE2 0x02
 #define SPI_MODE3 0x03
 
-#ifdef STM32F0
-#endif
-#ifdef STM32F1
-    #define SPI1_StreamTX 1_Channel3
-    #define SPI1_StreamRX 1_Channel2
-    #define SPI1_ChannelTX 0
-    #define SPI1_ChannelRX 0
-    #define SPI2_StreamTX 1_Channel5
-    #define SPI2_StreamRX 1_Channel4
-    #define SPI2_ChannelTX 0
-    #define SPI2_ChannelRX 0
-    #define SPI3_StreamTX 2_Channel2
-    #define SPI3_StreamRX 2_Channel1
-    #define SPI3_ChannelTX 0
-    #define SPI3_ChannelRX 0
-
-	/*
-	 * These settings are not possible for F1, L1, F3 series
-	 * So we define them to nothing. We should move these to a single block
-	 * for all the series that are compatible.
-	 */
-	#define	_SPISetDMAChannel(hdma_handler,chan)
-	#define _SPISetDMAFIFO(hdma_handler)
-	#define _DMA_Instance_Type DMA_Channel_TypeDef
-
-	#define _SPIx_DMA(a) DMA##a
-	#define SPIx_DMA(a) _SPIx_DMA(a)
-	#define _SPIx_DMA_IRQn(a) DMA##a##_IRQn
-	#define SPIx_DMA_IRQn(a) _SPIx_DMA_IRQn(a)
-
-
-#endif
-#ifdef STM32F2
-    #define SPI1_StreamTX 2_Stream3
-    #define SPI1_StreamRX 2_Stream0
-    #define SPI1_ChannelTX DMA_CHANNEL_3
-    #define SPI1_ChannelRX DMA_CHANNEL_3
-    #define SPI2_StreamTX 1_Stream4
-    #define SPI2_StreamRX 1_Stream3
-    #define SPI2_ChannelTX DMA_CHANNEL_0
-    #define SPI2_ChannelRX DMA_CHANNEL_0
-    #define SPI3_StreamTX 1_Stream5
-    #define SPI3_StreamRX 1_Stream0
-    #define SPI3_ChannelTX DMA_CHANNEL_0
-    #define SPI3_ChannelRX DMA_CHANNEL_0
-
-	#define _SPIx_DMA(a) DMA##a
-	#define SPIx_DMA(a) _SPIx_DMA(a)
-	#define _SPIx_DMA_IRQn(a) DMA##a##_IRQn
-	#define SPIx_DMA_IRQn(a) _SPIx_DMA_IRQn(a)
-
-	#define _SPISetDmaIRQ(a) HAL_NVIC_SetPriority(SPIx_DMA_IRQn(a##_StreamTX), 0, 0); \
-							HAL_NVIC_SetPriority(SPIx_DMA_IRQn(a##_StreamRX), 0, 0); \
-							HAL_NVIC_EnableIRQ(SPIx_DMA_IRQn(a##_StreamTX)); \
-							HAL_NVIC_EnableIRQ(SPIx_DMA_IRQn(a##_StreamRX));
-#endif
-#ifdef STM32F3
-#endif
-#ifdef STM32F4
-    #define SPI1_StreamTX 2_Stream3
-    #define SPI1_StreamRX 2_Stream0
-    #define SPI1_ChannelTX DMA_CHANNEL_3
-    #define SPI1_ChannelRX DMA_CHANNEL_3
-    #define SPI2_StreamTX 1_Stream4
-    #define SPI2_StreamRX 1_Stream3
-    #define SPI2_ChannelTX DMA_CHANNEL_0
-    #define SPI2_ChannelRX DMA_CHANNEL_0
-    #define SPI3_StreamTX 1_Stream5
-    #define SPI3_StreamRX 1_Stream0
-    #define SPI3_ChannelTX DMA_CHANNEL_0
-    #define SPI3_ChannelRX DMA_CHANNEL_0
-
-	#define _SPIx_DMA(a) DMA##a
-	#define SPIx_DMA(a) _SPIx_DMA(a)
-	#define _SPIx_DMA_IRQn(a) DMA##a##_IRQn
-	#define SPIx_DMA_IRQn(a) _SPIx_DMA_IRQn(a)
-
-
-	/*
-	 * These settings below are only possible for F2, F4, F7 and L4 series
-	 * We should move these to a single block
-	 * for all the series that are compatible.
-	 */
-	#define _DMA_Instance_Type DMA_Stream_TypeDef
-	#define	_SPISetDMAChannel(hdma_handler,chan) hdma_handler.Init.Channel = chan
-
+#if defined(STM32F4) || defined(STM32F7)
 	#define _SPISetDMAFIFO(hdma_handler)	do { hdma_handler.Init.FIFOMode = DMA_FIFOMODE_DISABLE; \
 								hdma_handler.Init.FIFOMode = DMA_FIFOMODE_ENABLE; \
 								hdma_handler.Init.FIFOThreshold = DMA_FIFO_THRESHOLD_FULL; \
 								hdma_handler.Init.MemBurst = DMA_MBURST_SINGLE; \
 								hdma_handler.Init.PeriphBurst = DMA_PBURST_SINGLE; } while (0)
 
-	#define _SPISetDmaIRQ(a) HAL_NVIC_SetPriority(SPIx_DMA_IRQn(a##_StreamTX), 0, 0); \
-							HAL_NVIC_SetPriority(SPIx_DMA_IRQn(a##_StreamRX), 0, 0); \
-							HAL_NVIC_EnableIRQ(SPIx_DMA_IRQn(a##_StreamTX)); \
-							HAL_NVIC_EnableIRQ(SPIx_DMA_IRQn(a##_StreamRX));
-#endif
-#ifdef STM32F7
-    #define SPI1_StreamTX 2_Stream3
-    #define SPI1_StreamRX 2_Stream0
-    #define SPI1_ChannelTX DMA_CHANNEL_3
-    #define SPI1_ChannelRX DMA_CHANNEL_3
-    #define SPI2_StreamTX 1_Stream4
-    #define SPI2_StreamRX 1_Stream3
-    #define SPI2_ChannelTX DMA_CHANNEL_0
-    #define SPI2_ChannelRX DMA_CHANNEL_0
-    #define SPI3_StreamTX 1_Stream5
-    #define SPI3_StreamRX 1_Stream0
-    #define SPI3_ChannelTX DMA_CHANNEL_0
-    #define SPI3_ChannelRX DMA_CHANNEL_0
-
-	#define _SPIx_DMA(a) DMA##a
-	#define SPIx_DMA(a) _SPIx_DMA(a)
-	#define _SPIx_DMA_IRQn(a) DMA##a##_IRQn
-	#define SPIx_DMA_IRQn(a) _SPIx_DMA_IRQn(a)
-
-	#define _SPISetDmaIRQ(a) HAL_NVIC_SetPriority(SPIx_DMA_IRQn(a##_StreamTX), 0, 0); \
-							HAL_NVIC_SetPriority(SPIx_DMA_IRQn(a##_StreamRX), 0, 0); \
-							HAL_NVIC_EnableIRQ(SPIx_DMA_IRQn(a##_StreamTX)); \
-							HAL_NVIC_EnableIRQ(SPIx_DMA_IRQn(a##_StreamRX));
-#endif
-#ifdef STM32L0
-#endif
-#ifdef STM32L1
-#endif
-#ifdef STM32L4
+#else
+    #define _SPISetDMAFIFO(hdma_handler)
 #endif
 
 class SPISettings {
@@ -177,7 +77,7 @@ class SPISettings {
     uint8_t dataMode;
 };
 
-
+typedef void (*spi_callback_type)();
 
 class SPIClass {
   public:
@@ -210,16 +110,94 @@ class SPIClass {
     uint8_t transfer(uint8_t data);
     uint16_t transfer16(uint16_t data);
     void transfer(uint8_t *buf, size_t count);
-	uint8_t dmaTransfer(uint8_t *transmitBuf, uint8_t *receiveBuf, uint16_t length);
-	uint8_t dmaSend(uint8_t *transmitBuf, uint16_t length, bool minc = 1);
 
+    void setDataWidth16(bool width16) {
+        if (width16) {
+            LL_SPI_SetDataWidth(spiHandle.Instance, LL_SPI_DATAWIDTH_16BIT);
+
+            hdma_spi_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+            hdma_spi_rx.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+
+            hdma_spi_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
+            hdma_spi_tx.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
+
+        } else if (LL_SPI_GetDataWidth(spiHandle.Instance) == LL_SPI_DATAWIDTH_16BIT) {
+            LL_SPI_SetDataWidth(spiHandle.Instance, LL_SPI_DATAWIDTH_8BIT);
+
+            hdma_spi_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+            hdma_spi_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+
+            hdma_spi_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+            hdma_spi_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+        }
+    }
+
+
+    bool transfer(uint8_t data, uint8_t *rxBuffer, size_t count) {
+        repeatTransmitData = data;
+        if (transfer((uint8_t*) NULL, rxBuffer, count, NULL)) {
+            flush();
+            return true;
+        }
+        return false;
+    }
+    bool transfer(uint8_t *txBuffer, uint8_t *rxBuffer, size_t count) {
+        if (transfer(txBuffer, rxBuffer, count, NULL)) {
+            flush();
+            return true;
+        }
+        return false;
+    }
+    bool transfer(uint8_t data, uint8_t *rxBuffer, size_t count, spi_callback_type callback) {
+        repeatTransmitData = data;
+        return transfer((uint8_t*) NULL, rxBuffer, count, callback);
+    }
+    bool transfer(uint8_t *txBuffer, uint8_t *rxBuffer, size_t count, spi_callback_type callback);
+
+
+    bool transfer16(uint16_t data, uint16_t *rxBuffer, size_t count) {
+        setDataWidth16(true);
+
+        repeatTransmitData = data;
+
+        return transfer((uint8_t*)NULL, (uint8_t*)rxBuffer, count);
+    }
+    bool transfer16(uint16_t *txBuffer, uint16_t *rxBuffer, size_t count) {
+        setDataWidth16(true);
+
+        return transfer((uint8_t*)txBuffer, (uint8_t *)rxBuffer, count);
+    }
+    bool transfer16(uint16_t data, uint16_t *rxBuffer, size_t count, spi_callback_type callback) {
+        setDataWidth16(true);
+
+        repeatTransmitData = data;
+        return transfer((uint8_t*) NULL, (uint8_t*)rxBuffer, count, callback);
+    }
+    bool transfer16(uint16_t *txBuffer, uint16_t *rxBuffer, size_t count, spi_callback_type callback) {
+        setDataWidth16(true);
+
+        return transfer((uint8_t*)txBuffer, (uint8_t*)rxBuffer, count, callback);
+    }
+
+    void flush(void);
+    bool done(void);
+
+	uint8_t __attribute__ ((deprecated)) dmaTransfer(uint8_t *transmitBuf, uint8_t *receiveBuf, uint16_t length);
+	uint8_t __attribute__ ((deprecated)) dmaSend(uint8_t *transmitBuf, uint16_t length, bool minc = 1);
+
+
+    SPI_HandleTypeDef spiHandle = {};
+
+    uint16_t repeatTransmitData = 0XFFFF;
+    spi_callback_type callback;
+
+    volatile bool dmaDone = true;
 
   private:
     uint32_t apb_freq = 0;
 
     SPISettings settings = {};
 
-    SPI_HandleTypeDef spiHandle = {};
     DMA_HandleTypeDef hdma_spi_rx = {};
     DMA_HandleTypeDef hdma_spi_tx = {};
 
@@ -232,6 +210,7 @@ class SPIClass {
 };
 
 inline uint8_t SPIClass::transfer(uint8_t data) {
+    while(__HAL_SPI_GET_FLAG(&spiHandle, SPI_FLAG_TXE) == RESET);
 
 	*(volatile uint8_t*)&spiHandle.Instance->DR = data;
 
@@ -239,19 +218,23 @@ inline uint8_t SPIClass::transfer(uint8_t data) {
 	while(__HAL_SPI_GET_FLAG(&spiHandle, SPI_FLAG_BSY) == SET);
 
 	return *(volatile uint8_t*)&spiHandle.Instance->DR;
-
-	/*
-	if (HAL_SPI_TransmitReceive(&spiHandle, &data, &data, 1, 1000) != HAL_OK) {
-		return 0;
-	}
-	return data;
-	*/
 }
+
 inline uint16_t SPIClass::transfer16(uint16_t data) {
-	if (HAL_SPI_TransmitReceive(&spiHandle, (uint8_t*)&data, (uint8_t*)&data, 2, 1000) != HAL_OK) {
-		return 0;
-	}
-	return data;
+    LL_SPI_SetDataWidth(spiHandle.Instance, LL_SPI_DATAWIDTH_16BIT);
+
+    while(__HAL_SPI_GET_FLAG(&spiHandle, SPI_FLAG_TXE) == RESET);
+
+    *(volatile uint16_t*)&spiHandle.Instance->DR = data;
+
+    while(__HAL_SPI_GET_FLAG(&spiHandle, SPI_FLAG_RXNE) == RESET);
+    while(__HAL_SPI_GET_FLAG(&spiHandle, SPI_FLAG_BSY) == SET);
+
+    uint16_t ret = *(volatile uint16_t*)&spiHandle.Instance->DR;
+
+    LL_SPI_SetDataWidth(spiHandle.Instance, LL_SPI_DATAWIDTH_8BIT);
+
+    return ret;
 }
 
 inline void SPIClass::transfer(uint8_t *buf, size_t count) {
