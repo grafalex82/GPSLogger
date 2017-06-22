@@ -95,11 +95,17 @@ ADD_LIBRARY(AdafruitGFX STATIC
 ADD_LIBRARY(AdafruitSSD1306 STATIC
 	Adafruit_SSD1306/Adafruit_SSD1306.cpp
 	Adafruit_SSD1306/Adafruit_SSD1306.h
+#	Adafruit_SSD1306/ssd1306_i2c_driver.cpp
+#	Adafruit_SSD1306/ssd1306_i2c_driver.h
+#	Adafruit_SSD1306/ssd1306_spi_driver.cpp
+#	Adafruit_SSD1306/ssd1306_spi_driver.h
+#	Adafruit_SSD1306/ssd1306_sw_spi_driver.cpp
+#	Adafruit_SSD1306/ssd1306_sw_spi_driver.h
 )
 
 TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
-	STM32generic/libraries/Wire/src
-	STM32generic/libraries/SPI/src
+#	STM32generic/libraries/Wire/src
+#	STM32generic/libraries/SPI/src
 	AdafruitGFX
 )
 
@@ -115,6 +121,8 @@ SET(ARDUINO_LIBS_SRC
 	${ARDUINO_LIBS_DIR}/SPI/src/SPI.h
 	${ARDUINO_LIBS_DIR}/Wire/src/Wire.cpp
 	${ARDUINO_LIBS_DIR}/Wire/src/Wire.h
+#	${ARDUINO_LIBS_DIR}/SPI/src/SPI.cpp
+#	${ARDUINO_LIBS_DIR}/SPI/src/SPI.h
 )
 
 ADD_LIBRARY(ArduinoLibs STATIC ${ARDUINO_LIBS_SRC})
@@ -152,8 +160,8 @@ SET(STM32GENERIC_SRC
 ##	STM32generic/cores/arduino/WString.cpp
 ##	STM32generic/cores/arduino/WString.h
 
-	STM32generic/cores/arduino/stm32/SerialUART.cpp
-	STM32generic/cores/arduino/stm32/SerialUART.h
+#	STM32generic/cores/arduino/stm32/SerialUART.cpp
+#	STM32generic/cores/arduino/stm32/SerialUART.h
 	STM32generic/cores/arduino/stm32/SerialUSB.cpp
 	STM32generic/cores/arduino/stm32/SerialUSB.h
 ##	STM32generic/cores/arduino/stm32/stm32_ADC.c
@@ -235,7 +243,7 @@ SET(HAL_SRC
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_crc.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_dac.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_dac_ex.c
-#	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_dma.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_dma.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_eth.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_flash.c
 #	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_flash_ex.c

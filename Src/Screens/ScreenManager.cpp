@@ -10,6 +10,7 @@
 #include "ScreenManager.h"
 #include "ButtonsThread.h"
 
+#include "DisplayDriver.h"
 #include "CurrentPositionScreen.h"
 #include "CurrentTimeScreen.h"
 #include "SpeedScreen.h"
@@ -17,9 +18,10 @@
 #include "OdometerScreen.h"
 #include "SettingsGroupScreen.h"
 
-Adafruit_SSD1306 display(-1);
+extern DisplayDriver displayDriver;
+Adafruit_SSD1306 display(&displayDriver, -1);
 
-#if (SSD1306_LCDHEIGHT != 32)
+#if (SSD1306_LCDHEIGHT != 64)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 
@@ -65,7 +67,7 @@ void backToParentScreen()
 void initDisplay()
 {
 	// by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-	display.begin(SSD1306_SWITCHCAPVCC, 0x3C, false);  // initialize with the I2C addr 0x3C (for the 128x32)
+	display.begin(SSD1306_SWITCHCAPVCC, false);  // initialize with the I2C addr 0x3C (for the 128x32)
 	display.setTextColor(WHITE);				// Assuming all subsequent commands draw in white color
 }
 
