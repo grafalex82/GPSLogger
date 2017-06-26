@@ -312,6 +312,13 @@ class SdFat : public SdFileSystem<SdSpiCard> {
     m_spi.setPort(spiPort);
   }
 #endif  // IMPLEMENT_SPI_PORT_SELECTION
+
+  SdFat(SdSpiDriver * driver)
+  {
+	m_spi = driver;
+  }
+
+
   /** Initialize SD card and file system.
    *
    * \param[in] csPin SD card chip select pin.
@@ -319,7 +326,7 @@ class SdFat : public SdFileSystem<SdSpiCard> {
    * \return true for success else false.
    */
   bool begin(uint8_t csPin = SS, SPISettings spiSettings = SPI_FULL_SPEED) {
-    return m_card.begin(&m_spi, csPin, spiSettings) &&
+	return m_card.begin(m_spi, csPin, spiSettings) &&
            SdFileSystem::begin();
   }
   /** Initialize SD card for diagnostic use only.
@@ -329,7 +336,7 @@ class SdFat : public SdFileSystem<SdSpiCard> {
    * \return true for success else false.
    */
   bool cardBegin(uint8_t csPin = SS, SPISettings settings = SPI_FULL_SPEED) {
-    return m_card.begin(&m_spi, csPin, settings);
+	return m_card.begin(m_spi, csPin, settings);
   }
   /** Initialize file system for diagnostic use only.
    * \return true for success else false.
@@ -339,7 +346,7 @@ class SdFat : public SdFileSystem<SdSpiCard> {
   }
 
  private:
-  SdFatSpiDriver m_spi;
+  SdSpiDriver * m_spi;
 };
 //==============================================================================
 #if ENABLE_SDIO_CLASS || defined(DOXYGEN)
@@ -457,7 +464,7 @@ class SdFatEX : public SdFileSystem<SdSpiCardEX> {
   }
 
  private:
-  SdFatSpiDriver m_spi;
+  SdSpiDriver * m_spi;
 };
 //==============================================================================
 #if ENABLE_SOFTWARE_SPI_CLASS || defined(DOXYGEN)
@@ -490,15 +497,20 @@ class SdFatSoftSpiEX : public SdFileSystem<SdSpiCardEX>  {
  */
 class Sd2Card : public SdSpiCard {
  public:
+  Sd2Card(SdSpiDriver * spi)
+  {
+	m_spi = spi;
+  }
+
   /** Initialize the SD card.
    * \param[in] csPin SD chip select pin.
    * \param[in] settings SPI speed, mode, and bit order.
    * \return true for success else false.
    */
   bool begin(uint8_t csPin = SS, SPISettings settings = SD_SCK_MHZ(50)) {
-    return SdSpiCard::begin(&m_spi, csPin, settings);
+	return SdSpiCard::begin(m_spi, csPin, settings);
   }
  private:
-  SdFatSpiDriver m_spi;
+  SdSpiDriver * m_spi;
 };
 #endif  // SdFat_h

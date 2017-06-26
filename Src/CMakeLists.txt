@@ -57,6 +57,8 @@ SET(SOURCE_FILES
 	IdleThread.h
 	LEDThread.cpp
 	LEDThread.h
+	SdFatSPIDriver.cpp
+	SdFatSPIDriver.h
 	SDThread.cpp
 	SDThread.h
 	TimeFont.cpp
@@ -70,8 +72,9 @@ INCLUDE_DIRECTORIES(
 	${GPSLOGGER_LIBS_DIR}/AdafruitGFX
 	${GPSLOGGER_LIBS_DIR}/Adafruit_SSD1306
 	${GPSLOGGER_LIBS_DIR}/NeoGPS
-	${GPSLOGGER_LIBS_DIR}/SD
-	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/Wire/src
+	${GPSLOGGER_LIBS_DIR}/SdFat
+#	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/Wire/src
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
 	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/FreeRTOS/src
 )
 
@@ -83,13 +86,17 @@ ADD_EXECUTABLE(GPSLogger ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(GPSLogger
 	NeoGPS
 	FreeRTOS
-	SD
+	SDFAT
 	AdafruitGFX
 	AdafruitSSD1306
 #	ArduinoLibs
 	STM32generic
 	HAL
 	m
+)
+
+TARGET_COMPILE_DEFINITIONS(GPSLogger PRIVATE
+	-DENABLE_ARDUINO_FEATURES=0	#Disable SdFat stuff
 )
 
 STM32_GENERATE_MAP_FILE(GPSLogger)

@@ -129,6 +129,8 @@ extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uartHandle)
 
 void vGPSTask(void *pvParameters)
 {
+	uint8_t maxLen = 0;
+
 	// GPS initialization must be done withing GPS thread as thread handle is stored
 	// and used later for synchronization purposes
 	gpsUart.init();

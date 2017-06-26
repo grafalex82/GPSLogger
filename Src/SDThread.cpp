@@ -1,14 +1,20 @@
 #include <Arduino_FreeRTOS.h>
-#include <SD.h>
 
+#include <SerialUSB.h>
+#define Serial SerialUSB
+#include <SdFat.h>
+
+#include "SdFatSPIDriver.h"
 #include "SDThread.h"
 
+SdFatSPIDriver spiDriver;
+SdFat SD(&spiDriver);
 
 //Sd2Card card;
 //SdVolume volume;
 //SdFile root;
 
-File rawDataFile;
+FatFile rawDataFile;
 
 enum SDMessageType
 {
@@ -77,7 +83,7 @@ bool initSDCard()
 	}
 	SerialUSB.println("card initialized.");
 
-	rawDataFile = SD.open("RAW_GPS.TXT", FILE_WRITE | O_APPEND);
+	rawDataFile.open(&SD, "RAW_GPS.TXT", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
 
 	return true;
 }
@@ -90,13 +96,14 @@ void saveRawData(const SDMessage & msg)
 //	SerialUSB.write(rawGPSDataBuf.rawData.rawDataBuf, rawGPSDataBuf.rawData.len);
 
 	rawDataFile.write(rawGPSDataBuf.rawData.rawDataBuf, rawGPSDataBuf.rawData.len);
-	rawDataFile.flush();
 }
 
 void runSDMessageLoop()
 {
+	uint16_t i=0;
 	while(true)
 	{
+/*
 		SDMessage msg;
 		if(xQueueReceive(sdQueue, &msg, 50)) // TODO: fix hardcode
 		{
@@ -109,12 +116,22 @@ void runSDMessageLoop()
 				break;
 			}
 		}
+		*/
+
+		SerialUSB.print("Writing ");
+		SerialUSB.println(i);
+
+		rawDataFile.write("Test");
+		rawDataFile.printField(i, '\n');
+
+		i++;
+		vTaskDelay(1000);
 	}
 }
 
 void initSDThread()
 {
-	// Initialize buttons queue
+	// Initialize SD messages queue
 	sdQueue = xQueueCreate(5, sizeof(SDMessage)); // hope 5 messages would be enough
 }
 

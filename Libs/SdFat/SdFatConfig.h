@@ -70,7 +70,7 @@
  * will be defined. If ENABLE_EXTENDED_TRANSFER_CLASS is also nonzero,
  * the class SdFatSoftSpiEX will be defined.
  */
-#define ENABLE_SOFTWARE_SPI_CLASS 0
+#define ENABLE_SOFTWARE_SPI_CLASS 1
 //------------------------------------------------------------------------------
 /** 
  * Set MAINTAIN_FREE_CLUSTER_COUNT nonzero to keep the count of free clusters
@@ -168,9 +168,9 @@
 /**
  * Determine the default SPI configuration.
  */
-#if defined(__STM32F1__)
+#if defined(__STM32F1__) || defined(STM32F1)
 // has multiple SPI ports
-#define SD_HAS_CUSTOM_SPI 2
+#define SD_HAS_CUSTOM_SPI 1
 #elif defined(__AVR__)\
   || defined(__SAM3X8E__) || defined(__SAM3X8H__)\
   || (defined(__arm__) && defined(CORE_TEENSY))\

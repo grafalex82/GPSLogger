@@ -126,12 +126,17 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
   m_spiDriver->setSpiSettings(SD_SCK_HZ(250000));
   spiStart();
 
+  SerialUSB.println("Resetting channel");
+
   // must supply min of 74 clock cycles with CS high.
   spiUnselect();
   for (uint8_t i = 0; i < 10; i++) {
     spiSend(0XFF);
   }
   spiSelect();
+
+  SerialUSB.println("Sending CMD0");
+
   // command to go idle in SPI mode
   while (cardCommand(CMD0, 0) != R1_IDLE_STATE) {
     if (isTimedOut(t0, SD_INIT_TIMEOUT)) {
@@ -145,9 +150,14 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
     goto fail;
   }
 #endif  // USE_SD_CRC
+
+
   // check SD version
   while (1) {
-    if (cardCommand(CMD8, 0x1AA) == (R1_ILLEGAL_COMMAND | R1_IDLE_STATE)) {
+
+	  SerialUSB.println("Sending Cmd8");
+
+	if (cardCommand(CMD8, 0x1AA) == (R1_ILLEGAL_COMMAND | R1_IDLE_STATE)) {
       type(SD_CARD_TYPE_SD1);
       break;
     }
@@ -166,6 +176,9 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
   // initialize card and send host supports SDHC if SD2
   arg = type() == SD_CARD_TYPE_SD2 ? 0X40000000 : 0;
 
+  SerialUSB.println("Sending ACmd41");
+
+
   while (cardAcmd(ACMD41, arg) != R1_READY_STATE) {
     // check for timeout
     if (isTimedOut(t0, SD_INIT_TIMEOUT)) {
@@ -173,6 +186,8 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
       goto fail;
     }
   }
+
+  SerialUSB.println("Sending ACmd58");
   // if SD2 read OCR register to check for SDHC card
   if (type() == SD_CARD_TYPE_SD2) {
     if (cardCommand(CMD58, 0)) {
@@ -189,19 +204,28 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
   }
   spiStop();
   m_spiDriver->setSpiSettings(settings);
+
+  SerialUSB.println("Done");
+
   return true;
 
 fail:
+  SerialUSB.println("Failed");
   spiStop();
   return false;
 }
 //------------------------------------------------------------------------------
 // send command and return error code.  Return zero for OK
 uint8_t SdSpiCard::cardCommand(uint8_t cmd, uint32_t arg) {
+
+SerialUSB.print("Sending command ");
+SerialUSB.println(cmd, 16);
+
   // select card
   if (!m_spiActive) {
     spiStart();
   }
+
   // wait if busy
   waitNotBusy(SD_WRITE_TIMEOUT);
 
@@ -241,6 +265,10 @@ uint8_t SdSpiCard::cardCommand(uint8_t cmd, uint32_t arg) {
   // wait for response
   for (uint8_t i = 0; ((m_status = spiReceive()) & 0X80) && i != 0XFF; i++) {
   }
+
+  SerialUSB.print("Response ");
+  SerialUSB.println(m_status, 16);
+
   return m_status;
 }
 //------------------------------------------------------------------------------
