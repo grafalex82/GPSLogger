@@ -73,7 +73,41 @@ bool initSDCard()
 	//TODO Perhaps we should uninitialize SD card first
 
 	SerialUSB.println("Initializing SD card...");
+#if 0
+	// Initialize
+	spiDriver.begin(0);
 
+	// Deselect card first
+	spiDriver.deactivate();
+
+	//We must supply at least 74 clocks with CS high
+	for(int i=0; i<10; i++)
+		spiDriver.send(0xff);
+	vTaskDelay(5);
+
+	// Select card
+	spiDriver.activate();
+
+	// Wait
+	uint16_t q = 0;
+	while (spiDriver.receive() != 0XFF);
+	{
+		q++;
+		if(q == 0x1000)
+		{
+			SerialUSB.println("Failed :(");
+			return false;
+		}
+	}
+
+	SerialUSB.println("Works :)");
+#endif //0
+
+
+
+
+
+#if 1
 	// see if the card is present and can be initialized:
 	if (!SD.begin(PA4))
 	{
@@ -84,7 +118,7 @@ bool initSDCard()
 	SerialUSB.println("card initialized.");
 
 	rawDataFile.open(&SD, "RAW_GPS.TXT", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
-
+#endif
 	return true;
 }
 

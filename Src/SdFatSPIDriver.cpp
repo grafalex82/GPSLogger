@@ -53,7 +53,7 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	spiHandle.Init.CLKPolarity = SPI_POLARITY_LOW;
 	spiHandle.Init.CLKPhase = SPI_PHASE_1EDGE;
 	spiHandle.Init.NSS = SPI_NSS_SOFT;
-	spiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
+	spiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
 	spiHandle.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	spiHandle.Init.TIMode = SPI_TIMODE_DISABLE;
 	spiHandle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -64,24 +64,33 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 
 void SdFatSPIDriver::activate()
 {
+	SerialUSB.println("== activate");
 	// No special activation needed
 }
 
 
 void SdFatSPIDriver::deactivate()
 {
+	SerialUSB.println("== deactivate");
 	// No special deactivation needed
 }
 
 uint8_t SdFatSPIDriver::receive()
 {
+	SerialUSB.print("== receive: ");
+
 	uint8_t buf;
 	HAL_SPI_Receive(&spiHandle, &buf, 1, 10);
+
+	SerialUSB.println(buf, 16);
+
 	return buf;
 }
 
 uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 {
+	SerialUSB.println("== receive type 2");
+
 	// TODO: Receive via DMA here
 	HAL_SPI_Receive(&spiHandle, buf, n, 10);
 	return 0;
@@ -89,26 +98,37 @@ uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 
 void SdFatSPIDriver::send(uint8_t data)
 {
+	SerialUSB.print("== send: ");
+	SerialUSB.println(data, 16);
+
 	HAL_SPI_Transmit(&spiHandle, &data, 1, 10);
 }
 
 void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 {
+	SerialUSB.println("== send 2");
+
 	// TODO: Transmit over DMA here
 	HAL_SPI_Transmit(&spiHandle, (uint8_t*)buf, n, 10);
 }
 
 void SdFatSPIDriver::select()
 {
+	SerialUSB.println("== select");
+
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 }
 
 void SdFatSPIDriver::setSpiSettings(SPISettings spiSettings)
 {
+	SerialUSB.println("== setSetting");
+
 	// Ignore settings - we are using same settings for all transfer
 }
 
 void SdFatSPIDriver::unselect()
 {
+	SerialUSB.println("== unselect");
+
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 }
