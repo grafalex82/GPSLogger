@@ -59,6 +59,8 @@ SET(SOURCE_FILES
 	LEDThread.h
 	TimeFont.cpp
 	TimeFont.h
+	USBDebugLogger.cpp
+	USBDebugLogger.h
 	Utils.cpp
 	Utils.h
 )
