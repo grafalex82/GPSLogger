@@ -1,7 +1,10 @@
-#include "USBDebugLogger.h"
-
 #include <usbd_cdc_if.h>
 #include <usbd_cdc.h>
+
+#include <Arduino_FreeRTOS.h>
+#include "FreeRTOSHelpers.h"
+#include "USBDebugLogger.h"
+
 
 #define USB_SERIAL_BUFFER_SIZE 128
 
@@ -11,6 +14,14 @@ volatile uint16_t usbTxTail = 0;
 volatile uint16_t usbTransmitting = 0;
 
 extern USBD_HandleTypeDef hUsbDeviceFS;
+
+// TODO Make it static
+SemaphoreHandle_t usbMutex = NULL;
+
+void initUsbDebugLogger()
+{
+	usbMutex = xSemaphoreCreateMutex();
+}
 
 void usbDebugWrite(uint8_t c)
 {
@@ -49,6 +60,9 @@ void usbDebugWrite(const uint8_t *buffer, size_t size)
 
 	// Transmit the message but no longer than timeout
 	uint32_t timeout = HAL_GetTick() + 5;
+
+	// Protect this function from multiple entrance
+	MutexLocker locker(usbMutex);
 
 	// Copy data to the buffer
 	for(size_t i=0; i < size; i++)

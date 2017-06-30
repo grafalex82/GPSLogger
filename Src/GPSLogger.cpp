@@ -9,7 +9,7 @@
 #include "BoardInit.h"
 #include "LEDThread.h"
 #include "ButtonsThread.h"
-
+#include "USBDebugLogger.h"
 
 int main(void)
 {
@@ -17,6 +17,8 @@ int main(void)
 
 	USBDeviceFS.reenumerate();
 	USBDeviceFS.beginCDC();
+
+	initUsbDebugLogger();
 
 	//initDisplay();
 	initButtons();
