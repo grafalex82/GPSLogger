@@ -7,9 +7,9 @@
 #include "USBDebugLogger.h"
 
 
-#define USB_SERIAL_BUFFER_SIZE 128
+#define USB_SERIAL_BUFFER_SIZE 256
 
-uint8_t usbTxBuffer[CDC_SERIAL_BUFFER_SIZE];
+uint8_t usbTxBuffer[USB_SERIAL_BUFFER_SIZE];
 volatile uint16_t usbTxHead = 0;
 volatile uint16_t usbTxTail = 0;
 volatile uint16_t usbTransmitting = 0;
