@@ -1,5 +1,6 @@
 #include <usbd_cdc_if.h>
 #include <usbd_cdc.h>
+#include <stdarg.h>
 
 #include <Arduino_FreeRTOS.h>
 #include "FreeRTOSHelpers.h"
@@ -23,16 +24,6 @@ void initUsbDebugLogger()
 	usbMutex = xSemaphoreCreateMutex();
 }
 
-void usbDebugWrite(uint8_t c)
-{
-	usbDebugWrite(&c, 1);
-}
-
-void usbDebugWrite(const char * str)
-{
-	usbDebugWrite((const uint8_t *)str, strlen(str));
-}
-
 uint16_t transmitContiguousBuffer()
 {
 	uint16_t count = 0;
@@ -52,7 +43,7 @@ uint16_t transmitContiguousBuffer()
 	return count;
 }
 
-void usbDebugWrite(const uint8_t *buffer, size_t size)
+void usbDebugWriteInternal(const char *buffer, size_t size, bool reverse = false)
 {
 	// Ignore sending the message if USB is not connected
 	if(hUsbDeviceFS.dev_state != USBD_STATE_CONFIGURED)
@@ -67,9 +58,14 @@ void usbDebugWrite(const uint8_t *buffer, size_t size)
 	// Copy data to the buffer
 	for(size_t i=0; i < size; i++)
 	{
+		if(reverse)
+			--buffer;
+
 		usbTxBuffer[usbTxHead] = *buffer;
 		usbTxHead = (usbTxHead + 1) % sizeof(usbTxBuffer);
-		buffer++;
+
+		if(!reverse)
+			buffer++;
 
 		// Wait until there is a room in the buffer, or drop on timeout
 		while(usbTxHead == usbTxTail && HAL_GetTick() < timeout);
@@ -96,3 +92,139 @@ extern "C" void USBSerialTransferCompletedCB()
 		usbTransmitting = 0;
 	}
 }
+
+// sprintf implementation takes more than 10kb and adding heap to the project. I think this is
+// too much for the functionality I need
+//
+// Below is a homebrew printf-like dumping function which accepts:
+// - %d for digits
+// - %x for numbers as HEX
+// - %s for strings
+// - %% for percent symbol
+//
+// Implementation supports also value width as well as zero padding
+
+// Print the number to the buffer (in reverse order)
+// Returns number of printed symbols
+size_t PrintNum(unsigned int value, uint8_t radix, char * buf, uint8_t width, char padSymbol)
+{
+	//TODO check negative here
+
+	size_t len = 0;
+
+	// Print the number
+	do
+	{
+		char digit = value % radix;
+		*(buf++) = digit < 10 ? '0' + digit : 'A' - 10 + digit;
+		value /= radix;
+		len++;
+	}
+	while (value > 0);
+
+	// Add zero padding
+	while(len < width)
+	{
+		*(buf++) = padSymbol;
+		len++;
+	}
+
+	return len;
+}
+
+void usbDebugWrite(const char * fmt, ...)
+{
+	va_list v;
+	va_start(v, fmt);
+
+	const char * chunkStart = fmt;
+	size_t chunkSize = 0;
+
+	char ch;
+	do
+	{
+		// Get the next byte
+		ch = *(fmt++);
+
+		// Just copy the regular characters
+		if(ch != '%')
+		{
+			chunkSize++;
+			continue;
+		}
+
+		// We hit a special symbol. Dump string that we processed so far
+		if(chunkSize)
+			usbDebugWriteInternal(chunkStart, chunkSize);
+
+		// Process special symbols
+
+		// Check if zero padding requested
+		char padSymbol = ' ';
+		ch = *(fmt++);
+		if(ch == '0')
+		{
+			padSymbol = '0';
+			ch = *(fmt++);
+		}
+
+		// Check if width specified
+		uint8_t width = 0;
+		if(ch > '0' && ch <= '9')
+		{
+			width = ch - '0';
+			ch = *(fmt++);
+		}
+
+		// check the format
+		switch(ch)
+		{
+			case 'd':
+			case 'u':
+			{
+				char buf[12];
+				size_t len = PrintNum(va_arg(v, int), 10, buf, width, padSymbol);
+				usbDebugWriteInternal(buf + len, len, true);
+				break;
+			}
+			case 'x':
+			case 'X':
+			{
+				char buf[9];
+				size_t len = PrintNum(va_arg(v, int), 16, buf, width, padSymbol);
+				usbDebugWriteInternal(buf + len, len, true);
+				break;
+			}
+			case 's':
+			{
+				char * str = va_arg(v, char*);
+				usbDebugWriteInternal(str, strlen(str));
+				break;
+			}
+			case '%':
+			{
+				usbDebugWriteInternal(fmt-1, 1);
+				break;
+			}
+			default:
+				// Otherwise store it like a regular symbol as a part of next chunk
+				fmt--;
+				break;
+		}
+
+		chunkStart = fmt;
+		chunkSize=0;
+	}
+	while(ch != 0);
+
+	if(chunkSize)
+		usbDebugWriteInternal(chunkStart, chunkSize - 1); // Not including terminating NULL
+
+	va_end(v);
+}
+
+void usbDebugWrite(char c)
+{
+	usbDebugWriteInternal(&c, 1);
+}
+
