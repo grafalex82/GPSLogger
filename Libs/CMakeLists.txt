@@ -127,8 +127,8 @@ SET(STM32GENERIC_SRC
 
 #	STM32generic/cores/arduino/stm32/SerialUART.cpp
 #	STM32generic/cores/arduino/stm32/SerialUART.h
-	STM32generic/cores/arduino/stm32/SerialUSB.cpp
-	STM32generic/cores/arduino/stm32/SerialUSB.h
+#	STM32generic/cores/arduino/stm32/SerialUSB.cpp
+#	STM32generic/cores/arduino/stm32/SerialUSB.h
 ##	STM32generic/cores/arduino/stm32/stm32_ADC.c
 ##	STM32generic/cores/arduino/stm32/stm32_build_defines.h
 #	STM32generic/cores/arduino/stm32/stm32_clock.h
@@ -143,31 +143,31 @@ SET(STM32GENERIC_SRC
 	STM32generic/cores/arduino/stm32/stm32_init.c
 	STM32generic/cores/arduino/stm32/stm32_pin_list.c
 	STM32generic/cores/arduino/stm32/stm32_PWM.c
-	STM32generic/cores/arduino/stm32/USBDevice.cpp
-	STM32generic/cores/arduino/stm32/USBDevice.h
+#	STM32generic/cores/arduino/stm32/USBDevice.cpp
+#	STM32generic/cores/arduino/stm32/USBDevice.h
  
-#	STM32generic/cores/arduino/usb/usb_device.c
-#	STM32generic/cores/arduino/usb/usb_device.h
-	STM32generic/cores/arduino/usb/usbd_conf.h
-	STM32generic/cores/arduino/usb/usbd_conf_F1.c
-#	STM32generic/cores/arduino/usb/usbd_conf_F4.c
-#	STM32generic/cores/arduino/usb/usbd_conf_F7.c
-#	STM32generic/cores/arduino/usb/usbd_conf_L0.c
-#	STM32generic/cores/arduino/usb/usbd_conf_L4.c
-	STM32generic/cores/arduino/usb/usbd_core.c
-	STM32generic/cores/arduino/usb/usbd_core.h
-	STM32generic/cores/arduino/usb/usbd_ctlreq.c
-	STM32generic/cores/arduino/usb/usbd_ctlreq.h
-	STM32generic/cores/arduino/usb/usbd_def.h
-	STM32generic/cores/arduino/usb/usbd_desc.c
-	STM32generic/cores/arduino/usb/usbd_desc.h
-	STM32generic/cores/arduino/usb/usbd_ioreq.c
-	STM32generic/cores/arduino/usb/usbd_ioreq.h
+##	STM32generic/cores/arduino/usb/usb_device.c
+##	STM32generic/cores/arduino/usb/usb_device.h
+#	STM32generic/cores/arduino/usb/usbd_conf.h
+#	STM32generic/cores/arduino/usb/usbd_conf_F1.c
+##	STM32generic/cores/arduino/usb/usbd_conf_F4.c
+##	STM32generic/cores/arduino/usb/usbd_conf_F7.c
+##	STM32generic/cores/arduino/usb/usbd_conf_L0.c
+##	STM32generic/cores/arduino/usb/usbd_conf_L4.c
+#	STM32generic/cores/arduino/usb/usbd_core.c
+#	STM32generic/cores/arduino/usb/usbd_core.h
+#	STM32generic/cores/arduino/usb/usbd_ctlreq.c
+#	STM32generic/cores/arduino/usb/usbd_ctlreq.h
+#	STM32generic/cores/arduino/usb/usbd_def.h
+#	STM32generic/cores/arduino/usb/usbd_desc.c
+#	STM32generic/cores/arduino/usb/usbd_desc.h
+#	STM32generic/cores/arduino/usb/usbd_ioreq.c
+#	STM32generic/cores/arduino/usb/usbd_ioreq.h
  
-	STM32generic/cores/arduino/usb/cdc/usbd_cdc.c
-	STM32generic/cores/arduino/usb/cdc/usbd_cdc.h
-	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.c
-	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.h
+#	STM32generic/cores/arduino/usb/cdc/usbd_cdc.c
+#	STM32generic/cores/arduino/usb/cdc/usbd_cdc.h
+#	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.c
+#	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.h
 
 
 #	STM32generic/variants/BLUEPILL/systemclock_config.c
@@ -183,6 +183,36 @@ TARGET_INCLUDE_DIRECTORIES(STM32generic PRIVATE
 TARGET_COMPILE_DEFINITIONS(STM32generic PRIVATE 
 	-DMENU_USB_SERIAL
 )
+
+###################
+# USB Core and classes
+###################
+
+SET(USB_SRC
+	USB/Core/usbd_conf.c
+	USB/Core/usbd_conf.h
+	USB/Core/usbd_core.c
+	USB/Core/usbd_core.h
+	USB/Core/usbd_ctlreq.c
+	USB/Core/usbd_ctlreq.h
+	USB/Core/usbd_def.h
+	USB/Core/usbd_desc.c
+	USB/Core/usbd_desc.h
+	USB/Core/usbd_ioreq.c
+	USB/Core/usbd_ioreq.h
+
+	USB/CDC/usbd_cdc.c
+	USB/CDC/usbd_cdc.h
+	USB/CDC/usbd_cdc_if.c
+	USB/CDC/usbd_cdc_if.h
+)
+ADD_LIBRARY(USB STATIC ${USB_SRC})
+
+TARGET_INCLUDE_DIRECTORIES(USB PRIVATE
+	USB/Core
+	USB/CDC
+)
+
 
 
 ###################

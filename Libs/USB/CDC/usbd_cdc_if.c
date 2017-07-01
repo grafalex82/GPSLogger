@@ -51,8 +51,6 @@
 /* USER CODE BEGIN INCLUDE */
 /* USER CODE END INCLUDE */
 
-extern void USBSerial_Rx_Handler(uint8_t *data, uint16_t len);
-
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
   * @{
   */
@@ -290,8 +288,10 @@ static int8_t CDC_Receive_FS (uint8_t* Buf, uint32_t *Len)
     }
   }
 
-  uint16_t len = *Len;
-  USBSerial_Rx_Handler((uint8_t *)&Buf[0], len);
+  // No really need to process received the packed - USB CDC receive is not used
+  //uint16_t len = *Len;
+  //USBSerial_Rx_Handler((uint8_t *)&Buf[0], len);
+
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
   return (USBD_OK);
   /* USER CODE END 6 */ 
@@ -318,6 +318,7 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
   }
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
   result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
+
   /* USER CODE END 7 */ 
   return result;
 }

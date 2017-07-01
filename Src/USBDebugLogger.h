@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void initUsbDebugLogger();
+void initUSB();
 void usbDebugWrite(char c);
 void usbDebugWrite(const char * fmt, ...);
 

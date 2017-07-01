@@ -3,10 +3,8 @@
 #include <stm32f1xx_hal_gpio.h>
 
 #include "LEDThread.h"
-
+#include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
-
-#include "SerialUSB.h"
 
 
 // Class to encapsulate working with onboard LED(s)

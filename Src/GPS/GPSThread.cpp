@@ -1,4 +1,3 @@
-#include <SerialUSB.h>
 #include <Arduino_FreeRTOS.h>
 #include <NMEAGPS.h>
 #include "Streamers.h"

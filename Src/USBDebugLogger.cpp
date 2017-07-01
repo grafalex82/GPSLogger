@@ -1,9 +1,13 @@
 #include <usbd_cdc_if.h>
 #include <usbd_cdc.h>
+#include <usbd_desc.h>
+
+#include <string.h>
 #include <stdarg.h>
 
 #include <Arduino_FreeRTOS.h>
 #include "FreeRTOSHelpers.h"
+
 #include "USBDebugLogger.h"
 
 
@@ -19,9 +23,44 @@ extern USBD_HandleTypeDef hUsbDeviceFS;
 // TODO Make it static
 SemaphoreHandle_t usbMutex = NULL;
 
-void initUsbDebugLogger()
+USBD_HandleTypeDef hUsbDeviceFS;
+
+void reenumerateUSB()
 {
+	// Initialize PA12 pin
+	GPIO_InitTypeDef pinInit;
+	pinInit.Pin = GPIO_PIN_12;
+	pinInit.Mode = GPIO_MODE_OUTPUT_PP;
+	pinInit.Speed = GPIO_SPEED_FREQ_LOW;
+	HAL_GPIO_Init(GPIOA, &pinInit);
+
+	// Let host know to enumerate USB devices on the bus
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+	for(unsigned int i=0; i<512; i++) {};
+
+	// Restore pin mode
+	pinInit.Mode = GPIO_MODE_INPUT;
+	pinInit.Pull = GPIO_NOPULL;
+	HAL_GPIO_Init(GPIOA, &pinInit);
+	for(unsigned int i=0; i<512; i++) {};
+}
+
+void initUSB()
+{
+	reenumerateUSB();
+
+	USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
+	USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC);
+	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
+	USBD_Start(&hUsbDeviceFS);
+
 	usbMutex = xSemaphoreCreateMutex();
+}
+
+extern PCD_HandleTypeDef hpcd_USB_FS;
+
+extern "C" void USB_LP_CAN1_RX0_IRQHandler(void) {
+  HAL_PCD_IRQHandler(&hpcd_USB_FS);
 }
 
 uint16_t transmitContiguousBuffer()

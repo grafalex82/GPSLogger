@@ -181,8 +181,9 @@ long map(long, long, long, long, long);
 
 #ifdef __cplusplus
 
-#include "SerialUART.h"
-#include <SerialUSB.h>
+#include "Stream.h"
+//#include "SerialUART.h"
+//#include <SerialUSB.h>
 
 #if defined(MENU_SERIAL)
 #define Serial MENU_SERIAL
