@@ -64,6 +64,7 @@
 #include "usbd_ctlreq.h"
 
 void Error_Handler();
+void USBSerialTransferCompletedCB();
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
@@ -690,9 +691,9 @@ static uint8_t  USBD_CDC_DataIn (USBD_HandleTypeDef *pdev, uint8_t epnum)
   USBD_CDC_HandleTypeDef   *hcdc = (USBD_CDC_HandleTypeDef*) pdev->pClassData;
   
   if(pdev->pClassData != NULL)
-  {
-    
+  {    
     hcdc->TxState = 0;
+    USBSerialTransferCompletedCB();
 
     return USBD_OK;
   }
