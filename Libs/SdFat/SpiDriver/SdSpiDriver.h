@@ -101,7 +101,7 @@ class SdSpiLibDriver {
    *
    * \param[in] spiSettings SPI speed, mode, and byte order.
    */
-  void setSpiSettings(SPISettings spiSettings) {
+  void setSpiSettings(const SPISettings & spiSettings) {
     m_spiSettings = spiSettings;
   }
   /** Set CS high. */
@@ -165,7 +165,7 @@ class SdSpiAltDriver {
    *
    * \param[in] spiSettings SPI speed, mode, and byte order.
    */
-  void setSpiSettings(SPISettings spiSettings) {
+  void setSpiSettings(const SPISettings & spiSettings) {
     m_spiSettings = spiSettings;
   }
   /** Set CS high. */
@@ -259,7 +259,7 @@ class SdSpiSoftDriver : public SdSpiBaseDriver {
    *
    * \param[in] spiSettings SPI speed, mode, and byte order.
    */
-  void setSpiSettings(SPISettings spiSettings) {
+  void setSpiSettings(const SPISettings & spiSettings) {
     (void)spiSettings;
   }
   /** Set CS high. */

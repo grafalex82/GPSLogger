@@ -23,6 +23,9 @@
 // #define SD_TRACE(m, b) Serial.print(m);Serial.println(b);
 #define SD_CS_DBG(m)
 // #define SD_CS_DBG(m) Serial.println(F(m));
+
+extern "C++" void usbDebugWrite(const char * fmt, ...);
+
 //==============================================================================
 #if USE_SD_CRC
 // CRC functions
@@ -126,7 +129,7 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
   m_spiDriver->setSpiSettings(SD_SCK_HZ(250000));
   spiStart();
 
-  SerialUSB.println("Resetting channel");
+  usbDebugWrite("Resetting channel\n");
 
   // must supply min of 74 clock cycles with CS high.
   spiUnselect();
@@ -135,7 +138,7 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
   }
   spiSelect();
 
-  SerialUSB.println("Sending CMD0");
+  usbDebugWrite("Sending CMD0\n");
 
   // command to go idle in SPI mode
   while (cardCommand(CMD0, 0) != R1_IDLE_STATE) {
@@ -155,7 +158,7 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
   // check SD version
   while (1) {
 
-	  SerialUSB.println("Sending Cmd8");
+	  usbDebugWrite("Sending Cmd8\n");
 
 	if (cardCommand(CMD8, 0x1AA) == (R1_ILLEGAL_COMMAND | R1_IDLE_STATE)) {
       type(SD_CARD_TYPE_SD1);
@@ -176,7 +179,7 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
   // initialize card and send host supports SDHC if SD2
   arg = type() == SD_CARD_TYPE_SD2 ? 0X40000000 : 0;
 
-  SerialUSB.println("Sending ACmd41");
+  usbDebugWrite("Sending ACmd41\n");
 
 
   while (cardAcmd(ACMD41, arg) != R1_READY_STATE) {
@@ -187,7 +190,7 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
     }
   }
 
-  SerialUSB.println("Sending ACmd58");
+  usbDebugWrite("Sending ACmd58\n");
   // if SD2 read OCR register to check for SDHC card
   if (type() == SD_CARD_TYPE_SD2) {
     if (cardCommand(CMD58, 0)) {
@@ -205,21 +208,20 @@ bool SdSpiCard::begin(SdSpiDriver* spi, uint8_t csPin, SPISettings settings) {
   spiStop();
   m_spiDriver->setSpiSettings(settings);
 
-  SerialUSB.println("Done");
+  usbDebugWrite("Done\n");
 
   return true;
 
 fail:
-  SerialUSB.println("Failed");
+  usbDebugWrite("Failed\n");
   spiStop();
   return false;
 }
 //------------------------------------------------------------------------------
 // send command and return error code.  Return zero for OK
-uint8_t SdSpiCard::cardCommand(uint8_t cmd, uint32_t arg) {
-
-SerialUSB.print("Sending command ");
-SerialUSB.println(cmd, 16);
+uint8_t SdSpiCard::cardCommand(uint8_t cmd, uint32_t arg)
+{
+usbDebugWrite("Sending command %02x\n", cmd);
 
   // select card
   if (!m_spiActive) {
@@ -266,8 +268,7 @@ SerialUSB.println(cmd, 16);
   for (uint8_t i = 0; ((m_status = spiReceive()) & 0X80) && i != 0XFF; i++) {
   }
 
-  SerialUSB.print("Response ");
-  SerialUSB.println(m_status, 16);
+  usbDebugWrite("Response %02x\n", m_status);
 
   return m_status;
 }

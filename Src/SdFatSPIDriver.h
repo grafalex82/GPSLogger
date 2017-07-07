@@ -5,6 +5,8 @@
 #include <Arduino_FreeRTOS.h>
 #include <stm32f1xx_hal_spi.h>
 
+class SPISettings;
+
 // This is custom implementation of SPI Driver class. SdFat library is
 // using this class to access SD card over SPI
 //
@@ -30,7 +32,7 @@ public:
 	virtual void send(uint8_t data);
 	virtual void send(const uint8_t* buf, size_t n);
 	virtual void select();
-	virtual void setSpiSettings(SPISettings spiSettings);
+	virtual void setSpiSettings(const SPISettings & spiSettings);
 	virtual void unselect();
 };
 
