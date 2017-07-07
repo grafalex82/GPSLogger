@@ -51,8 +51,6 @@
 /* USER CODE BEGIN INCLUDE */
 /* USER CODE END INCLUDE */
 
-extern void USBSerial_Rx_Handler(uint8_t *data, uint16_t len);
-
 /** @addtogroup STM32_USB_OTG_DEVICE_LIBRARY
   * @{
   */
@@ -100,10 +98,11 @@ extern void USBSerial_Rx_Handler(uint8_t *data, uint16_t len);
 /* Create buffer for reception and transmission           */
 /* It's up to user to redefine and/or remove those define */
 /* Received Data over USB are stored in this buffer       */
-uint8_t UserRxBufferFS[APP_RX_DATA_SIZE];
+uint8_t UserRxBufferFS[32]; // Not really used. Reserving just a little room for Magic String
 
 /* Send Data over USB CDC are stored in this buffer       */
-uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
+//uint8_t UserTxBufferFS[APP_TX_DATA_SIZE];
+extern uint8_t * usbTxBuffer;
 
 /* USER CODE BEGIN PRIVATE_VARIABLES */
 
@@ -141,7 +140,7 @@ static int8_t CDC_Receive_FS  (uint8_t* pbuf, uint32_t *Len);
   * @}
   */ 
   
-USBD_CDC_ItfTypeDef USBD_Interface_fops_FS = 
+const USBD_CDC_ItfTypeDef USBD_Interface_fops_FS = 
 {
   CDC_Init_FS,
   CDC_DeInit_FS,
@@ -160,7 +159,7 @@ static int8_t CDC_Init_FS(void)
 { 
   /* USER CODE BEGIN 3 */ 
   /* Set Application Buffers */
-  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, UserTxBufferFS, 0);
+  USBD_CDC_SetTxBuffer(&hUsbDeviceFS, usbTxBuffer, 0);
   USBD_CDC_SetRxBuffer(&hUsbDeviceFS, UserRxBufferFS);
   return (USBD_OK);
   /* USER CODE END 3 */ 
@@ -290,8 +289,10 @@ static int8_t CDC_Receive_FS (uint8_t* Buf, uint32_t *Len)
     }
   }
 
-  uint16_t len = *Len;
-  USBSerial_Rx_Handler((uint8_t *)&Buf[0], len);
+  // No really need to process received the packed - USB CDC receive is not used
+  //uint16_t len = *Len;
+  //USBSerial_Rx_Handler((uint8_t *)&Buf[0], len);
+
   USBD_CDC_ReceivePacket(&hUsbDeviceFS);
   return (USBD_OK);
   /* USER CODE END 6 */ 
@@ -318,6 +319,7 @@ uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len)
   }
   USBD_CDC_SetTxBuffer(&hUsbDeviceFS, Buf, Len);
   result = USBD_CDC_TransmitPacket(&hUsbDeviceFS);
+
   /* USER CODE END 7 */ 
   return result;
 }

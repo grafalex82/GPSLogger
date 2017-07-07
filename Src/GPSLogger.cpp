@@ -1,8 +1,5 @@
 #include <Arduino_FreeRTOS.h>
 
-#include "USBDevice.h"
-#include "SerialUSB.h"
-
 #include "Screens/ScreenManager.h"
 #include "GPS/GPSThread.h"
 
@@ -10,13 +7,13 @@
 #include "LEDThread.h"
 #include "ButtonsThread.h"
 #include "SDThread.h"
+#include "USBDebugLogger.h"
 
 int main(void)
 {
 	InitBoard();
 
-	USBDeviceFS.reenumerate();
-	USBDeviceFS.beginCDC();
+	initUSB();
 
 	//initDisplay();
 	initButtons();

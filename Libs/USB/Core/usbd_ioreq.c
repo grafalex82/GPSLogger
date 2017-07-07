@@ -93,7 +93,7 @@
 * @retval status
 */
 USBD_StatusTypeDef  USBD_CtlSendData (USBD_HandleTypeDef  *pdev, 
-                               uint8_t *pbuf,
+                               const uint8_t *pbuf,
                                uint16_t len)
 {
   /* Set EP0 State */
@@ -101,7 +101,7 @@ USBD_StatusTypeDef  USBD_CtlSendData (USBD_HandleTypeDef  *pdev,
   pdev->ep_in[0].total_length = len;
   pdev->ep_in[0].rem_length   = len;
  /* Start the transfer */
-  USBD_LL_Transmit (pdev, 0x00, pbuf, len);  
+  USBD_LL_Transmit (pdev, 0x00, (uint8_t *)pbuf, len);
   
   return USBD_OK;
 }
