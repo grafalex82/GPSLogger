@@ -2,8 +2,11 @@
 #define SDFATSPIDRIVER_H
 
 #include "SpiDriver/SdSpiBaseDriver.h"
-#include <Arduino_FreeRTOS.h>
+
 #include <stm32f1xx_hal_spi.h>
+
+//Forward declarations
+typedef void * TaskHandle_t;
 
 // This is custom implementation of SPI Driver class. SdFat library is
 // using this class to access SD card over SPI

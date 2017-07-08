@@ -6,6 +6,7 @@
 #include "GPSDataModel.h"
 
 #include "SDThread.h"
+#include "USBDebugLogger.h"
 
 // A GPS parser
 NMEAGPS gpsParser;
@@ -168,8 +169,7 @@ void vGPSTask(void *pvParameters)
 		if(len > maxLen)
 		{
 			maxLen = len;
-			SerialUSB.print("=== New max len detected: ");
-			SerialUSB.println(maxLen);
+			usbDebugWrite("=== New max len detected: %d\n", maxLen);
 		}
 
 		//Send received raw data to SD thread

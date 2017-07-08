@@ -1,7 +1,17 @@
 #include <Arduino_FreeRTOS.h>
+#include <Print.h>
 
-#include <SerialUSB.h>
-#define Serial SerialUSB
+#include "USBDebugLogger.h"
+
+class CSerial : public Print
+{
+	virtual size_t write(uint8_t c)
+	{
+		usbDebugWrite((char)c);
+		return 1;
+	}
+} Serial;
+
 #include <SdFat.h>
 
 #include "SdFatSPIDriver.h"
@@ -15,6 +25,7 @@ SdFat SD(&spiDriver);
 //SdFile root;
 
 FatFile rawDataFile;
+FatFile bulkFile;
 
 enum SDMessageType
 {
@@ -68,39 +79,88 @@ void ackRawGPSData(uint8_t len)
 	xQueueSend(sdQueue, &rawGPSDataBuf, 10);
 }
 
+bool waitUntilReady()
+{
+	usbDebugWrite("Waiting until ready...\n");
+
+	for(uint8_t i = 0; i < 255; i++)
+	{
+		if(spiDriver.receive() == 0xff)
+			return true;
+	}
+
+	return false;
+}
+
+uint8_t cardCommand(uint8_t command, uint32_t arg)
+{
+	uint8_t res = 0xFF;
+
+	spiDriver.select();
+	if(!waitUntilReady())
+		return 0;
+
+
+	uint8_t commandSequence[6] = {
+		(uint8_t) (command | 0x40),
+		(uint8_t) (arg >> 24),
+		(uint8_t) (arg >> 16),
+		(uint8_t) (arg >> 8),
+		(uint8_t) (arg & 0xFF),
+		0xFF
+	};
+
+	if (command == CMD0)
+		commandSequence[5] = 0x95;
+
+	else if (command == CMD8)
+		commandSequence[5] = 0x87;
+
+	spiDriver.send(commandSequence, 6);
+
+	//Data sent, now await Response
+	uint8_t count = 20;
+	while ((res & 0x80) && count)
+	{
+		res = spiDriver.receive();
+		count--;
+	}
+
+	return res;
+}
+
 bool initSDCard()
 {
 	//TODO Perhaps we should uninitialize SD card first
 
-	SerialUSB.println("Initializing SD card...");
+	usbDebugWrite("Initializing SD card...\n");
 #if 0
 	// Initialize
 	spiDriver.begin(0);
 
 	// Deselect card first
-	spiDriver.deactivate();
+	spiDriver.unselect();
 
 	//We must supply at least 74 clocks with CS high
 	for(int i=0; i<10; i++)
 		spiDriver.send(0xff);
 	vTaskDelay(5);
 
-	// Select card
-	spiDriver.activate();
-
-	// Wait
-	uint16_t q = 0;
-	while (spiDriver.receive() != 0XFF);
+	uint8_t status;
+	uint8_t tries = 0;
+	while ((status = cardCommand(CMD0, 0)) != 0x01)
 	{
-		q++;
-		if(q == 0x1000)
+		tries++;
+
+		if(tries >=25 )
 		{
-			SerialUSB.println("Failed :(");
+			usbDebugWrite("Failed...\n");
 			return false;
 		}
 	}
 
-	SerialUSB.println("Works :)");
+
+	usbDebugWrite("Works :)\n");
 #endif //0
 
 
@@ -111,13 +171,14 @@ bool initSDCard()
 	// see if the card is present and can be initialized:
 	if (!SD.begin(PA4))
 	{
-		SerialUSB.println("Card failed, or not present");
+		usbDebugWrite("Card failed, or not present\n");
 		// don't do anything more:
 		return false;
 	}
-	SerialUSB.println("card initialized.");
+	usbDebugWrite("card initialized.\n");
 
 	rawDataFile.open(&SD, "RAW_GPS.TXT", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
+	bulkFile.open(&SD, "bulk.dat", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
 #endif
 	return true;
 }
@@ -132,8 +193,13 @@ void saveRawData(const SDMessage & msg)
 	rawDataFile.write(rawGPSDataBuf.rawData.rawDataBuf, rawGPSDataBuf.rawData.len);
 }
 
+uint8_t sd_buf[512];
+
 void runSDMessageLoop()
 {
+	for(uint16_t q = 0; q<512; q++)
+		sd_buf[q] = q & 0xff;
+
 	uint16_t i=0;
 	while(true)
 	{
@@ -152,11 +218,12 @@ void runSDMessageLoop()
 		}
 		*/
 
-		SerialUSB.print("Writing ");
-		SerialUSB.println(i);
+		usbDebugWrite("Writing %d\n", i);
 
 		rawDataFile.write("Test");
 		rawDataFile.printField(i, '\n');
+
+		bulkFile.write(sd_buf, 512);
 
 		i++;
 		vTaskDelay(1000);
@@ -173,7 +240,7 @@ void vSDThread(void *pvParameters)
 {
 	while(true)
 	{
-		vTaskDelay(2000);
+		vTaskDelay(3000);
 
 		if(initSDCard())
 			runSDMessageLoop();

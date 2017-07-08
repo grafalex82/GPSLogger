@@ -1,12 +1,17 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include <SPI.h> // Should not be included, but SPISettings is defined there
-
+#include <stm32f1xx_hal_dma.h>
 #include <stm32f1xx_hal_gpio.h>
 #include <stm32f1xx_hal_spi.h>
 
+#include <Arduino_FreeRTOS.h>
+#include <SPI.h> // Should not be included, but SPISettings is defined there
+
 #include "SdFatSPIDriver.h"
+#include "USBDebugLogger.h"
+
+//#define USB_DEBUG
 
 SdFatSPIDriver::SdFatSPIDriver()
 {
@@ -64,49 +69,60 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 
 void SdFatSPIDriver::activate()
 {
-	SerialUSB.println("== activate");
+#ifdef USB_DEBUG
+	usbDebugWrite("== activate\n");
+#endif
 	// No special activation needed
 }
 
 
 void SdFatSPIDriver::deactivate()
 {
-	SerialUSB.println("== deactivate");
+#ifdef USB_DEBUG
+	usbDebugWrite("== deactivate\n");
+#endif
 	// No special deactivation needed
 }
 
 uint8_t SdFatSPIDriver::receive()
 {
-	SerialUSB.print("== receive: ");
+#ifdef USB_DEBUG
+	usbDebugWrite("== receive: ");
+#endif
 
 	uint8_t buf;
-	HAL_SPI_Receive(&spiHandle, &buf, 1, 10);
+	uint8_t dummy = 0xff;
+	HAL_SPI_TransmitReceive(&spiHandle, &dummy, &buf, 1, 10);
 
-	SerialUSB.println(buf, 16);
+#ifdef USB_DEBUG
+	usbDebugWrite("%02x\n", buf);
+#endif
 
 	return buf;
 }
 
 uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 {
-	SerialUSB.println("== receive type 2");
+	usbDebugWrite("== reading %d bytes\n", n);
 
 	// TODO: Receive via DMA here
-	HAL_SPI_Receive(&spiHandle, buf, n, 10);
+	uint8_t dummy = 0xff;
+	HAL_SPI_TransmitReceive(&spiHandle, &dummy, buf, n, 10);
 	return 0;
 }
 
 void SdFatSPIDriver::send(uint8_t data)
 {
-	SerialUSB.print("== send: ");
-	SerialUSB.println(data, 16);
+#ifdef USB_DEBUG
+	usbDebugWrite("== send: %02x\n", data);
+#endif
 
 	HAL_SPI_Transmit(&spiHandle, &data, 1, 10);
 }
 
 void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 {
-	SerialUSB.println("== send 2");
+	usbDebugWrite("== sending %d bytes\n", n);
 
 	// TODO: Transmit over DMA here
 	HAL_SPI_Transmit(&spiHandle, (uint8_t*)buf, n, 10);
@@ -114,21 +130,27 @@ void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 
 void SdFatSPIDriver::select()
 {
-	SerialUSB.println("== select");
+#ifdef USB_DEBUG
+	usbDebugWrite("== select\n");
+#endif
 
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 }
 
 void SdFatSPIDriver::setSpiSettings(SPISettings spiSettings)
 {
-	SerialUSB.println("== setSetting");
+#ifdef USB_DEBUG
+	usbDebugWrite("== setSetting\n");
+#endif
 
 	// Ignore settings - we are using same settings for all transfer
 }
 
 void SdFatSPIDriver::unselect()
 {
-	SerialUSB.println("== unselect");
+#ifdef USB_DEBUG
+	usbDebugWrite("== unselect\n");
+#endif
 
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
 }
