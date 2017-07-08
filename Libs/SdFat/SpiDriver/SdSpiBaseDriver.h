@@ -67,7 +67,7 @@ class SdSpiBaseDriver {
   /** Save SPI settings.
    * \param[in] spiSettings SPI speed, mode, and bit order.
    */
-  virtual void setSpiSettings(SPISettings spiSettings) = 0;
+  virtual void setSpiSettings(const SPISettings & spiSettings) = 0;
   /** Set CS high. */
   virtual void unselect() = 0;
 };
