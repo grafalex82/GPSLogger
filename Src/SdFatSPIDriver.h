@@ -33,7 +33,7 @@ public:
 	virtual void send(uint8_t data);
 	virtual void send(const uint8_t* buf, size_t n);
 	virtual void select();
-	virtual void setSpiSettings(SPISettings spiSettings);
+	virtual void setSpiSettings(const SPISettings & spiSettings);
 	virtual void unselect();
 };
 

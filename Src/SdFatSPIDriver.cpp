@@ -58,7 +58,7 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	spiHandle.Init.CLKPolarity = SPI_POLARITY_LOW;
 	spiHandle.Init.CLKPhase = SPI_PHASE_1EDGE;
 	spiHandle.Init.NSS = SPI_NSS_SOFT;
-	spiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_256;
+	spiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
 	spiHandle.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	spiHandle.Init.TIMode = SPI_TIMODE_DISABLE;
 	spiHandle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -103,11 +103,12 @@ uint8_t SdFatSPIDriver::receive()
 
 uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 {
+#ifdef USB_DEBUG
 	usbDebugWrite("== reading %d bytes\n", n);
+#endif
 
 	// TODO: Receive via DMA here
-	uint8_t dummy = 0xff;
-	HAL_SPI_TransmitReceive(&spiHandle, &dummy, buf, n, 10);
+	HAL_SPI_Receive(&spiHandle, buf, n, 10);
 	return 0;
 }
 
@@ -122,7 +123,9 @@ void SdFatSPIDriver::send(uint8_t data)
 
 void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 {
+#ifdef USB_DEBUG
 	usbDebugWrite("== sending %d bytes\n", n);
+#endif
 
 	// TODO: Transmit over DMA here
 	HAL_SPI_Transmit(&spiHandle, (uint8_t*)buf, n, 10);
@@ -137,7 +140,7 @@ void SdFatSPIDriver::select()
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
 }
 
-void SdFatSPIDriver::setSpiSettings(SPISettings spiSettings)
+void SdFatSPIDriver::setSpiSettings(const SPISettings & spiSettings)
 {
 #ifdef USB_DEBUG
 	usbDebugWrite("== setSetting\n");
