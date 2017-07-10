@@ -16,8 +16,6 @@ uint8_t debugEnabled = 0;
 
 const size_t DMA_TRESHOLD = 16;
 
-uint32_t step1, step2, step3, step4;
-
 SdFatSPIDriver::SdFatSPIDriver()
 {
 }
@@ -198,6 +196,7 @@ void SdFatSPIDriver::send(uint8_t data)
 
 void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 {
+	vTaskDelay(1);
 #ifdef USB_DEBUG
 	if(debugEnabled)
 	usbDebugWrite("== sending %d bytes\n", n);
@@ -210,12 +209,8 @@ void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 		return;
 	}
 
-	step1 = HAL_GetTick();
-
 	// Start data transfer
 	HAL_SPI_Transmit_DMA(&spiHandle, (uint8_t*)buf, n);
-
-	step2 = HAL_GetTick();
 
 #ifdef USB_DEBUG
 	if(debugEnabled)
@@ -224,10 +219,6 @@ void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 
 	// Wait until transfer is completed
 	ulTaskNotifyTake(pdTRUE, 100);
-
-	step4 = HAL_GetTick();
-
-	usbDebugWrite("%d, %d, %d\n", step2-step1, step3-step2, step4-step3);
 
 #ifdef USB_DEBUG
 	if(debugEnabled)
@@ -285,7 +276,6 @@ extern "C" void DMA1_Channel3_IRQHandler(void)
 
 extern "C" void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
 {
-	step3 = HAL_GetTick();
 	spiDriver.dmaTransferCompletedCB();
 }
 
