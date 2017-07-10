@@ -30,7 +30,7 @@
 //------------------------------------------------------------------------------
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /** Macro for debug. */
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 #if DEBUG_MODE
 
 extern "C++" void usbDebugWrite(const char *, ...);
