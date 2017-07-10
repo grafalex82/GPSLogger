@@ -18,6 +18,8 @@ class SdFatSPIDriver : public SdSpiBaseDriver
 {
 	// SPI module
 	SPI_HandleTypeDef spiHandle;
+	DMA_HandleTypeDef dmaHandleRx;
+	DMA_HandleTypeDef dmaHandleTx;
 
 	// GPS thread handle
 	TaskHandle_t xSDThread = NULL;
@@ -35,6 +37,12 @@ public:
 	virtual void select();
 	virtual void setSpiSettings(const SPISettings & spiSettings);
 	virtual void unselect();
+
+	// Handle getter
+	SPI_HandleTypeDef getHandle() const {return spiHandle;}
+
+	// DMA transter callback
+	void dmaTransferCompletedCB();
 };
 
 

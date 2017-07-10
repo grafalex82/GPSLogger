@@ -11,7 +11,12 @@
 #include "SdFatSPIDriver.h"
 #include "USBDebugLogger.h"
 
-//#define USB_DEBUG
+#define USB_DEBUG
+uint8_t debugEnabled = 0;
+
+const size_t DMA_TRESHOLD = 16;
+
+uint32_t step1, step2, step3, step4;
 
 SdFatSPIDriver::SdFatSPIDriver()
 {
@@ -58,18 +63,52 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	spiHandle.Init.CLKPolarity = SPI_POLARITY_LOW;
 	spiHandle.Init.CLKPhase = SPI_PHASE_1EDGE;
 	spiHandle.Init.NSS = SPI_NSS_SOFT;
-	spiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;
+	spiHandle.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_4;
 	spiHandle.Init.FirstBit = SPI_FIRSTBIT_MSB;
 	spiHandle.Init.TIMode = SPI_TIMODE_DISABLE;
 	spiHandle.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
 	spiHandle.Init.CRCPolynomial = 10;
 	HAL_SPI_Init(&spiHandle);
 	__HAL_SPI_ENABLE(&spiHandle);
+
+	// DMA controller clock enable
+	__HAL_RCC_DMA1_CLK_ENABLE();
+
+	// Rx DMA channel
+	dmaHandleRx.Instance = DMA1_Channel2;
+	dmaHandleRx.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	dmaHandleRx.Init.PeriphInc = DMA_PINC_DISABLE;
+	dmaHandleRx.Init.MemInc = DMA_MINC_ENABLE;
+	dmaHandleRx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	dmaHandleRx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	dmaHandleRx.Init.Mode = DMA_NORMAL;
+	dmaHandleRx.Init.Priority = DMA_PRIORITY_LOW;
+	HAL_DMA_Init(&dmaHandleRx);
+	__HAL_LINKDMA(&spiHandle, hdmarx, dmaHandleRx);
+
+	// Tx DMA channel
+	dmaHandleTx.Instance = DMA1_Channel3;
+	dmaHandleTx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+	dmaHandleTx.Init.PeriphInc = DMA_PINC_DISABLE;
+	dmaHandleTx.Init.MemInc = DMA_MINC_ENABLE;
+	dmaHandleTx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	dmaHandleTx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+	dmaHandleTx.Init.Mode = DMA_NORMAL;
+	dmaHandleTx.Init.Priority = DMA_PRIORITY_LOW;
+	HAL_DMA_Init(&dmaHandleTx);
+	__HAL_LINKDMA(&spiHandle, hdmatx, dmaHandleTx);
+
+	// Setup DMA interrupts
+	HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 8, 0);
+	HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
+	HAL_NVIC_SetPriority(DMA1_Channel3_IRQn, 8, 0);
+	HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
 }
 
 void SdFatSPIDriver::activate()
 {
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== activate\n");
 #endif
 	// No special activation needed
@@ -79,6 +118,7 @@ void SdFatSPIDriver::activate()
 void SdFatSPIDriver::deactivate()
 {
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== deactivate\n");
 #endif
 	// No special deactivation needed
@@ -87,6 +127,7 @@ void SdFatSPIDriver::deactivate()
 uint8_t SdFatSPIDriver::receive()
 {
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== receive: ");
 #endif
 
@@ -95,6 +136,7 @@ uint8_t SdFatSPIDriver::receive()
 	HAL_SPI_TransmitReceive(&spiHandle, &dummy, &buf, 1, 10);
 
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("%02x\n", buf);
 #endif
 
@@ -103,18 +145,51 @@ uint8_t SdFatSPIDriver::receive()
 
 uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 {
+	memset(buf, 0xff, n);
+
+	// Not using DMA for short transfers
+	if(n <= DMA_TRESHOLD)
+	{
 #ifdef USB_DEBUG
-	usbDebugWrite("== reading %d bytes\n", n);
+		if(debugEnabled)
+		usbDebugWrite("== reading %d bytes\n", n);
+#endif
+		uint8_t s = HAL_SPI_TransmitReceive(&spiHandle, buf, buf, n, 10);
+
+		if(s)
+			usbDebugWrite("Failed ad #10: %d\n", s);
+
+		return s;
+	}
+
+#ifdef USB_DEBUG
+	if(debugEnabled)
+	usbDebugWrite("== reading %d bytes over DMA\n", n);
 #endif
 
-	// TODO: Receive via DMA here
-	HAL_SPI_Receive(&spiHandle, buf, n, 10);
-	return 0;
+	// Start data transfer
+	HAL_SPI_TransmitReceive_DMA(&spiHandle, buf, buf, n);
+
+#ifdef USB_DEBUG
+	if(debugEnabled)
+	usbDebugWrite("==   transfer started\n");
+#endif
+
+	// Wait until transfer is completed
+	ulTaskNotifyTake(pdTRUE, 100);
+
+#ifdef USB_DEBUG
+	if(debugEnabled)
+	usbDebugWrite("==   transfer finished\n");
+#endif
+
+	return 0; // Ok status
 }
 
 void SdFatSPIDriver::send(uint8_t data)
 {
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== send: %02x\n", data);
 #endif
 
@@ -124,16 +199,46 @@ void SdFatSPIDriver::send(uint8_t data)
 void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 {
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== sending %d bytes\n", n);
 #endif
 
-	// TODO: Transmit over DMA here
-	HAL_SPI_Transmit(&spiHandle, (uint8_t*)buf, n, 10);
+	// Not using DMA for short transfers
+	if(n <= DMA_TRESHOLD)
+	{
+		HAL_SPI_Transmit(&spiHandle, (uint8_t*)buf, n, 10);
+		return;
+	}
+
+	step1 = HAL_GetTick();
+
+	// Start data transfer
+	HAL_SPI_Transmit_DMA(&spiHandle, (uint8_t*)buf, n);
+
+	step2 = HAL_GetTick();
+
+#ifdef USB_DEBUG
+	if(debugEnabled)
+	usbDebugWrite("==   transfer started\n");
+#endif
+
+	// Wait until transfer is completed
+	ulTaskNotifyTake(pdTRUE, 100);
+
+	step4 = HAL_GetTick();
+
+	usbDebugWrite("%d, %d, %d\n", step2-step1, step3-step2, step4-step3);
+
+#ifdef USB_DEBUG
+	if(debugEnabled)
+	usbDebugWrite("==   transfer finished\n");
+#endif
 }
 
 void SdFatSPIDriver::select()
 {
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== select\n");
 #endif
 
@@ -143,6 +248,7 @@ void SdFatSPIDriver::select()
 void SdFatSPIDriver::setSpiSettings(const SPISettings & spiSettings)
 {
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== setSetting\n");
 #endif
 
@@ -152,8 +258,38 @@ void SdFatSPIDriver::setSpiSettings(const SPISettings & spiSettings)
 void SdFatSPIDriver::unselect()
 {
 #ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== unselect\n");
 #endif
 
 	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+}
+
+void SdFatSPIDriver::dmaTransferCompletedCB()
+{
+	// Resume SD thread
+	vTaskNotifyGiveFromISR(xSDThread, NULL);
+}
+
+extern SdFatSPIDriver spiDriver;
+
+extern "C" void DMA1_Channel2_IRQHandler(void)
+{
+	HAL_DMA_IRQHandler(spiDriver.getHandle().hdmarx);
+}
+
+extern "C" void DMA1_Channel3_IRQHandler(void)
+{
+	HAL_DMA_IRQHandler(spiDriver.getHandle().hdmatx);
+}
+
+extern "C" void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+	step3 = HAL_GetTick();
+	spiDriver.dmaTransferCompletedCB();
+}
+
+extern "C" void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+	spiDriver.dmaTransferCompletedCB();
 }

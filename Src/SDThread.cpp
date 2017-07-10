@@ -93,8 +93,9 @@ bool initSDCard()
 	}
 	usbDebugWrite("card initialized.\n");
 
-	rawDataFile.open(&SD, "RAW_GPS.TXT", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
-	bulkFile.open(&SD, "bulk.dat", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
+	//rawDataFile.open(&SD, "RAW_GPS.TXT", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
+	bulkFile.open(&SD, "bulk_2.dat", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
+	//bulkFile.open(&SD, "bulk.dat", O_READ);
 
 	return true;
 }
@@ -116,7 +117,7 @@ void runSDMessageLoop()
 	for(uint16_t q = 0; q<512; q++)
 		sd_buf[q] = q & 0xff;
 
-	uint16_t i=0;
+	uint32_t i=0;
 	uint32_t prev = HAL_GetTick();
 	while(true)
 	{
@@ -137,17 +138,24 @@ void runSDMessageLoop()
 
 //		usbDebugWrite("Writing block #%d\n", i);
 
+		//uint32_t t1 = HAL_GetTick();
 		bulkFile.write(sd_buf, 512);
+		//uint32_t t2 = HAL_GetTick();
 		bulkFile.write(sd_buf, 512);
+		//uint32_t t3 = HAL_GetTick();
+
+//		usbDebugWrite("1kb write time: %d, %d\n", t2-t1, t3-t2);
 
 		i++;
 
 		uint32_t cur = HAL_GetTick();
 		if(cur-prev >= 1000)
 		{
-			prev = cur;
-			usbDebugWrite("Saved %d kb\n", i);
+			usbDebugWrite("Written %d kb\n", i);
 			i = 0;
+
+//			vTaskDelay(1000);
+			prev = HAL_GetTick();
 		}
 	}
 }
