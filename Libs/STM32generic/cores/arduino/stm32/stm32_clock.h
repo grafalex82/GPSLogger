@@ -34,6 +34,8 @@
 extern "C"{
 #endif
 
+extern void yield();
+
 inline void delay(unsigned long millis) {
     uint32_t tickstart = 0;
     tickstart = HAL_GetTick();
