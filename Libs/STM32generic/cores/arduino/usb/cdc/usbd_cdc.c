@@ -63,6 +63,8 @@
 #include "usbd_desc.h"
 #include "usbd_ctlreq.h"
 
+void Error_Handler();
+void USBSerialTransferCompletedCB();
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
@@ -132,9 +134,27 @@ static uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length);
 uint8_t  *USBD_CDC_GetDeviceQualifierDescriptor (uint16_t *length);
 
 
-static uint32_t staticMemory[(sizeof(USBD_CDC_HandleTypeDef)/4)+1];
+static uint32_t cdc_handle[(sizeof(USBD_CDC_HandleTypeDef)/4)+1];
 
-static uint8_t staticMemoryUsed = 0;
+/**
+  * @brief  static single allocation.
+  * @param  size: size of allocated memory
+  * @retval None
+  */
+void *USBD_static_malloc(uint32_t size)
+{
+  return cdc_handle;
+}
+
+/**
+  * @brief  Dummy memory free
+  * @param  *p pointer to allocated  memory address
+  * @retval None
+  */
+void USBD_static_free(void *p)
+{
+
+}
 
 /* USB Standard Device Descriptor */
 __ALIGN_BEGIN static uint8_t USBD_CDC_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] __ALIGN_END =
@@ -519,13 +539,7 @@ static uint8_t  USBD_CDC_Init (USBD_HandleTypeDef *pdev,
                  CDC_CMD_PACKET_SIZE);
   
   
-  if (staticMemoryUsed == 0) {
-      pdev->pClassData = &staticMemory;
-      staticMemoryUsed = 1;
-  } else {
-      // On the rare ocasion when you want to use CDC on both FS and HS USB
-      pdev->pClassData = malloc(sizeof(USBD_CDC_HandleTypeDef));
-  }
+  pdev->pClassData = USBD_malloc(sizeof (USBD_CDC_HandleTypeDef));
 
   if(pdev->pClassData == NULL)
   {
@@ -593,13 +607,7 @@ static uint8_t  USBD_CDC_DeInit (USBD_HandleTypeDef *pdev,
   if(pdev->pClassData != NULL)
   {
     ((USBD_CDC_ItfTypeDef *)pdev->pUserData)->DeInit();
-
-    if (pdev->pClassData != &staticMemory) {
-        free(pdev->pClassData);
-    } else {
-        staticMemoryUsed = 0;
-    }
-
+    USBD_free(pdev->pClassData);
     pdev->pClassData = NULL;
   }
   
@@ -683,9 +691,9 @@ static uint8_t  USBD_CDC_DataIn (USBD_HandleTypeDef *pdev, uint8_t epnum)
   USBD_CDC_HandleTypeDef   *hcdc = (USBD_CDC_HandleTypeDef*) pdev->pClassData;
   
   if(pdev->pClassData != NULL)
-  {
-    
+  {    
     hcdc->TxState = 0;
+    USBSerial_Tx_Handler();
 
     return USBD_OK;
   }

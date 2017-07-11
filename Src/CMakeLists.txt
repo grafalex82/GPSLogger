@@ -11,6 +11,8 @@ SET(SOURCE_FILES
 	Screens/CurrentTimeScreen.h
 	Screens/DebugScreen.cpp
 	Screens/DebugScreen.h
+	Screens/DisplayDriver.cpp
+	Screens/DisplayDriver.h
 	Screens/OdometerActionScreen.cpp
 	Screens/OdometerActionScreen.h
 	Screens/OdometerScreen.cpp
@@ -32,33 +34,51 @@ SET(SOURCE_FILES
 	Screens/TimeZoneScreen.cpp
 	Screens/TimeZoneScreen.h
 
-	8x12Font.cpp
-	Buttons.cpp
-	FontTest.cpp
-	GPSDataModel.cpp
-	GPSLogger.cpp
-	GPSOdometer.cpp
-	GPSSatellitesData.cpp
-	GPSThread.cpp
-	IdleThread.cpp
-	TimeFont.cpp
-	Utils.cpp
+	GPS/GPSDataModel.cpp
+	GPS/GPSDataModel.h
+	GPS/GPSOdometer.cpp
+	GPS/GPSOdometer.h
+	GPS/GPSSatellitesData.cpp
+	GPS/GPSSatellitesData.h
+	GPS/GPSThread.cpp
+	GPS/GPSThread.h
 
-	../Libs/STM32generic/cores/arduino/syscalls.c
+	8x12Font.cpp
+	8x12Font.h
+	BoardInit.cpp
+	BoardInit.h
+	ButtonsThread.cpp
+	ButtonsThread.h
+#	FontTest.cpp
+#	FontTest.h
+	FreeRTOSHelpers.h
+	GPSLogger.cpp
+	IdleThread.cpp
+	IdleThread.h
+	LEDThread.cpp
+	LEDThread.h
+	TimeFont.cpp
+	TimeFont.h
+	USBDebugLogger.cpp
+	USBDebugLogger.h
+	Utils.cpp
+	Utils.h
 )
 
 INCLUDE_DIRECTORIES(
 	.
 	${GPSLOGGER_LIBS_DIR}/AdafruitGFX
+	${GPSLOGGER_LIBS_DIR}/Adafruit_SSD1306
 	${GPSLOGGER_LIBS_DIR}/NeoGPS
-	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/Adafruit_SSD1306
-	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
-	${GPSLOGGER_LIBS_DIR}/STM32duino/libraries/FreeRTOS821
-	)
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/Wire/src
+	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/FreeRTOS/src
+	${GPSLOGGER_LIBS_DIR}/USB/Core
+	${GPSLOGGER_LIBS_DIR}/USB/CDC
+)
 
 
 # Do not link to libc or newlib-nano - we are not using anything from that
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nosys.specs")
+SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nosys.specs")
 
 ADD_EXECUTABLE(GPSLogger ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(GPSLogger
@@ -66,11 +86,14 @@ TARGET_LINK_LIBRARIES(GPSLogger
 	FreeRTOS
 	AdafruitGFX
 	AdafruitSSD1306
-	ArduinoLibs
-#	STM32duino
+#	ArduinoLibs
+	USB
 	STM32generic
+	HAL
+	m
 )
 
+STM32_GENERATE_MAP_FILE(GPSLogger)
 STM32_SET_TARGET_PROPERTIES(GPSLogger)
 STM32_PRINT_SIZE_OF_TARGETS(GPSLogger)
 

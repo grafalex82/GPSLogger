@@ -1,7 +1,7 @@
-#include "GPSOdometer.h"
+#include "GPS/GPSOdometer.h"
+#include "GPS/GPSDataModel.h"
 #include "OdometerActionScreen.h"
 #include "ScreenManager.h"
-#include "GPSDataModel.h"
 
 OdometerActionScreen::OdometerActionScreen(uint8_t odometer)
 {

@@ -1,4 +1,4 @@
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 
 #include "IdleThread.h"
 
@@ -42,4 +42,9 @@ float getCPULoad()
 float getMaxCPULoad()
 {
 	return 100. - 100. * minIdleValue /  (1 << periodLen);
+}
+
+extern "C" void yield()
+{
+	//taskYIELD();
 }
