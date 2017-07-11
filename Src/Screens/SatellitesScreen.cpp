@@ -1,11 +1,12 @@
-#include <Adafruit_SSD1306_STM32.h>
-#include <MapleFreeRTOS821.h>
+#include <Adafruit_SSD1306.h>
+#include <Arduino_FreeRTOS.h>
 #include <NMEAGPS.h>
 
 #include "SatellitesScreen.h"
 #include "8x12Font.h"
-#include "GPSDataModel.h"
 #include "Utils.h"
+
+#include "GPS/GPSDataModel.h"
 
 // DebugScreen should not be here. I just needed to attach DebugScreen somewhere
 #include "DebugScreen.h"

@@ -44,13 +44,13 @@ void stm32AfInit(const stm32_af_pin_list_type list[], int size, const void *inst
     if (port == NULL) {
         port = stm32AfGetDefault(list, size, instance, &pin);
     }
-    stm32GpioClock(port);
+    stm32GpioClockEnable(port);
     
     GPIO_InitTypeDef GPIO_InitStruct;
     GPIO_InitStruct.Pin = pin;
     GPIO_InitStruct.Mode = mode;
     GPIO_InitStruct.Pull = pull;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM; // Slow signal slew rate to keep noise to minimum
     GPIO_InitStruct.Alternate = stm32AfGet(list, size, instance, port, pin);
     HAL_GPIO_Init(port, &GPIO_InitStruct);
 }

@@ -263,7 +263,7 @@ void vPortSVCHandler( void )
 					"	orr r14, #0xd					\n"
 					"	bx r14							\n"
 					"									\n"
-					"	.align 4						\n"
+					"	.align 2						\n"
 					"pxCurrentTCBConst2: .word pxCurrentTCB				\n"
 				);
 }
@@ -430,7 +430,7 @@ void xPortPendSVHandler( void )
 	"	isb									\n"
 	"	bx r14								\n"
 	"										\n"
-	"	.align 4							\n"
+	"	.align 2							\n"
 	"pxCurrentTCBConst: .word pxCurrentTCB	\n"
 	::"i"(configMAX_SYSCALL_INTERRUPT_PRIORITY)
 	);
@@ -446,7 +446,7 @@ void xPortSysTickHandler( void )
 	portDISABLE_INTERRUPTS();
 	{
 		/* Increment the RTOS tick. */
-		if( xTaskIncrementTick() != pdFALSE )
+		if( xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED && xTaskIncrementTick() != pdFALSE )
 		{
 			/* A context switch is required.  Context switching is performed in
 			the PendSV interrupt.  Pend the PendSV interrupt. */

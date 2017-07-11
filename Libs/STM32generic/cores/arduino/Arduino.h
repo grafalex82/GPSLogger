@@ -68,8 +68,8 @@ void yield(void);
 #define degrees(rad) ((rad)*RAD_TO_DEG)
 #define sq(x) ((x)*(x))
 
-#define interrupts() sei()
-#define noInterrupts() cli()
+#define interrupts() __enable_irq()
+#define noInterrupts() __disable_irq()
 
 #define clockCyclesPerMicrosecond() ( F_CPU / 1000000L )
 #define clockCyclesToMicroseconds(a) ( (a) / clockCyclesPerMicrosecond() )
@@ -181,8 +181,9 @@ long map(long, long, long, long, long);
 
 #ifdef __cplusplus
 
-#include "SerialUART.h"
-#include <SerialUSB.h>
+#include "Stream.h"
+//#include "SerialUART.h"
+//#include <SerialUSB.h>
 
 #if defined(MENU_SERIAL)
 #define Serial MENU_SERIAL

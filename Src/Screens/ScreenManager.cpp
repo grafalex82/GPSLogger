@@ -1,15 +1,16 @@
 #include <stddef.h> //for NULL
 
-#include <MapleFreeRTOS821.h>
+#include <Arduino_FreeRTOS.h>
 
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 
 #include "8x12Font.h"
 #include "Screen.h"
 #include "ScreenManager.h"
-#include "Buttons.h"
+#include "ButtonsThread.h"
 
+#include "DisplayDriver.h"
 #include "CurrentPositionScreen.h"
 #include "CurrentTimeScreen.h"
 #include "SpeedScreen.h"
@@ -17,9 +18,10 @@
 #include "OdometerScreen.h"
 #include "SettingsGroupScreen.h"
 
-Adafruit_SSD1306 display(-1);
+extern DisplayDriver displayDriver;
+Adafruit_SSD1306 display(&displayDriver, -1);
 
-#if (SSD1306_LCDHEIGHT != 32)
+#if (SSD1306_LCDHEIGHT != 64)
 #error("Height incorrect, please fix Adafruit_SSD1306.h!");
 #endif
 
@@ -36,9 +38,9 @@ int screenIdx = 0;
 CurrentTimeScreen timeScreen;
 CurrentPositionScreen positionScreen;
 SpeedScreen speedScreen;
+OdometerScreen odometerScreen(0);
 SatellitesScreen satellitesScreen;
 SettingsGroupScreen rootSettingsScreen;
-OdometerScreen odometerScreen(0);
 
 void setCurrentScreen(Screen * screen)
 {
@@ -65,7 +67,7 @@ void backToParentScreen()
 void initDisplay()
 {
 	// by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-	display.begin(SSD1306_SWITCHCAPVCC, 0x3C, false);  // initialize with the I2C addr 0x3C (for the 128x32)
+	display.begin(SSD1306_SWITCHCAPVCC, false);  // initialize with the I2C addr 0x3C (for the 128x32)
 	display.setTextColor(WHITE);				// Assuming all subsequent commands draw in white color
 }
 
@@ -119,13 +121,16 @@ void processButton(const ButtonMessage &msg)
 
 void vDisplayTask(void *pvParameters) 
 {
+	initDisplay();
+	initScreens();
+
 	TickType_t lastActionTicks = xTaskGetTickCount();
 	
 	for (;;)
 	{
 		// Poll the buttons queue for an event. Process button if pressed, or show current screen as usual if no button pressed
 		ButtonMessage msg;
-		if(xQueueReceive(buttonsQueue, &msg, DISPLAY_CYCLE))
+		if(waitForButtonMessage(&msg, DISPLAY_CYCLE))
 		{
 			processButton(msg);
 			
@@ -140,7 +145,7 @@ void vDisplayTask(void *pvParameters)
 			display.ssd1306_command(SSD1306_DISPLAYOFF);
 			
 			// Wait for a button
-			xQueueReceive(buttonsQueue, &msg, portMAX_DELAY);
+			waitForButtonMessage(&msg, portMAX_DELAY);
 			
 			// Resume
 			display.ssd1306_command(SSD1306_DISPLAYON);

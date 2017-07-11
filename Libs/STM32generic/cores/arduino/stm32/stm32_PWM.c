@@ -82,7 +82,7 @@ void analogWrite(uint8_t pin, int value) {
         HAL_TIM_Base_Start_IT(handle);
     }
 
-    for(int i=0; i<sizeof(pwm_config) / sizeof(pwm_config[0]); i++) {
+    for(size_t i=0; i<sizeof(pwm_config) / sizeof(pwm_config[0]); i++) {
         if (pwm_config[i].port == NULL ||
                 (pwm_config[i].port == variant_pin_list[pin].port
                 && pwm_config[i].pin_mask == variant_pin_list[pin].pin_mask)) {
@@ -101,14 +101,14 @@ void analogWrite(uint8_t pin, int value) {
 }
 
 void stm32_pwm_disable(GPIO_TypeDef *port, uint32_t pin_mask) {
-    for(int i=0; i<sizeof(pwm_config) / sizeof(pwm_config[0]); i++) {
+    for(size_t i=0; i<sizeof(pwm_config) / sizeof(pwm_config[0]); i++) {
         if (pwm_config[i].port == NULL) {
             return;
         }
 
         if (pwm_config[i].port == port && pwm_config[i].pin_mask == pin_mask) {
 
-            for(int j = i + 1; j < sizeof(pwm_config) / sizeof(pwm_config[0]); j++) {
+            for(size_t j = i + 1; j < sizeof(pwm_config) / sizeof(pwm_config[0]); j++) {
                 if (pwm_config[j].port == NULL) {
                     pwm_config[i].port = pwm_config[j - 1].port;
                     pwm_config[i].pin_mask = pwm_config[j - 1].pin_mask;
@@ -124,41 +124,41 @@ void stm32_pwm_disable(GPIO_TypeDef *port, uint32_t pin_mask) {
 }
 
 void pwm_callback() {
-    counter += period;
-    period = 256;
+    if(__HAL_TIM_GET_FLAG(handle, TIM_FLAG_UPDATE) != RESET) {
+        if(__HAL_TIM_GET_IT_SOURCE(handle, TIM_IT_UPDATE) !=RESET) {
+            __HAL_TIM_CLEAR_IT(handle, TIM_IT_UPDATE);
 
-    for(int i=0; i<sizeof(pwm_config); i++) {
-        if (pwm_config[i].port != NULL) {
-            if (pwm_config[i].duty_cycle > counter % pwm_config[i].frequency) {
-                pwm_config[i].port->BSRR = pwm_config[i].pin_mask;
-                period = min(period, pwm_config[i].duty_cycle - (counter % pwm_config[i].frequency));
-            } else {
-                pwm_config[i].port->BSRR = pwm_config[i].pin_mask << 16;
-                period = min(period, 256 - counter % pwm_config[i].frequency);
+            counter += period;
+            period = 256;
+
+            for(size_t i=0; i<sizeof(pwm_config); i++) {
+                if (pwm_config[i].port != NULL) {
+                    if (pwm_config[i].duty_cycle > counter % pwm_config[i].frequency) {
+                        pwm_config[i].port->BSRR = pwm_config[i].pin_mask;
+                        period = min(period, pwm_config[i].duty_cycle - (counter % pwm_config[i].frequency));
+                    } else {
+                        pwm_config[i].port->BSRR = pwm_config[i].pin_mask << 16;
+                        period = min(period, 256 - counter % pwm_config[i].frequency);
+                    }
+                } else {
+                    break;
+                }
             }
-        } else {
-            break;
+
+            if (!period) {
+                period = 256;
+            }
+            __HAL_TIM_SET_AUTORELOAD(handle, period);
         }
     }
-
-    if (!period) {
-        period = 256;
-    }
-    __HAL_TIM_SET_AUTORELOAD(handle, period);
 }
 
 #ifdef TIM2
-extern void TIM2_IRQHandler(void) {
-    HAL_TIM_IRQHandler(handle);
-}
+  extern void TIM2_IRQHandler(void) {
 #else
-extern void TIM2_IRQHandler(void) {
-    HAL_TIM_IRQHandler(handle);
-}
+  extern void TIM3_IRQHandler(void) {
 #endif
 
-
-extern void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (pwm_callback_func != NULL) {
         (*pwm_callback_func)();
     }

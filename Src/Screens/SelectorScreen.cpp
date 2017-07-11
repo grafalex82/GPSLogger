@@ -1,4 +1,4 @@
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 
 #include "8x12Font.h"
 #include "SelectorScreen.h"

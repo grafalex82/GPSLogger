@@ -51,7 +51,8 @@ build.extra_flags=
 build.extra_flags_usb=
 build.extra_flags_serial=
 build.extra_flags_serial_auto=
-build.extra_flags_menu={build.extra_flags_usb} {build.extra_flags_serial} {build.extra_flags_serial_auto}
+build.extra_flags_jtag=
+build.extra_flags_menu={build.extra_flags_usb} {build.extra_flags_serial} {build.extra_flags_serial_auto} {build.extra_flags_jtag}
 build.ldscript=ldscript.ld
 
 # These can be overridden in platform.local.txt
@@ -136,7 +137,7 @@ tools.stlink_upload.upload.pattern="{path}/{cmd}" {serial.port.file} {upload.alt
 tools.maple_upload.cmd=maple_upload
 tools.maple_upload.cmd.windows=maple_upload.bat
 tools.maple_upload.path={runtime.hardware.path}/tools/win
-tools.maple_upload.path.macosx={runtime.hardware.path.path}/tools/macosx
+tools.maple_upload.path.macosx={runtime.hardware.path}/tools/macosx
 tools.maple_upload.path.linux={runtime.hardware.path}/tools/linux
 tools.maple_upload.path.linux64={runtime.hardware.path}/tools/linux64
 tools.maple_upload.upload.params.verbose=-d

@@ -8,11 +8,11 @@ SET(GPSLOGGER_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Libs)
 SET(STM32_CHIP "STM32F103CB")
 
 # Using Maple's linker script that corresponds maple/stm32duino code
-SET(STM32_LINKER_SCRIPT ${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/ldscript_bootloader_2000.ld)
-LINK_DIRECTORIES(${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/)
+#SET(STM32_LINKER_SCRIPT ${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/ldscript_bootloader_2000.ld)
+#LINK_DIRECTORIES(${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/)
 
 # Flash offset due to bootloader
-SET(VECT_TAB_ADDR "0x08002000")
+SET(VECT_TAB_ADDR "0x2000")
 SET(STM32_FLASH_ORIGIN "0x08002000")
 
 # Load the toolchain file that uses vars above
@@ -35,24 +35,15 @@ ADD_DEFINITIONS(
 	-DMCU_STM32F103CB
 	-DF_CPU=72000000L
 	-DARDUINO=10801
-#	-DDEBUG_LEVEL=DEBUG_NONE
-#	-DSERIAL_USB
 )
 
 # Project wide include directories
 INCLUDE_DIRECTORIES(
-	# Arduino core
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/cores/maple
-
-	# Libmaple/HAL	
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/system/libmaple
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/system/libmaple/include
-#	${GPSLOGGER_LIBS_DIR}/STM32duino/variants/generic_stm32f103c
-
-	#Arduino
+	# Arduino layer (stm32generic)
 	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino
 	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/stm32
-	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/usb
+#	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/usb
+#	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/usb/cdc # TODO: code should not call these functions directly and work via arduino layer
 	${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL
 
 	# HAL and CMSIS

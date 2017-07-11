@@ -23,13 +23,15 @@
 #ifndef _SERIAL_USBDEVICE_H_INCLUDED
 #define _SERIAL_USBDEVICE_H_INCLUDED
 
-#include "stdint.h"
+#include "Arduino.h"
+
+#include "msc/usbd_msc.h"
+
+extern USBD_StorageTypeDef USBD_DISK_fops;
 
 class USBDeviceClass {
   public:
     void reenumerate();
-
-    bool beginMenuSelection();
 
     bool beginCDC();
 

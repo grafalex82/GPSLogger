@@ -1,4 +1,4 @@
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 #undef degrees //defined in wirish.h
 #include <NMEAGPS.h>
 
@@ -6,7 +6,7 @@
 #include "Utils.h"
 #include "ScreenManager.h"
 #include "CurrentPositionScreen.h"
-#include "GPSDataModel.h"
+#include "GPS/GPSDataModel.h"
 
 extern Adafruit_SSD1306 display;
 

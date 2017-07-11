@@ -1,11 +1,12 @@
-#include <Adafruit_SSD1306_STM32.h>
+#include <Adafruit_SSD1306.h>
 #include <NMEAGPS.h>
 
 #include "TimeZoneScreen.h"
 #include "ScreenManager.h"
 #include "TimeFont.h"
-#include "GPSDataModel.h"
 #include "Utils.h"
+
+#include "GPS/GPSDataModel.h"
 
 extern Adafruit_SSD1306 display;
 
