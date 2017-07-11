@@ -508,7 +508,7 @@ void Adafruit_SSD1306::drawFastVLineInternal(int16_t x, int16_t __y, int16_t __h
 
     // note - lookup table results in a nearly 10% performance improvement in fill* functions
     // register uint8_t mask = ~(0xFF >> (mod));
-    static uint8_t premask[8] = {0x00, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
+    static const uint8_t premask[8] = {0x00, 0x80, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC, 0xFE };
     register uint8_t mask = premask[mod];
 
     // adjust the mask if we're not going to reach the end of this byte
@@ -568,7 +568,7 @@ void Adafruit_SSD1306::drawFastVLineInternal(int16_t x, int16_t __y, int16_t __h
     // this time we want to mask the low bits of the byte, vs the high bits we did above
     // register uint8_t mask = (1 << mod) - 1;
     // note - lookup table results in a nearly 10% performance improvement in fill* functions
-    static uint8_t postmask[8] = {0x00, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F };
+    static const uint8_t postmask[8] = {0x00, 0x01, 0x03, 0x07, 0x0F, 0x1F, 0x3F, 0x7F };
     register uint8_t mask = postmask[mod];
     switch (color)
     {

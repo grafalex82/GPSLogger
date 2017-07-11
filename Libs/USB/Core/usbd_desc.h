@@ -91,7 +91,7 @@
 /** @defgroup USBD_DESC_Exported_Variables
   * @{
   */ 
-extern USBD_DescriptorsTypeDef FS_Desc;
+extern const USBD_DescriptorsTypeDef FS_Desc;
 /**
   * @}
   */ 

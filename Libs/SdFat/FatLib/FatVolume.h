@@ -30,12 +30,18 @@
 //------------------------------------------------------------------------------
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 /** Macro for debug. */
-#define DEBUG_MODE 0
+#define DEBUG_MODE 1
 #if DEBUG_MODE
-#define DBG_FAIL_MACRO Serial.print(F(__FILE__)); Serial.println(__LINE__);
-#define DBG_PRINT_IF(b) if (b) {Serial.println(F(#b)); DBG_FAIL_MACRO;}
-#define DBG_HALT_IF(b) if (b) {Serial.println(F(#b));\
-                               DBG_FAIL_MACRO; while (1);}
+
+extern "C++" void usbDebugWrite(const char *, ...);
+
+//#define DBG_FAIL_MACRO Serial.print(F(__FILE__)); Serial.println(__LINE__);
+//#define DBG_PRINT_IF(b) if (b) {Serial.println(F(#b)); DBG_FAIL_MACRO;}
+//#define DBG_HALT_IF(b) if (b) {Serial.println(F(#b));
+//                               DBG_FAIL_MACRO; while (1);}
+#define DBG_FAIL_MACRO usbDebugWrite("Failed at %s:%d\n", __FILE__, __LINE__);
+#define DBG_PRINT_IF(b) if (b) {DBG_FAIL_MACRO;}
+#define DBG_HALT_IF(b) if (b) {DBG_FAIL_MACRO; while (1);}
 #else  // DEBUG_MODE
 #define DBG_FAIL_MACRO
 #define DBG_PRINT_IF(b)

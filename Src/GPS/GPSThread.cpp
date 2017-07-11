@@ -6,6 +6,7 @@
 #include "GPSDataModel.h"
 
 #include "SDThread.h"
+#include "USBDebugLogger.h"
 
 #include "USBDebugLogger.h"
 

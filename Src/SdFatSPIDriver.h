@@ -2,10 +2,12 @@
 #define SDFATSPIDRIVER_H
 
 #include "SpiDriver/SdSpiBaseDriver.h"
-#include <Arduino_FreeRTOS.h>
+
 #include <stm32f1xx_hal_spi.h>
 
+//Forward declarations
 class SPISettings;
+typedef void * TaskHandle_t;
 
 // This is custom implementation of SPI Driver class. SdFat library is
 // using this class to access SD card over SPI
@@ -17,6 +19,8 @@ class SdFatSPIDriver : public SdSpiBaseDriver
 {
 	// SPI module
 	SPI_HandleTypeDef spiHandle;
+	DMA_HandleTypeDef dmaHandleRx;
+	DMA_HandleTypeDef dmaHandleTx;
 
 	// GPS thread handle
 	TaskHandle_t xSDThread = NULL;
@@ -34,6 +38,12 @@ public:
 	virtual void select();
 	virtual void setSpiSettings(const SPISettings & spiSettings);
 	virtual void unselect();
+
+	// Handle getter
+	SPI_HandleTypeDef getHandle() const {return spiHandle;}
+
+	// DMA transter callback
+	void dmaTransferCompletedCB();
 };
 
 

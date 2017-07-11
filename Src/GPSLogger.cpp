@@ -7,7 +7,6 @@
 #include "LEDThread.h"
 #include "ButtonsThread.h"
 #include "SDThread.h"
-
 #include "USBDebugLogger.h"
 
 int main(void)
