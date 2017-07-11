@@ -306,7 +306,7 @@ USBD_StatusTypeDef  USBD_StdEPReq (USBD_HandleTypeDef *pdev , USBD_SetupReqTyped
       }
       
       USBD_CtlSendData (pdev,
-                        (uint8_t *)&pep->status,
+                        (const uint8_t *)&pep->status,
                         2);
       break;
       
@@ -332,7 +332,7 @@ static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev ,
                                USBD_SetupReqTypedef *req)
 {
   uint16_t len;
-  uint8_t *pbuf;
+  const uint8_t *pbuf;
   
     
   switch (req->wValue >> 8)
@@ -350,12 +350,10 @@ static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev ,
     if(pdev->dev_speed == USBD_SPEED_HIGH )   
     {
       pbuf   = (uint8_t *)pdev->pClass->GetHSConfigDescriptor(&len);
-      pbuf[1] = USB_DESC_TYPE_CONFIGURATION;
     }
     else
     {
       pbuf   = (uint8_t *)pdev->pClass->GetFSConfigDescriptor(&len);
-      pbuf[1] = USB_DESC_TYPE_CONFIGURATION;
     }
     break;
     
@@ -413,7 +411,6 @@ static void USBD_GetDescriptor(USBD_HandleTypeDef *pdev ,
     if(pdev->dev_speed == USBD_SPEED_HIGH  )   
     {
       pbuf   = (uint8_t *)pdev->pClass->GetOtherSpeedConfigDescriptor(&len);
-      pbuf[1] = USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION;
       break; 
     }
     else
@@ -580,14 +577,14 @@ static void USBD_GetConfig(USBD_HandleTypeDef *pdev ,
     case USBD_STATE_ADDRESSED:                     
       pdev->dev_default_config = 0;
       USBD_CtlSendData (pdev, 
-                        (uint8_t *)&pdev->dev_default_config,
+                        (const uint8_t *)&pdev->dev_default_config,
                         1);
       break;
       
     case USBD_STATE_CONFIGURED:   
       
       USBD_CtlSendData (pdev, 
-                        (uint8_t *)&pdev->dev_config,
+                        (const uint8_t *)&pdev->dev_config,
                         1);
       break;
       
@@ -627,7 +624,7 @@ static void USBD_GetStatus(USBD_HandleTypeDef *pdev ,
     }
     
     USBD_CtlSendData (pdev, 
-                      (uint8_t *)& pdev->dev_config_status,
+                      (const uint8_t *)& pdev->dev_config_status,
                       2);
     break;
     

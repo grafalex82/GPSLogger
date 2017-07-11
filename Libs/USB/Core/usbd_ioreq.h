@@ -86,7 +86,7 @@
   */ 
 
 USBD_StatusTypeDef  USBD_CtlSendData (USBD_HandleTypeDef  *pdev, 
-                               uint8_t *buf,
+                               const uint8_t *buf,
                                uint16_t len);
 
 USBD_StatusTypeDef  USBD_CtlContinueSendData (USBD_HandleTypeDef  *pdev, 

@@ -137,7 +137,7 @@ USBD_CDC_HandleTypeDef;
   * @{
   */ 
 
-extern USBD_ClassTypeDef  USBD_CDC;
+extern const USBD_ClassTypeDef  USBD_CDC;
 #define USBD_CDC_CLASS    &USBD_CDC
 /**
   * @}
@@ -147,7 +147,7 @@ extern USBD_ClassTypeDef  USBD_CDC;
   * @{
   */
 uint8_t  USBD_CDC_RegisterInterface  (USBD_HandleTypeDef   *pdev, 
-                                      USBD_CDC_ItfTypeDef *fops);
+									  const USBD_CDC_ItfTypeDef *fops);
 
 uint8_t  USBD_CDC_SetTxBuffer        (USBD_HandleTypeDef   *pdev,
                                       uint8_t  *pbuff,

@@ -122,18 +122,18 @@ static uint8_t  USBD_CDC_DataOut (USBD_HandleTypeDef *pdev,
 
 static uint8_t  USBD_CDC_EP0_RxReady (USBD_HandleTypeDef *pdev);
 
-static uint8_t  *USBD_CDC_GetFSCfgDesc (uint16_t *length);
+static const uint8_t  *USBD_CDC_GetFSCfgDesc (uint16_t *length);
 
-static uint8_t  *USBD_CDC_GetHSCfgDesc (uint16_t *length);
+static const uint8_t  *USBD_CDC_GetHSCfgDesc (uint16_t *length);
 
-static uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length);
+static const uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length);
 
-static uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length);
+static const uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length);
 
-uint8_t  *USBD_CDC_GetDeviceQualifierDescriptor (uint16_t *length);
+const uint8_t  *USBD_CDC_GetDeviceQualifierDescriptor (uint16_t *length);
 
 /* USB Standard Device Descriptor */
-__ALIGN_BEGIN static uint8_t USBD_CDC_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] __ALIGN_END =
+__ALIGN_BEGIN static const uint8_t USBD_CDC_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] __ALIGN_END =
 {
   USB_LEN_DEV_QUALIFIER_DESC,
   USB_DESC_TYPE_DEVICE_QUALIFIER,
@@ -157,7 +157,7 @@ __ALIGN_BEGIN static uint8_t USBD_CDC_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_
 
 
 /* CDC interface class callbacks structure */
-USBD_ClassTypeDef  USBD_CDC = 
+const USBD_ClassTypeDef  USBD_CDC = 
 {
   USBD_CDC_Init,
   USBD_CDC_DeInit,
@@ -176,7 +176,7 @@ USBD_ClassTypeDef  USBD_CDC =
 };
 
 /* USB CDC device Configuration Descriptor */
-__ALIGN_BEGIN uint8_t USBD_CDC_CfgHSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
+__ALIGN_BEGIN const uint8_t USBD_CDC_CfgHSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
 {
   /*Configuration Descriptor*/
   0x09,   /* bLength: Configuration Descriptor size */
@@ -272,7 +272,7 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgHSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
 
 
 /* USB CDC device Configuration Descriptor */
-__ALIGN_BEGIN uint8_t USBD_CDC_CfgFSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
+__ALIGN_BEGIN const uint8_t USBD_CDC_CfgFSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
 {
   /*Configuration Descriptor*/
   0x09,   /* bLength: Configuration Descriptor size */
@@ -366,7 +366,7 @@ __ALIGN_BEGIN uint8_t USBD_CDC_CfgFSDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
   0x00                               /* bInterval: ignore for Bulk transfer */
 } ;
 
-__ALIGN_BEGIN uint8_t USBD_CDC_OtherSpeedCfgDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
+__ALIGN_BEGIN const uint8_t USBD_CDC_OtherSpeedCfgDesc[USB_CDC_CONFIG_DESC_SIZ] __ALIGN_END =
 { 
   0x09,   /* bLength: Configuation Descriptor size */
   USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION,   
@@ -614,7 +614,7 @@ static uint8_t  USBD_CDC_Setup (USBD_HandleTypeDef *pdev,
                                                           (uint8_t *)hcdc->data,
                                                           req->wLength);
           USBD_CtlSendData (pdev, 
-                            (uint8_t *)hcdc->data,
+                            (const uint8_t *)hcdc->data,
                             req->wLength);
       }
       else
@@ -738,7 +738,7 @@ static uint8_t  USBD_CDC_EP0_RxReady (USBD_HandleTypeDef *pdev)
   * @param  length : pointer data length
   * @retval pointer to descriptor buffer
   */
-static uint8_t  *USBD_CDC_GetFSCfgDesc (uint16_t *length)
+static const uint8_t  *USBD_CDC_GetFSCfgDesc (uint16_t *length)
 {
   *length = sizeof (USBD_CDC_CfgFSDesc);
   return USBD_CDC_CfgFSDesc;
@@ -751,7 +751,7 @@ static uint8_t  *USBD_CDC_GetFSCfgDesc (uint16_t *length)
   * @param  length : pointer data length
   * @retval pointer to descriptor buffer
   */
-static uint8_t  *USBD_CDC_GetHSCfgDesc (uint16_t *length)
+static const uint8_t  *USBD_CDC_GetHSCfgDesc (uint16_t *length)
 {
   *length = sizeof (USBD_CDC_CfgHSDesc);
   return USBD_CDC_CfgHSDesc;
@@ -764,7 +764,7 @@ static uint8_t  *USBD_CDC_GetHSCfgDesc (uint16_t *length)
   * @param  length : pointer data length
   * @retval pointer to descriptor buffer
   */
-static uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length)
+static const uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length)
 {
   *length = sizeof (USBD_CDC_OtherSpeedCfgDesc);
   return USBD_CDC_OtherSpeedCfgDesc;
@@ -776,7 +776,7 @@ static uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length)
 * @param  length : pointer data length
 * @retval pointer to descriptor buffer
 */
-uint8_t  *USBD_CDC_GetDeviceQualifierDescriptor (uint16_t *length)
+uint8_t  const *USBD_CDC_GetDeviceQualifierDescriptor (uint16_t *length)
 {
   *length = sizeof (USBD_CDC_DeviceQualifierDesc);
   return USBD_CDC_DeviceQualifierDesc;
@@ -789,7 +789,7 @@ uint8_t  *USBD_CDC_GetDeviceQualifierDescriptor (uint16_t *length)
   * @retval status
   */
 uint8_t  USBD_CDC_RegisterInterface  (USBD_HandleTypeDef   *pdev, 
-                                      USBD_CDC_ItfTypeDef *fops)
+									  const USBD_CDC_ItfTypeDef *fops)
 {
   uint8_t  ret = USBD_FAIL;
   

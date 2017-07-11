@@ -22,11 +22,11 @@ void DisplayDriver::begin()
 	GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
 	GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
 	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
+	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 	// Enable I2C
-	__I2C1_CLK_ENABLE();
+	__HAL_RCC_I2C1_CLK_ENABLE();
 
 	// Initialie I2C
 	handle.Instance = I2C1;
@@ -34,10 +34,10 @@ void DisplayDriver::begin()
 	handle.Init.DutyCycle = I2C_DUTYCYCLE_2;
 	handle.Init.OwnAddress1 = 0;
 	handle.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
-	handle.Init.DualAddressMode = I2C_DUALADDRESS_DISABLED;
+	handle.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
 	handle.Init.OwnAddress2 = 0;
-	handle.Init.GeneralCallMode = I2C_GENERALCALL_DISABLED;
-	handle.Init.NoStretchMode = I2C_NOSTRETCH_DISABLED;
+	handle.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+	handle.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
 	HAL_I2C_Init(&handle);
 
 	// DMA controller clock enable

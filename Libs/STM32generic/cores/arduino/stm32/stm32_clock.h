@@ -34,8 +34,14 @@
 extern "C"{
 #endif
 
+extern void yield();
+
 inline void delay(unsigned long millis) {
-    HAL_Delay(millis);
+    uint32_t tickstart = 0;
+    tickstart = HAL_GetTick();
+    while((HAL_GetTick() - tickstart) < millis) {
+        yield();
+    }
 }
 
 inline uint32_t millis() {
@@ -59,7 +65,9 @@ inline uint32_t micros() {
 inline void delayMicroseconds(uint32_t microseconds){
   uint32_t start = micros();
 
-  while(start + microseconds > micros());
+  while(start + microseconds > micros()) {
+      yield();
+  }
 }
 
 #ifdef __cplusplus
