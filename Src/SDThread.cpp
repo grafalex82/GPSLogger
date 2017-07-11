@@ -139,11 +139,20 @@ bool initSDCard()
 	//TODO Perhaps we should uninitialize SD card first
 
 	usbDebugWrite("Initializing SD card...\n");
+
+	// see if the card is present and can be initialized:
+	if (!SD.begin(PA4))
+	{
+		usbDebugWrite("Card failed, or not present\n");
+		// don't do anything more:
+		return false;
+	}
 	usbDebugWrite("card initialized.\n");
 
 	//rawDataFile.open(&SD, "RAW_GPS.TXT", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
-	bulkFile.open(&SD, "bulk_2.dat", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
-	//bulkFile.open(&SD, "bulk.dat", O_READ);
+	//bulkFile.open(&SD, "bulk_2.dat", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
+	if(!bulkFile.open(&SD, "bulk.dat", O_READ))
+		usbDebugWrite("Filed to open file\n");
 
 	return true;
 }
@@ -187,9 +196,9 @@ void runSDMessageLoop()
 //		usbDebugWrite("Writing block #%d\n", i);
 
 		//uint32_t t1 = HAL_GetTick();
-		bulkFile.write(sd_buf, 512);
+		bulkFile.read(sd_buf, 512);
 		//uint32_t t2 = HAL_GetTick();
-		bulkFile.write(sd_buf, 512);
+		bulkFile.read(sd_buf, 512);
 		//uint32_t t3 = HAL_GetTick();
 
 //		usbDebugWrite("1kb write time: %d, %d\n", t2-t1, t3-t2);

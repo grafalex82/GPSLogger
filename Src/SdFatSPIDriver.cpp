@@ -11,7 +11,7 @@
 #include "SdFatSPIDriver.h"
 #include "USBDebugLogger.h"
 
-#define USB_DEBUG
+//#define USB_DEBUG
 uint8_t debugEnabled = 0;
 
 const size_t DMA_TRESHOLD = 16;
@@ -22,7 +22,6 @@ SdFatSPIDriver::SdFatSPIDriver()
 {
 }
 
-//void SdFatSPIDriver::activate();
 void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 {
 	// Ignore passed CS pin - This driver works with predefined one
@@ -127,7 +126,10 @@ void SdFatSPIDriver::deactivate()
 
 uint8_t SdFatSPIDriver::receive()
 {
+#ifdef USB_DEBUG
+	if(debugEnabled)
 	usbDebugWrite("== receive: ");
+#endif
 
 	uint8_t buf;
 	uint8_t dummy = 0xff;
