@@ -21,21 +21,6 @@ class UsbDebugSerial : public Print
 
 #include "Print.h"
 
-class DummyPrinter : public Print
-{
-public:
-	virtual size_t write(uint8_t c)
-	{
-		usbDebugWrite((char)c);
-		return 1;
-	}
-
-} Serial;
-
-#include <SdFat.h>
-
-
-
 // SD card instance
 SdFatSPIDriver spiDriver;
 SdFat SD(&spiDriver);

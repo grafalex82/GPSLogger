@@ -129,11 +129,6 @@ uint8_t SdFatSPIDriver::receive()
 {
 	usbDebugWrite("== receive: ");
 
-	uint8_t buf = 0xff;
-	HAL_SPI_TransmitReceive(&spiHandle, &buf, &buf, 1, 10);
-
-	usbDebugWrite("%02x\n", buf);
-
 	uint8_t buf;
 	uint8_t dummy = 0xff;
 	HAL_SPI_TransmitReceive(&spiHandle, &dummy, &buf, 1, 10);
