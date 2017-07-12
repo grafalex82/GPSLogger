@@ -93,8 +93,6 @@ void vButtonsThread(void *pvParameters)
 				msg.event = BUTTON_LONG_PRESS;
 			else
 				msg.event = BUTTON_CLICK;
-				
-			usbDebugWrite("Button pressed: %d\n", btn);
 
 			// Send the message
 			xQueueSend(buttonsQueue, &msg, 0);
