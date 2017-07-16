@@ -12,8 +12,6 @@
 #include "SDThread.h"
 #include "USBDebugLogger.h"
 
-#include "USBDebugLogger.h"
-
 // A GPS parser
 NMEAGPS gpsParser;
 

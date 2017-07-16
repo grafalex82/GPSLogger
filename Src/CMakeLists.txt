@@ -75,7 +75,6 @@ INCLUDE_DIRECTORIES(
 	${GPSLOGGER_LIBS_DIR}/Adafruit_SSD1306
 	${GPSLOGGER_LIBS_DIR}/NeoGPS
 	${GPSLOGGER_LIBS_DIR}/SdFat
-#	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/Wire/src
 	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
 	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/FreeRTOS/src
 	${GPSLOGGER_LIBS_DIR}/USB/Core
@@ -93,7 +92,6 @@ TARGET_LINK_LIBRARIES(GPSLogger
 	SDFAT
 	AdafruitGFX
 	AdafruitSSD1306
-#	ArduinoLibs
 	USB
 	STM32generic
 	HAL

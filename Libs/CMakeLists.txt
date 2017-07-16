@@ -3,7 +3,6 @@
 # Below each section represents a library with its own settings
 
 
-
 ###################
 # NeoGPS
 ###################
@@ -81,7 +80,7 @@ ADD_LIBRARY(SDFAT STATIC ${SDFAT_SRC})
 
 TARGET_INCLUDE_DIRECTORIES(SDFAT PRIVATE
 	SdFat
-	STM32generic/libraries/SPI/src
+	STM32generic/libraries/SPI/src   # just for SPISettings
 )
 
 TARGET_COMPILE_DEFINITIONS(SDFAT PRIVATE
@@ -150,28 +149,6 @@ TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
 #	STM32generic/libraries/SPI/src
 	AdafruitGFX
 )
-
-
-###################
-# Various Arduino libraries
-###################
-
-SET(ARDUINO_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32generic/libraries)
-
-SET(ARDUINO_LIBS_SRC
-	${ARDUINO_LIBS_DIR}/SPI/src/SPI.cpp
-	${ARDUINO_LIBS_DIR}/SPI/src/SPI.h
-#	${ARDUINO_LIBS_DIR}/Wire/src/Wire.cpp
-#	${ARDUINO_LIBS_DIR}/Wire/src/Wire.h
-)
-
-ADD_LIBRARY(ArduinoLibs STATIC ${ARDUINO_LIBS_SRC})
-
-TARGET_INCLUDE_DIRECTORIES(ArduinoLibs PRIVATE
-	STM32duino/libraries/SPI/src
-)
-
-
 
 
 ###################
