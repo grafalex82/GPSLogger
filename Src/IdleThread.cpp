@@ -43,3 +43,8 @@ float getMaxCPULoad()
 {
 	return 100. - 100. * minIdleValue /  (1 << periodLen);
 }
+
+extern "C" void yield()
+{
+	//taskYIELD();
+}

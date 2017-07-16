@@ -1,9 +1,8 @@
 #include <stm32f1xx_hal.h>
 #include <stm32f1xx_hal_rcc.h>
-#include <stm32f1xx_hal_gpio.h>
+#include <stm32f1xx_ll_gpio.h>
 
 #include "LEDThread.h"
-#include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
 
 
@@ -13,25 +12,32 @@
 //       May not be working properly if objects of this class are created as global variables
 class LEDDriver
 {
+	const uint32_t pin = LL_GPIO_PIN_13;
 public:
 	LEDDriver()
 	{
-		pinMode(PC13, OUTPUT);
+		//enable clock to the GPIOC peripheral
+		__HAL_RCC_GPIOC_IS_CLK_ENABLED();
+
+		// Init PC 13 as output
+		LL_GPIO_SetPinMode(GPIOC, pin, LL_GPIO_MODE_OUTPUT);
+		LL_GPIO_SetPinOutputType(GPIOC, pin, LL_GPIO_OUTPUT_PUSHPULL);
+		LL_GPIO_SetPinSpeed(GPIOC, pin, LL_GPIO_SPEED_FREQ_LOW);
 	}
 
 	void turnOn()
 	{
-		digitalWrite(PC13, LOW);
+		LL_GPIO_ResetOutputPin(GPIOC, pin);
 	}
 
 	void turnOff()
 	{
-		digitalWrite(PC13, HIGH);
+		LL_GPIO_SetOutputPin(GPIOC, pin);
 	}
 
 	void toggle()
 	{
-		digitalWrite(PC13, !digitalRead(PC13));
+		LL_GPIO_TogglePin(GPIOC, pin);
 	}
 };
 

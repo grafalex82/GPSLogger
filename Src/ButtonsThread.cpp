@@ -2,11 +2,13 @@
 #include <Arduino_FreeRTOS.h>
 #include "ButtonsThread.h"
 
+#include "USBDebugLogger.h"
+
 // TODO: perhaps it would be reasonable to detect button press via pin change interrupt
 
 // Pins assignment
-const uint8_t SEL_BUTTON_PIN = PC14;
-const uint8_t OK_BUTTON_PIN = PC15;
+const uint32_t SEL_BUTTON_PIN = LL_GPIO_PIN_14;
+const uint32_t OK_BUTTON_PIN = LL_GPIO_PIN_15;
 
 // Timing constants
 const uint32_t DEBOUNCE_DURATION = 1 / portTICK_PERIOD_MS;
@@ -22,9 +24,14 @@ QueueHandle_t buttonsQueue;
 // Initialize buttons related stuff
 void initButtons()
 {
+	//enable clock to the GPIOC peripheral
+	__HAL_RCC_GPIOC_IS_CLK_ENABLED();
+
 	// Set up button pins
-	pinMode(SEL_BUTTON_PIN, INPUT_PULLDOWN);
-	pinMode(OK_BUTTON_PIN, INPUT_PULLDOWN);
+	LL_GPIO_SetPinMode(GPIOC, SEL_BUTTON_PIN, LL_GPIO_MODE_INPUT);
+	LL_GPIO_SetPinPull(GPIOC, SEL_BUTTON_PIN, LL_GPIO_PULL_DOWN);
+	LL_GPIO_SetPinMode(GPIOC, OK_BUTTON_PIN, LL_GPIO_MODE_INPUT);
+	LL_GPIO_SetPinPull(GPIOC, OK_BUTTON_PIN, LL_GPIO_PULL_DOWN);
 
 	// Initialize buttons queue
 	buttonsQueue = xQueueCreate(3, sizeof(ButtonMessage)); // 3 clicks more than enough
@@ -32,13 +39,13 @@ void initButtons()
 
 
 // Reading button state (perform debounce first)
-inline bool getButtonState(uint8_t pin)
+inline bool getButtonState(uint32_t pin)
 {
-	if(digitalRead(pin))
+	if(LL_GPIO_IsInputPinSet(GPIOC, pin))
 	{
 		// dobouncing
 		vTaskDelay(DEBOUNCE_DURATION);
-		if(digitalRead(pin))
+		if(LL_GPIO_IsInputPinSet(GPIOC, pin))
 			return true;
 	}
 
@@ -86,7 +93,7 @@ void vButtonsThread(void *pvParameters)
 				msg.event = BUTTON_LONG_PRESS;
 			else
 				msg.event = BUTTON_CLICK;
-				
+
 			// Send the message
 			xQueueSend(buttonsQueue, &msg, 0);
 		}

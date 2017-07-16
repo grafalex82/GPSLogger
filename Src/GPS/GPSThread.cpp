@@ -1,9 +1,13 @@
+#include <stm32f1xx_ll_usart.h>
+#include <stm32f1xx_hal_rcc.h>
+
 #include <Arduino_FreeRTOS.h>
 #include <NMEAGPS.h>
 #include "Streamers.h"
 
 #include "GPSThread.h"
 #include "GPSDataModel.h"
+#include "USBDebugLogger.h"
 
 #include "SDThread.h"
 #include "USBDebugLogger.h"
@@ -19,9 +23,6 @@ const uint8_t gpsBufferSize = 128;
 // This class handles UART interface that receive chars from GPS and stores them to a buffer
 class GPS_UART
 {
-	// UART hardware handle
-	UART_HandleTypeDef uartHandle;
-
 	// Receive ring buffer
 	uint8_t rxBuffer[gpsBufferSize];
 	volatile uint8_t lastReadIndex = 0;
@@ -45,34 +46,32 @@ public:
 		__HAL_RCC_USART1_CLK_ENABLE();
 
 		// Init pins in alternate function mode
-		GPIO_InitTypeDef GPIO_InitStruct;
-		GPIO_InitStruct.Pin = GPIO_PIN_9; //TX pin
-		GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-		GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+		LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_9, LL_GPIO_MODE_ALTERNATE); //TX pin
+		LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_9, LL_GPIO_SPEED_FREQ_HIGH);
+		LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_9, LL_GPIO_OUTPUT_PUSHPULL);
 
-		GPIO_InitStruct.Pin = GPIO_PIN_10; //RX pin
-		GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-		GPIO_InitStruct.Pull = GPIO_NOPULL;
-		HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+		LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_10, LL_GPIO_MODE_INPUT); //RX pin
+
+		// Prepare for initialization
+		LL_USART_Disable(USART1);
 
 		// Init
-		uartHandle.Instance = USART1;
-		uartHandle.Init.BaudRate = 9600;
-		uartHandle.Init.WordLength = UART_WORDLENGTH_8B;
-		uartHandle.Init.StopBits = UART_STOPBITS_1;
-		uartHandle.Init.Parity = UART_PARITY_NONE;
-		uartHandle.Init.Mode = UART_MODE_TX_RX;
-		uartHandle.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-		uartHandle.Init.OverSampling = UART_OVERSAMPLING_16;
-		HAL_UART_Init(&uartHandle);
+		LL_USART_SetBaudRate(USART1, HAL_RCC_GetPCLK2Freq(), 9600);
+		LL_USART_SetDataWidth(USART1, LL_USART_DATAWIDTH_8B);
+		LL_USART_SetStopBitsLength(USART1, LL_USART_STOPBITS_1);
+		LL_USART_SetParity(USART1, LL_USART_PARITY_NONE);
+		LL_USART_SetTransferDirection(USART1, LL_USART_DIRECTION_TX_RX);
+		LL_USART_SetHWFlowCtrl(USART1, LL_USART_HWCONTROL_NONE);
 
 		// We will be using UART interrupt to get data
 		HAL_NVIC_SetPriority(USART1_IRQn, 6, 0);
 		HAL_NVIC_EnableIRQ(USART1_IRQn);
 
-		// We will be waiting for a single char right received right to the buffer
-		HAL_UART_Receive_IT(&uartHandle, rxBuffer, 1);
+		// Enable UART interrupt on byte reception
+		LL_USART_EnableIT_RXNE(USART1);
+
+		// Finally enable the peripheral
+		LL_USART_Enable(USART1);
 	}
 
 	// Check if byte is available
@@ -96,37 +95,23 @@ public:
 		return ulTaskNotifyTake(pdTRUE, 10);
 	}
 
-	// Helper function, returns UART handler
-	inline UART_HandleTypeDef * getUartHandle()
+	// Process received byte
+	inline void charReceivedCB(uint8_t c)
 	{
-		return &uartHandle;
-	}
-
-	// Char received, prepare for next one
-	inline void charReceivedCB()
-	{
-		char lastReceivedChar = rxBuffer[lastReceivedIndex % gpsBufferSize];
-
+		rxBuffer[lastReceivedIndex % gpsBufferSize] = c;
 		lastReceivedIndex++;
-		HAL_UART_Receive_IT(&uartHandle, rxBuffer + (lastReceivedIndex % gpsBufferSize), 1);
 
 		// If a EOL symbol received, notify GPS thread that line is avaialble to read
-		if(lastReceivedChar == '\n')
+		if(c == '\n')
 			vTaskNotifyGiveFromISR(xGPSThread, NULL);
 	}
 } gpsUart; // An instance of UART handler
 
 
-// Forward UART interrupt processing to HAL
 extern "C" void USART1_IRQHandler(void)
 {
-	HAL_UART_IRQHandler(gpsUart.getUartHandle());
-}
-
-// HAL calls this callback when it receives a char from UART. Forward it to the class
-extern "C" void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uartHandle)
-{
-	gpsUart.charReceivedCB();
+	uint8_t byte = LL_USART_ReceiveData8(USART1);
+	gpsUart.charReceivedCB(byte);
 }
 
 void vGPSTask(void *pvParameters)
@@ -151,9 +136,8 @@ void vGPSTask(void *pvParameters)
 		while(gpsUart.available())
 		{
 			int c = gpsUart.readChar();
-
+			//usbDebugWrite(c);
 			gpsParser.handle(c);
-			//SerialUSB.write(c);
 			buf[len++] = c;
 
 			// Reached end of line
