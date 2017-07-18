@@ -24,27 +24,27 @@ ADD_LIBRARY(NeoGPS STATIC ${NEOGPS_SRC})
 ###################
 
 SET(FREERTOS_SRC
-	STM32generic/libraries/FreeRTOS/src/Arduino_FreeRTOS.c
-	STM32generic/libraries/FreeRTOS/src/Arduino_FreeRTOS.h
-	STM32generic/libraries/FreeRTOS/src/FreeRTOS.h
-	STM32generic/libraries/FreeRTOS/src/FreeRTOSConfig.h
-	STM32generic/libraries/FreeRTOS/src/heap_1.c
-	STM32generic/libraries/FreeRTOS/src/list.c
-	STM32generic/libraries/FreeRTOS/src/list.h
-	STM32generic/libraries/FreeRTOS/src/mpu_prototypes.h
-	STM32generic/libraries/FreeRTOS/src/mpu_wrappers.h
-	STM32generic/libraries/FreeRTOS/src/port_CM3.c
-	STM32generic/libraries/FreeRTOS/src/portable.h
-	STM32generic/libraries/FreeRTOS/src/portmacro_CM3.h
-	STM32generic/libraries/FreeRTOS/src/projdefs.h
-	STM32generic/libraries/FreeRTOS/src/queue.c
-	STM32generic/libraries/FreeRTOS/src/queue.h
-	STM32generic/libraries/FreeRTOS/src/semphr.h
-	STM32generic/libraries/FreeRTOS/src/StackMacros.h
-	STM32generic/libraries/FreeRTOS/src/task.h
-	STM32generic/libraries/FreeRTOS/src/tasks.c
-	STM32generic/libraries/FreeRTOS/src/timers.c
-	STM32generic/libraries/FreeRTOS/src/timers.h
+	FreeRTOS/Arduino_FreeRTOS.c
+	FreeRTOS/Arduino_FreeRTOS.h
+	FreeRTOS/FreeRTOS.h
+	FreeRTOS/FreeRTOSConfig.h
+	FreeRTOS/heap_1.c
+	FreeRTOS/list.c
+	FreeRTOS/list.h
+	FreeRTOS/mpu_prototypes.h
+	FreeRTOS/mpu_wrappers.h
+	FreeRTOS/port.c
+	FreeRTOS/portable.h
+	FreeRTOS/portmacro.h
+	FreeRTOS/projdefs.h
+	FreeRTOS/queue.c
+	FreeRTOS/queue.h
+	FreeRTOS/semphr.h
+	FreeRTOS/StackMacros.h
+	FreeRTOS/task.h
+	FreeRTOS/tasks.c
+	FreeRTOS/timers.c
+	FreeRTOS/timers.h
 )
 ADD_LIBRARY(FreeRTOS STATIC ${FREERTOS_SRC})
 
