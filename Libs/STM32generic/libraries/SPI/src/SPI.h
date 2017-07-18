@@ -100,7 +100,7 @@ class SPIClass {
     void begin();
     void end();
 
-    void beginTransaction(SPISettings settings);
+	void beginTransaction(const SPISettings & settings);
 	void endTransaction();
 
 	void setBitOrder(uint8_t);
@@ -225,12 +225,12 @@ inline uint16_t SPIClass::transfer16(uint16_t data) {
 
     while(__HAL_SPI_GET_FLAG(&spiHandle, SPI_FLAG_TXE) == RESET);
 
-    *(volatile uint16_t*)&spiHandle.Instance->DR = data;
+	spiHandle.Instance->DR = data;
 
     while(__HAL_SPI_GET_FLAG(&spiHandle, SPI_FLAG_RXNE) == RESET);
     while(__HAL_SPI_GET_FLAG(&spiHandle, SPI_FLAG_BSY) == SET);
 
-    uint16_t ret = *(volatile uint16_t*)&spiHandle.Instance->DR;
+	uint16_t ret = spiHandle.Instance->DR & 0xffff;
 
     LL_SPI_SetDataWidth(spiHandle.Instance, LL_SPI_DATAWIDTH_8BIT);
 

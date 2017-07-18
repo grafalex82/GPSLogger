@@ -3,7 +3,6 @@
 # Below each section represents a library with its own settings
 
 
-
 ###################
 # NeoGPS
 ###################
@@ -17,6 +16,76 @@ SET(NEOGPS_SRC
 )
 ADD_LIBRARY(NeoGPS STATIC ${NEOGPS_SRC})
 
+
+###################
+# SD card library
+###################
+
+SET(SDFAT_SRC
+	SdFat/BlockDriver.h
+	SdFat/FreeStack.h
+#	SdFat/MinimumSerial.cpp
+#	SdFat/MinimumSerial.h
+	SdFat/SdFat.h
+	SdFat/SdFatConfig.h
+	SdFat/SysCall.h
+
+	SdFat/FatLib/ArduinoFiles.h
+	SdFat/FatLib/ArduinoStream.h
+	SdFat/FatLib/BaseBlockDriver.h
+	SdFat/FatLib/bufstream.h
+	SdFat/FatLib/FatApiConstants.h
+	SdFat/FatLib/FatFile.cpp
+	SdFat/FatLib/FatFile.h
+	SdFat/FatLib/FatFileLFN.cpp
+	SdFat/FatLib/FatFilePrint.cpp
+	SdFat/FatLib/FatFileSFN.cpp
+	SdFat/FatLib/FatFileSystem.h
+	SdFat/FatLib/FatLib.h
+	SdFat/FatLib/FatLibConfig.h
+	SdFat/FatLib/FatStructs.h
+	SdFat/FatLib/FatVolume.cpp
+	SdFat/FatLib/FatVolume.h
+	SdFat/FatLib/FmtNumber.cpp
+	SdFat/FatLib/FmtNumber.h
+#	SdFat/FatLib/fstream.cpp
+#	SdFat/FatLib/fstream.h
+#	SdFat/FatLib/ios.h
+#	SdFat/FatLib/iostream.h
+#	SdFat/FatLib/istream.cpp
+#	SdFat/FatLib/istream.h
+#	SdFat/FatLib/ostream.cpp
+#	SdFat/FatLib/ostream.h
+#	SdFat/FatLib/StdioStream.cpp
+#	SdFat/FatLib/StdioStream.h
+
+	SdFat/SdCard/SdInfo.h
+#	SdFat/SdCard/SdioCard.h
+#	SdFat/SdCard/SdioCardEX.cpp
+#	SdFat/SdCard/SdioTeensy.cpp
+	SdFat/SdCard/SdSpiCard.cpp
+	SdFat/SdCard/SdSpiCard.h
+#	SdFat/SdCard/SdSpiCardEX.cpp
+
+	SdFat/SpiDriver/DigitalPin.h
+	SdFat/SpiDriver/SdSpiBaseDriver.h
+	SdFat/SpiDriver/SdSpiDriver.h
+#	SdFat/SpiDriver/SdSpiESP8266.cpp
+#	SdFat/SpiDriver/SdSpiSAM3X.cpp
+	SdFat/SpiDriver/SdSpiSTM32F1.cpp
+#	SdFat/SpiDriver/SdSpiTeensy3.cpp
+	SdFat/SpiDriver/SoftSPI.h
+)
+ADD_LIBRARY(SDFAT STATIC ${SDFAT_SRC})
+
+TARGET_INCLUDE_DIRECTORIES(SDFAT PRIVATE
+	SdFat
+	STM32generic/libraries/SPI/src   # just for SPISettings
+)
+
+TARGET_COMPILE_DEFINITIONS(SDFAT PRIVATE
+	-DENABLE_ARDUINO_FEATURES=0
+)
 
 
 ###################
@@ -80,23 +149,6 @@ TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
 #	STM32generic/libraries/SPI/src
 	AdafruitGFX
 )
-
-
-###################
-# Various Arduino libraries
-###################
-
-SET(ARDUINO_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/STM32generic/libraries)
-
-SET(ARDUINO_LIBS_SRC
-	${ARDUINO_LIBS_DIR}/Wire/src/Wire.cpp
-	${ARDUINO_LIBS_DIR}/Wire/src/Wire.h
-#	${ARDUINO_LIBS_DIR}/SPI/src/SPI.cpp
-#	${ARDUINO_LIBS_DIR}/SPI/src/SPI.h
-)
-
-ADD_LIBRARY(ArduinoLibs STATIC ${ARDUINO_LIBS_SRC})
-
 
 
 ###################

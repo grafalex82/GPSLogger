@@ -9,6 +9,9 @@
 #include "GPSDataModel.h"
 #include "USBDebugLogger.h"
 
+#include "SDThread.h"
+#include "USBDebugLogger.h"
+
 // A GPS parser
 NMEAGPS gpsParser;
 
@@ -111,12 +114,18 @@ extern "C" void USART1_IRQHandler(void)
 
 void vGPSTask(void *pvParameters)
 {
+	uint8_t maxLen = 0;
+
 	// GPS initialization must be done withing GPS thread as thread handle is stored
 	// and used later for synchronization purposes
 	gpsUart.init();
 
 	for (;;)
 	{
+		//Receive one line from GPS
+		char * buf = requestRawGPSBuffer();
+		uint8_t len = 0;
+
 		// Wait until whole string is received
 		if(!gpsUart.waitForString())
 			continue;
@@ -127,14 +136,36 @@ void vGPSTask(void *pvParameters)
 			int c = gpsUart.readChar();
 			//usbDebugWrite(c);
 			gpsParser.handle(c);
+			buf[len++] = c;
+
+			// Reached end of line
+			if(c == '\n')
+				break;
+
+			// Buffer overrun protection
+			if(len == maxRawGPSDataLen)
+			{
+				buf[len] = '\n';
+				break;
+			}
 		}
 		
+		if(len > maxLen)
+		{
+			maxLen = len;
+			usbDebugWrite("=== New max len detected: %d\n", maxLen);
+		}
+
+		//Send received raw data to SD thread
+		ackRawGPSData(len);
+
+		// Update GPS model data
 		if(gpsParser.available())
 		{
 			GPSDataModel::instance().processNewGPSFix(gpsParser.read());
 			GPSDataModel::instance().processNewSatellitesData(gpsParser.satellites, gpsParser.sat_count);
 		}
-			
+
 		vTaskDelay(10);
 	}
 }
