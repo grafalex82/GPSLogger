@@ -37,24 +37,22 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	__HAL_RCC_SPI1_CLK_ENABLE();
 
 	// Init pins
-	GPIO_InitTypeDef GPIO_InitStruct;
-	GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_7;	//MOSI & SCK
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_7, LL_GPIO_MODE_ALTERNATE);			// MOSI: AF PP
+	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_7, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_7, LL_GPIO_SPEED_FREQ_HIGH);
 
-	GPIO_InitStruct.Pin = GPIO_PIN_6;				//MISO
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_PP; //GPIO_MODE_INPUT
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_6, LL_GPIO_MODE_INPUT);				// MISO: Input Floating
 
-	GPIO_InitStruct.Pin = GPIO_PIN_4;				//CS
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_5, LL_GPIO_MODE_ALTERNATE);			// SCK: AF PP
+	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_5, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_5, LL_GPIO_SPEED_FREQ_HIGH);
+
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_4, LL_GPIO_MODE_OUTPUT);				// CS
+	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_4, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_4, LL_GPIO_SPEED_FREQ_MEDIUM);
 
 	// Set CS pin High by default
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+	LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_4);
 
 	// Init SPI
 	spiHandle.Instance = SPI1;
@@ -235,7 +233,7 @@ void SdFatSPIDriver::select()
 	usbDebugWrite("== select\n");
 #endif
 
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_RESET);
+	LL_GPIO_ResetOutputPin(GPIOA, LL_GPIO_PIN_4);
 }
 
 void SdFatSPIDriver::setSpiSettings(const SPISettings & spiSettings)
@@ -255,7 +253,7 @@ void SdFatSPIDriver::unselect()
 	usbDebugWrite("== unselect\n");
 #endif
 
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_4, GPIO_PIN_SET);
+	LL_GPIO_SetOutputPin(GPIOA, LL_GPIO_PIN_4);
 }
 
 void SdFatSPIDriver::dmaTransferCompletedCB()

@@ -1,6 +1,7 @@
 #include <Print.h>
 #include "USBDebugLogger.h"
 
+
 // SdFat needs Serial for its interface. Provide our one
 // (must be declared before including SdFat.h)
 class UsbDebugSerial : public Print
@@ -225,6 +226,8 @@ void initSDThread()
 
 void vSDThread(void *pvParameters)
 {
+	initSDThread();
+
 	while(true)
 	{
 		vTaskDelay(3000);
