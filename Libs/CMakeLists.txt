@@ -133,16 +133,16 @@ SET(STM32GENERIC_SRC
 ##	STM32generic/cores/arduino/stm32/stm32_build_defines.h
 #	STM32generic/cores/arduino/stm32/stm32_clock.h
 ##	STM32generic/cores/arduino/stm32/stm32_def.h
-	STM32generic/cores/arduino/stm32/stm32_gpio.c
-	STM32generic/cores/arduino/stm32/stm32_gpio.h
-	STM32generic/cores/arduino/stm32/stm32_gpio_af.c
-	STM32generic/cores/arduino/stm32/stm32_gpio_af.h
+#	STM32generic/cores/arduino/stm32/stm32_gpio.c
+#	STM32generic/cores/arduino/stm32/stm32_gpio.h
+#	STM32generic/cores/arduino/stm32/stm32_gpio_af.c
+#	STM32generic/cores/arduino/stm32/stm32_gpio_af.h
 ##	STM32generic/cores/arduino/stm32/stm32_gpio_af_F0F2F3F4F7L0L1L4.c
-	STM32generic/cores/arduino/stm32/stm32_gpio_af_F1.c
+#	STM32generic/cores/arduino/stm32/stm32_gpio_af_F1.c
 #	STM32generic/cores/arduino/stm32/stm32_gpio_exti.c
 	STM32generic/cores/arduino/stm32/stm32_init.c
-	STM32generic/cores/arduino/stm32/stm32_pin_list.c
-	STM32generic/cores/arduino/stm32/stm32_PWM.c
+#	STM32generic/cores/arduino/stm32/stm32_pin_list.c
+#	STM32generic/cores/arduino/stm32/stm32_PWM.c
 #	STM32generic/cores/arduino/stm32/USBDevice.cpp
 #	STM32generic/cores/arduino/stm32/USBDevice.h
  
@@ -309,7 +309,7 @@ SET(HAL_SRC
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_eth.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_flash.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_flash_ex.c
-	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_gpio.c
+	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_gpio.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_gpio_ex.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_hcd.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_i2c.c

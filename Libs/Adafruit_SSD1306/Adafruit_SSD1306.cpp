@@ -155,6 +155,8 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, bool reset)
   // Initialize communication driver
   _driver->begin();
 
+  // TODO: Move this code to the driver's begin() method
+/*
   if ((reset) && (_rst >= 0))
   {
     // Setup reset pin direction (used by both SPI and I2C)
@@ -170,6 +172,7 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, bool reset)
     digitalWrite(_rst, HIGH);
     // turn on VCC (9V?)
   }
+*/
 
   // Init sequence
   ssd1306_command(SSD1306_DISPLAYOFF);                    // 0xAE
