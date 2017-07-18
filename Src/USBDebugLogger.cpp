@@ -2,8 +2,10 @@
 #include <usbd_cdc.h>
 #include <usbd_desc.h>
 
-#include <string.h>
-#include <stdarg.h>
+#include <stm32f1xx_ll_gpio.h>
+
+#include <string.h> // strlen
+#include <stdarg.h> // VA
 
 #include <Arduino_FreeRTOS.h>
 #include "FreeRTOSHelpers.h"
@@ -28,20 +30,16 @@ USBD_HandleTypeDef hUsbDeviceFS;
 void reenumerateUSB()
 {
 	// Initialize PA12 pin
-	GPIO_InitTypeDef pinInit;
-	pinInit.Pin = GPIO_PIN_12;
-	pinInit.Mode = GPIO_MODE_OUTPUT_PP;
-	pinInit.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(GPIOA, &pinInit);
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_OUTPUT);
+	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_12, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_12, LL_GPIO_SPEED_FREQ_LOW);
 
 	// Let host know to enumerate USB devices on the bus
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_12, GPIO_PIN_RESET);
+	LL_GPIO_ResetOutputPin(GPIOA, GPIO_PIN_12);
 	for(unsigned int i=0; i<512; i++) {};
 
 	// Restore pin mode
-	pinInit.Mode = GPIO_MODE_INPUT;
-	pinInit.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(GPIOA, &pinInit);
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
 	for(unsigned int i=0; i<512; i++) {};
 }
 

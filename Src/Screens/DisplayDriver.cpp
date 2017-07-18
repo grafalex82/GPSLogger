@@ -1,5 +1,6 @@
 #include <stm32f1xx_hal_dma.h>
 #include <stm32f1xx_hal_i2c.h>
+#include <stm32f1xx_ll_gpio.h>
 
 #include "DisplayDriver.h"
 
@@ -18,12 +19,10 @@ void DisplayDriver::begin()
 	xDisplayThread = xTaskGetCurrentTaskHandle();
 
 	// Initialize I2C pins
-	GPIO_InitTypeDef GPIO_InitStruct;
-	GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_6 , LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_6, LL_GPIO_OUTPUT_OPENDRAIN);
+	LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_7 , LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_7, LL_GPIO_OUTPUT_OPENDRAIN);
 
 	// Enable I2C
 	__HAL_RCC_I2C1_CLK_ENABLE();
