@@ -257,6 +257,15 @@ SET(USB_SRC
 	USB/CDC/usbd_cdc.h
 	USB/CDC/usbd_cdc_if.c
 	USB/CDC/usbd_cdc_if.h
+
+	USB/MSC/usbd_msc.c
+	USB/MSC/usbd_msc.h
+	USB/MSC/usbd_msc_bot.c
+	USB/MSC/usbd_msc_bot.h
+	USB/MSC/usbd_msc_data.c
+	USB/MSC/usbd_msc_data.h
+	USB/MSC/usbd_msc_scsi.c
+	USB/MSC/usbd_msc_scsi.h
 )
 ADD_LIBRARY(USB STATIC ${USB_SRC})
 
