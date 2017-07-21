@@ -22,8 +22,8 @@ class SdFatSPIDriver : public SdSpiBaseDriver
 	DMA_HandleTypeDef dmaHandleRx;
 	DMA_HandleTypeDef dmaHandleTx;
 
-	// GPS thread handle
-	TaskHandle_t xSDThread = NULL;
+	// Synchronization semaphore handle
+	SemaphoreHandle_t xSema = NULL;
 
 public:
 	SdFatSPIDriver();

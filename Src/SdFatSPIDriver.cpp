@@ -28,7 +28,7 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	(void)chipSelectPin;
 
 	// Initialize GPS Thread handle
-	xSDThread = xTaskGetCurrentTaskHandle();
+	xSema = xSemaphoreCreateBinary();
 
 	// Enable clocking of corresponding periperhal
 	__HAL_RCC_GPIOA_CLK_ENABLE();
@@ -174,7 +174,7 @@ uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 #endif
 
 	// Wait until transfer is completed
-	ulTaskNotifyTake(pdTRUE, 100);
+	xSemaphoreTake(xSema, 100);
 
 #ifdef USB_DEBUG
 	if(debugEnabled)
@@ -218,7 +218,7 @@ void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 #endif
 
 	// Wait until transfer is completed
-	ulTaskNotifyTake(pdTRUE, 100);
+	xSemaphoreTake(xSema, 100);
 
 #ifdef USB_DEBUG
 	if(debugEnabled)
@@ -259,7 +259,7 @@ void SdFatSPIDriver::unselect()
 void SdFatSPIDriver::dmaTransferCompletedCB()
 {
 	// Resume SD thread
-	vTaskNotifyGiveFromISR(xSDThread, NULL);
+	xSemaphoreGiveFromISR(xSema, NULL);
 }
 
 extern SdFatSPIDriver spiDriver;
