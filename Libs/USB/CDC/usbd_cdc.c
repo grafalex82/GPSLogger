@@ -65,6 +65,10 @@
 
 extern void USBSerialTransferCompletedCB();
 
+// A CDC object
+USBD_CDC_HandleTypeDef cdcInstance;
+
+
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
   */
@@ -515,7 +519,7 @@ static uint8_t  USBD_CDC_Init (USBD_HandleTypeDef *pdev,
                  CDC_CMD_PACKET_SIZE);
   
     
-  pdev->pClassData = USBD_malloc(sizeof (USBD_CDC_HandleTypeDef));
+  pdev->pClassData = &cdcInstance;
   
   if(pdev->pClassData == NULL)
   {
@@ -583,7 +587,6 @@ static uint8_t  USBD_CDC_DeInit (USBD_HandleTypeDef *pdev,
   if(pdev->pClassData != NULL)
   {
     ((USBD_CDC_ItfTypeDef *)pdev->pUserData)->DeInit();
-    USBD_free(pdev->pClassData);
     pdev->pClassData = NULL;
   }
   
