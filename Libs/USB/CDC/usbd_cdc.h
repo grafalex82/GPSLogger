@@ -139,6 +139,7 @@ USBD_CDC_HandleTypeDef;
 
 extern const USBD_ClassTypeDef  USBD_CDC;
 #define USBD_CDC_CLASS    &USBD_CDC
+
 /**
   * @}
   */ 

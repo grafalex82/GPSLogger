@@ -71,14 +71,22 @@
 /** @defgroup USBD_DESC_Private_Defines
   * @{
   */ 
-#define USBD_VID						0x1EAF
-#define USBD_LANGID_STRING				0x409
-#define USBD_MANUFACTURER_STRING		"Leaf Labs"
-#define USBD_PID_FS						0x0004
-#define USBD_PRODUCT_STRING_FS			"Maple"
-#define USBD_SERIALNUMBER_STRING_FS		"00000000001A"
-#define USBD_CONFIGURATION_STRING_FS    "CDC Config"
-#define USBD_INTERFACE_STRING_FS		"CDC Interface"
+//#define USBD_VID						0x1EAF
+//#define USBD_LANGID_STRING				0x409
+//#define USBD_MANUFACTURER_STRING		"Leaf Labs"
+//#define USBD_PID_FS						0x0004
+//#define USBD_PRODUCT_STRING_FS			"Maple"
+//#define USBD_SERIALNUMBER_STRING_FS		"00000000001A"
+//#define USBD_CONFIGURATION_STRING_FS    "CDC Config"
+//#define USBD_INTERFACE_STRING_FS		"CDC Interface"
+#define USBD_VID     1155
+#define USBD_LANGID_STRING     1033
+#define USBD_MANUFACTURER_STRING     "STMicroelectronics"
+#define USBD_PID_FS     22314
+#define USBD_PRODUCT_STRING_FS     "STM32 Mass Storage"
+#define USBD_SERIALNUMBER_STRING_FS     "00000000001A"
+#define USBD_CONFIGURATION_STRING_FS     "MSC Config"
+#define USBD_INTERFACE_STRING_FS     "MSC Interface"
 
 /* USER CODE BEGIN 0 */
 
@@ -130,8 +138,8 @@ __ALIGN_BEGIN const uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
     USB_DESC_TYPE_DEVICE,       /*bDescriptorType*/
     0x00,                       /* bcdUSB */  
     0x02,
-    0x02,                        /*bDeviceClass*/
-    0x02,                       /*bDeviceSubClass*/
+    0x00,                        /*bDeviceClass*/
+    0x00,                       /*bDeviceSubClass*/
     0x00,                       /*bDeviceProtocol*/
     USB_MAX_EP0_SIZE,          /*bMaxPacketSize*/
     LOBYTE(USBD_VID),           /*idVendor*/

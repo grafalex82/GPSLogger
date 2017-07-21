@@ -1,5 +1,6 @@
 #include <usbd_cdc_if.h>
 #include <usbd_cdc.h>
+#include <usbd_msc.h>
 #include <usbd_desc.h>
 
 #include <stm32f1xx_ll_gpio.h>
@@ -12,6 +13,7 @@
 
 #include "USBDebugLogger.h"
 
+#include "SdMscDriver.h"
 
 #define USB_SERIAL_BUFFER_SIZE 256
 
@@ -36,11 +38,11 @@ void reenumerateUSB()
 
 	// Let host know to enumerate USB devices on the bus
 	LL_GPIO_ResetOutputPin(GPIOA, GPIO_PIN_12);
-	for(unsigned int i=0; i<512; i++) {};
+	HAL_Delay(1);
 
 	// Restore pin mode
 	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
-	for(unsigned int i=0; i<512; i++) {};
+	HAL_Delay(1);
 }
 
 void initUSB()
@@ -48,8 +50,9 @@ void initUSB()
 	reenumerateUSB();
 
 	USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
-	USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC);
-	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
+	USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC);
+	//USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
+	USBD_MSC_RegisterStorage(&hUsbDeviceFS, &SdMscDriver);
 	USBD_Start(&hUsbDeviceFS);
 
 	usbMutex = xSemaphoreCreateMutex();

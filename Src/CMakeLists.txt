@@ -59,6 +59,8 @@ SET(SOURCE_FILES
 	LEDThread.h
 	SdFatSPIDriver.cpp
 	SdFatSPIDriver.h
+	SdMscDriver.cpp
+	SdMscDriver.h
 	SDThread.cpp
 	SDThread.h
 	TimeFont.cpp
@@ -79,6 +81,7 @@ INCLUDE_DIRECTORIES(
 	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/FreeRTOS/src
 	${GPSLOGGER_LIBS_DIR}/USB/Core
 	${GPSLOGGER_LIBS_DIR}/USB/CDC
+	${GPSLOGGER_LIBS_DIR}/USB/MSC
 )
 
 

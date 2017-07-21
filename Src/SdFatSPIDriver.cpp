@@ -14,7 +14,7 @@
 //#define USB_DEBUG
 uint8_t debugEnabled = 0;
 
-const size_t DMA_TRESHOLD = 1600;
+const size_t DMA_TRESHOLD = 16384;
 
 #include "USBDebugLogger.h"
 
