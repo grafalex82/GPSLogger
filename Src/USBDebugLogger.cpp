@@ -1,5 +1,5 @@
 #include <usbd_cdc_if.h>
-#include <usbd_cdc.h>
+//#include <usbd_cdc.h>
 #include <usbd_msc.h>
 #include <usbd_desc.h>
 
@@ -48,9 +48,11 @@ void reenumerateUSB()
 void initUSB()
 {
 	reenumerateUSB();
-
+	return;
 	USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
+	return;
 	USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC);
+
 	//USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
 	USBD_MSC_RegisterStorage(&hUsbDeviceFS, &SdMscDriver);
 	USBD_Start(&hUsbDeviceFS);
@@ -174,6 +176,8 @@ size_t PrintNum(unsigned int value, uint8_t radix, char * buf, uint8_t width, ch
 
 void usbDebugWrite(const char * fmt, ...)
 {
+	return;
+
 	va_list v;
 	va_start(v, fmt);
 
@@ -265,6 +269,7 @@ void usbDebugWrite(const char * fmt, ...)
 
 void usbDebugWrite(char c)
 {
+	return;
 	usbDebugWriteInternal(&c, 1);
 }
 

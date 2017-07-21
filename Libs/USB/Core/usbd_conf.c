@@ -267,7 +267,9 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
   */
 USBD_StatusTypeDef  USBD_LL_Init (USBD_HandleTypeDef *pdev)
 { 
-  /* Init USB_IP */
+	return 0;
+
+	/* Init USB_IP */
   /* Link The driver to the stack */
   hpcd_USB_FS.pData = pdev;
   pdev->pData = &hpcd_USB_FS;
@@ -279,6 +281,7 @@ USBD_StatusTypeDef  USBD_LL_Init (USBD_HandleTypeDef *pdev)
   hpcd_USB_FS.Init.low_power_enable = DISABLE;
   hpcd_USB_FS.Init.lpm_enable = DISABLE;
   hpcd_USB_FS.Init.battery_charging_enable = DISABLE;
+
   if (HAL_PCD_Init(&hpcd_USB_FS) != HAL_OK)
   {
 	Error_Handler();
