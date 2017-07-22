@@ -4,4 +4,7 @@
 // A thread that is responsible for showing current device status via onboard LED(s)
 void vLEDThread(void *pvParameters);
 
+void setLedStatus(uint8_t status);
+void halt(uint8_t status);
+
 #endif // LEDDRIVER_H

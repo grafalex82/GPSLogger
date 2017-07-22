@@ -13,6 +13,8 @@ int main(void)
 {
 	InitBoard();
 
+	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
+
 	initUSB();
 
 	//initDisplay();
