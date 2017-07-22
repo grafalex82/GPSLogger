@@ -48,7 +48,6 @@ void reenumerateUSB()
 void initUSB()
 {
 	reenumerateUSB();
-	return;
 	USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
 	return;
 	USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC);
