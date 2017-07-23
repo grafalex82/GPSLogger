@@ -13,7 +13,7 @@ class UsbDebugSerial : public Print
 	}
 } Serial;
 
-#include <SdFat.h>
+//#include <SdFat.h>
 #include <Arduino_FreeRTOS.h>
 
 #include "SdFatSPIDriver.h"
@@ -24,11 +24,11 @@ class UsbDebugSerial : public Print
 
 // SD card instance
 SdFatSPIDriver spiDriver;
-SdFat SD(&spiDriver);
+//SdFat SD(&spiDriver);
 
 // Files we are working fith
-FatFile rawDataFile;
-FatFile bulkFile;
+//FatFile rawDataFile;
+//FatFile bulkFile;
 
 enum SDMessageType
 {
@@ -82,59 +82,7 @@ void ackRawGPSData(uint8_t len)
 	xQueueSend(sdQueue, &rawGPSDataBuf, 10);
 }
 
-bool waitUntilReady()
-{
-	uint16_t q = 0;
-	while (spiDriver.receive() != 0XFF)
-	{
-		q++;
-		if(q == 0x1000)
-		{
-			usbDebugWrite("Card is not ready :(\n");
-			return false;
-		}
-	}
-
-	return true;
-}
-
-bool cardCommand(uint8_t command, uint32_t arg)
-{
-
-	waitUntilReady(); //wait for card to no longer be busy
-
-	uint8_t commandSequence[] = {
-		(uint8_t) (command | 0x40),
-		(uint8_t) (arg >> 24),
-		(uint8_t) (arg >> 16),
-		(uint8_t) (arg >> 8),
-		(uint8_t) (arg & 0xFF),
-		0xFF };
-
-	if (command == CMD0)
-		commandSequence[5] = 0x95;
-	else
-	if (command == CMD8)
-		commandSequence[5] = 0x87;
-
-	spiDriver.send(commandSequence[0]);
-	spiDriver.send(commandSequence[1]);
-	spiDriver.send(commandSequence[2]);
-	spiDriver.send(commandSequence[3]);
-	spiDriver.send(commandSequence[4]);
-	spiDriver.send(commandSequence[5]);
-
-	//Data sent, now await Response
-	uint8_t res = 0xFF;
-	uint8_t count = 20;
-	while ((res & 0x80) && count) {
-		res = spiDriver.receive();
-		count--;
-	}
-
-	return res;
-}
-
+#if 0
 bool initSDCard()
 {
 	//TODO Perhaps we should uninitialize SD card first
@@ -239,7 +187,7 @@ void vSDThread(void *pvParameters)
 	}
 }
 
-
+#endif
 
 /*
 	usbDebugWrite("Initializing card...");
