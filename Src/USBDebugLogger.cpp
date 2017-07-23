@@ -13,6 +13,8 @@
 
 #include "USBDebugLogger.h"
 
+#include "SdMscDriver.h"
+#include "LEDThread.h"
 
 #define USB_SERIAL_BUFFER_SIZE 256
 
@@ -20,8 +22,6 @@ uint8_t usbTxBuffer[USB_SERIAL_BUFFER_SIZE];
 volatile uint16_t usbTxHead = 0;
 volatile uint16_t usbTxTail = 0;
 volatile uint16_t usbTransmitting = 0;
-
-extern USBD_HandleTypeDef hUsbDeviceFS;
 
 // TODO Make it static
 SemaphoreHandle_t usbMutex = NULL;
@@ -39,19 +39,55 @@ void reenumerateUSB()
 	LL_GPIO_ResetOutputPin(GPIOA, GPIO_PIN_12);
 	HAL_Delay(1);
 
-	// Restore pin mode
-	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
-	HAL_Delay(1);
 }
+
+extern void blink(uint8_t);
+extern "C" PCD_HandleTypeDef hpcd_USB_FS;
 
 void initUSB()
 {
+	HAL_PCD_Stop(&hpcd_USB_FS);
+
 	reenumerateUSB();
-	return;
-	USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
-	USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC);
-	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
+
+	setLedStatus(0);
+//	HAL_Delay(1000);
+//	blink(7);
+
+	USBD_StatusTypeDef res = USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
+	if(res)
+		halt(res);
+
+	setLedStatus(1);
+
+//	HAL_Delay(1000);
+//	blink(6);
+
+	HAL_Delay(2);
+
+	res = USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC);
+	if(res)
+		halt(res);
+
+
+	setLedStatus(2);
+//	HAL_Delay(1000);
+//	blink(5);
+
+	USBD_MSC_RegisterStorage(&hUsbDeviceFS, &SdMscDriver);
+
+	setLedStatus(3);
+//	HAL_Delay(1000);
+//	blink(4);
+
 	USBD_Start(&hUsbDeviceFS);
+
+	setLedStatus(4);
+//	HAL_Delay(1000);
+//	blink(3);
+
+	// Restore pin mode
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
 
 	usbMutex = xSemaphoreCreateMutex();
 }

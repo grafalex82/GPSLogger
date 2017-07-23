@@ -68,7 +68,7 @@ void blink(uint8_t status)
 
 		status <<= 1;
 
-		HAL_Delay(120);
+		HAL_Delay(200);
 	}
 }
 
