@@ -15,7 +15,7 @@ int main(void)
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
 
-	//initUSB();
+	initUSB();
 	//halt(5);
 
 	//initDisplay();
