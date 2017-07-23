@@ -7,7 +7,7 @@
 
 //Forward declarations
 class SPISettings;
-typedef void * TaskHandle_t;
+typedef void * SemaphoreHandle_t;
 
 // This is custom implementation of SPI Driver class. SdFat library is
 // using this class to access SD card over SPI

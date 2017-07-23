@@ -59,6 +59,8 @@ SET(SOURCE_FILES
 	LEDThread.h
 	SdFatSPIDriver.cpp
 	SdFatSPIDriver.h
+	SdMscDriver.cpp
+	SdMscDriver.h
 	SDThread.cpp
 	SDThread.h
 	TimeFont.cpp
