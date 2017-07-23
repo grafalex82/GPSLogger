@@ -8,12 +8,17 @@
 #include "ButtonsThread.h"
 #include "SDThread.h"
 #include "USBDebugLogger.h"
+#include "SdMscDriver.h"
 
 int main(void)
 {
 	InitBoard();
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
+
+	// Initialize SD card before initializing USB
+	if(!initSD())
+		halt(7);
 
 	initUSB();
 	//halt(5);

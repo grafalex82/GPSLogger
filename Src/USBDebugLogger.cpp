@@ -37,7 +37,7 @@ void reenumerateUSB()
 
 	// Let host know to enumerate USB devices on the bus
 	LL_GPIO_ResetOutputPin(GPIOA, GPIO_PIN_12);
-	HAL_Delay(1);
+	HAL_Delay(200);
 
 }
 
@@ -88,6 +88,7 @@ void initUSB()
 
 	// Restore pin mode
 	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
+	HAL_Delay(200);
 
 	usbMutex = xSemaphoreCreateMutex();
 }

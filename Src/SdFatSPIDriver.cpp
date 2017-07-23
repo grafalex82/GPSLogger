@@ -28,13 +28,14 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	(void)chipSelectPin;
 
 	// Initialize GPS Thread handle
-	xSema = xSemaphoreCreateBinary();
+	//xSema = xSemaphoreCreateBinary();
 
 	// Enable clocking of corresponding periperhal
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 	__HAL_RCC_GPIOC_CLK_ENABLE();
 	__HAL_RCC_GPIOD_CLK_ENABLE();
 	__HAL_RCC_SPI1_CLK_ENABLE();
+
 
 	// Init pins
 	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_7, LL_GPIO_MODE_ALTERNATE);			// MOSI: AF PP

@@ -6,6 +6,12 @@
 extern SdFatSPIDriver spiDriver;
 SdSpiCard card;
 
+bool initSD()
+{
+	bool res = card.begin(&spiDriver, PA4, SPI_FULL_SPEED);
+	return res;
+}
+
 const uint8_t SD_MSC_Inquirydata[] = {/* 36 */
   /* LUN 0 */
   0x00,
@@ -26,8 +32,8 @@ int8_t SD_MSC_Init (uint8_t lun)
 {
 	(void)lun; // Not used
 
-	if(!card.begin(&spiDriver, 0, SPI_FULL_SPEED))
-		return USBD_FAIL;
+//	if(!card.begin(&spiDriver, 0, SPI_FULL_SPEED))
+//		return USBD_FAIL;
 
 	return (USBD_OK);
 }
