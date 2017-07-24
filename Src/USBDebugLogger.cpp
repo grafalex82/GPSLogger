@@ -50,18 +50,9 @@ void initUSB()
 
 	reenumerateUSB();
 
-	setLedStatus(0);
-//	HAL_Delay(1000);
-//	blink(7);
-
 	USBD_StatusTypeDef res = USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
 	if(res)
 		halt(res);
-
-	setLedStatus(1);
-
-//	HAL_Delay(1000);
-//	blink(6);
 
 	HAL_Delay(2);
 
@@ -69,22 +60,8 @@ void initUSB()
 	if(res)
 		halt(res);
 
-
-	setLedStatus(2);
-//	HAL_Delay(1000);
-//	blink(5);
-
 	USBD_MSC_RegisterStorage(&hUsbDeviceFS, &SdMscDriver);
-
-	setLedStatus(3);
-//	HAL_Delay(1000);
-//	blink(4);
-
 	USBD_Start(&hUsbDeviceFS);
-
-	setLedStatus(4);
-//	HAL_Delay(1000);
-//	blink(3);
 
 	// Restore pin mode
 	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);

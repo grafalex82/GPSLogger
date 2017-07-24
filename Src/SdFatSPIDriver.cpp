@@ -14,7 +14,7 @@
 //#define USB_DEBUG
 uint8_t debugEnabled = 0;
 
-const size_t DMA_TRESHOLD = 16384;
+const size_t DMA_TRESHOLD = 16000000;
 
 #include "USBDebugLogger.h"
 
@@ -28,7 +28,9 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	(void)chipSelectPin;
 
 	// Initialize GPS Thread handle
-	//xSema = xSemaphoreCreateBinary();
+	portDISABLE_INTERRUPTS();
+	xSema = xSemaphoreCreateBinary();
+	portENABLE_INTERRUPTS();
 
 	// Enable clocking of corresponding periperhal
 	__HAL_RCC_GPIOA_CLK_ENABLE();
