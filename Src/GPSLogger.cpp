@@ -15,14 +15,22 @@ int main(void)
 	InitBoard();
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
+/*
+	blink(9);
+	blink(7);
+	blink(0);
 
 	// Initialize SD card before initializing USB
 	if(!initSD())
 		halt(7);
 
+	blink(7);
+	blink(0);
+	blink(7);
+
 	initUSB();
 	//halt(5);
-
+*/
 	//initDisplay();
 	initButtons();
 	//initScreens();
@@ -35,7 +43,7 @@ int main(void)
 	xTaskCreate(vLEDThread, "LED Thread",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vDisplayTask, "Display Task", 768, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
-	xTaskCreate(vGPSTask, "GPS Task", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
+	//xTaskCreate(vGPSTask, "GPS Task", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
 
 	// Run scheduler and all the threads
 	vTaskStartScheduler();

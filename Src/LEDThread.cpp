@@ -5,6 +5,8 @@
 #include "LEDThread.h"
 #include <Arduino_FreeRTOS.h>
 
+#include "USBDebugLogger.h"
+
 volatile uint8_t ledStatus = 0xff;
 
 // Class to encapsulate working with onboard LED(s)
@@ -103,6 +105,8 @@ void vLEDThread(void *pvParameters)
 			led.turnOn();
 			vTaskDelay(100);
 			led.turnOff();
+
+			usbDebugWrite("Test\n");
 		}
 		else
 		{

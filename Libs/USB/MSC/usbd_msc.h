@@ -51,16 +51,10 @@
 /** @defgroup USBD_BOT_Exported_Defines
   * @{
   */ 
-#define MSC_MAX_FS_PACKET            0x40
-#define MSC_MAX_HS_PACKET            0x200
-
 #define BOT_GET_MAX_LUN              0xFE
 #define BOT_RESET                    0xFF
 #define USB_MSC_CONFIG_DESC_SIZ      32
  
-
-#define MSC_EPIN_ADDR                0x81 
-#define MSC_EPOUT_ADDR               0x01 
 
 #define MSC_MEDIA_PACKET     512
 
@@ -85,7 +79,7 @@ typedef struct _USBD_STORAGE
 }USBD_StorageTypeDef;
 
 
-typedef struct
+typedef struct _USBD_MSC_BOT_HandleTypeDef
 {
   uint32_t                 max_lun;   
   uint32_t                 interface; 
@@ -111,6 +105,22 @@ USBD_MSC_BOT_HandleTypeDef;
 /* Structure for MSC process */
 extern USBD_ClassTypeDef  USBD_MSC;
 #define USBD_MSC_CLASS    &USBD_MSC
+
+uint8_t  USBD_MSC_Init (USBD_HandleTypeDef *pdev, 
+                            uint8_t cfgidx);
+
+uint8_t  USBD_MSC_DeInit (USBD_HandleTypeDef *pdev, 
+                              uint8_t cfgidx);
+
+uint8_t  USBD_MSC_Setup (USBD_HandleTypeDef *pdev, 
+                             USBD_SetupReqTypedef *req);
+
+uint8_t  USBD_MSC_DataIn (USBD_HandleTypeDef *pdev, 
+                              uint8_t epnum);
+
+uint8_t  USBD_MSC_DataOut (USBD_HandleTypeDef *pdev, 
+                               uint8_t epnum);
+
 
 uint8_t  USBD_MSC_RegisterStorage  (USBD_HandleTypeDef   *pdev, 
                                     USBD_StorageTypeDef *fops);

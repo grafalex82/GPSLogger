@@ -5,6 +5,7 @@
 void vLEDThread(void *pvParameters);
 
 void setLedStatus(uint8_t status);
+void blink(uint8_t status);
 void halt(uint8_t status);
 
 #endif // LEDDRIVER_H

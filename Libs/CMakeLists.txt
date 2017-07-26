@@ -266,6 +266,9 @@ SET(USB_SRC
 	USB/MSC/usbd_msc_data.h
 	USB/MSC/usbd_msc_scsi.c
 	USB/MSC/usbd_msc_scsi.h
+
+	USB/MSC_CDC/usbd_msc_cdc.c
+	USB/MSC_CDC/usbd_msc_cdc.h
 )
 ADD_LIBRARY(USB STATIC ${USB_SRC})
 
@@ -273,6 +276,7 @@ TARGET_INCLUDE_DIRECTORIES(USB PRIVATE
 	USB/Core
 	USB/CDC
 	USB/MSC
+	USB/MSC_CDC
 )
 
 

@@ -113,6 +113,8 @@
 #define USB_HS_MAX_PACKET_SIZE                            512
 #define USB_FS_MAX_PACKET_SIZE                            64
 #define USB_MAX_EP0_SIZE                                  64
+#define CDC_CMD_PACKET_SIZE		                          8  /* Control Endpoint Packet size */
+#define CDC_DATA_PACKET_SIZE		                      USB_FS_MAX_PACKET_SIZE
 
 /*  Device Status */
 #define USBD_STATE_DEFAULT                                1
@@ -221,6 +223,16 @@ typedef struct
   uint32_t                maxpacket;   
 } USBD_EndpointTypeDef;
 
+//Forward declaration
+typedef PCD_HandleTypeDef PCD_HandleTypeDef;
+struct _USBD_CDC_HandleTypeDef;
+typedef struct _USBD_CDC_HandleTypeDef USBD_CDC_HandleTypeDef;
+typedef struct _USBD_CDC_Itf USBD_CDC_ItfTypeDef;
+struct _USBD_MSC_BOT_HandleTypeDef;
+typedef struct _USBD_MSC_BOT_HandleTypeDef USBD_MSC_BOT_HandleTypeDef;
+struct _USBD_STORAGE;
+typedef struct _USBD_STORAGE USBD_StorageTypeDef;
+
 /* USB Device handle structure */
 typedef struct _USBD_HandleTypeDef
 {
@@ -243,9 +255,11 @@ typedef struct _USBD_HandleTypeDef
   USBD_SetupReqTypedef    request;
   const USBD_DescriptorsTypeDef *pDesc;
   const USBD_ClassTypeDef       *pClass;
-  void                    *pClassData;  
-  const void                    *pUserData;
-  void                    *pData;    
+  USBD_MSC_BOT_HandleTypeDef    *pClassDataMSC;
+  const USBD_StorageTypeDef     *pClassSpecificInterfaceMSC;
+  USBD_CDC_HandleTypeDef        *pClassDataCDC;
+  const USBD_CDC_ItfTypeDef     *pClassSpecificInterfaceCDC;
+  PCD_HandleTypeDef             *pPCDHandle;
 } USBD_HandleTypeDef;
 
 /**

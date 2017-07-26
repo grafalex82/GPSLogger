@@ -1,6 +1,7 @@
 #include <usbd_cdc_if.h>
-#include <usbd_cdc.h>
-#include <usbd_msc.h>
+//#include <usbd_cdc.h>
+#include <usbd_msc_cdc.h>
+//#include <usbd_msc.h>
 #include <usbd_desc.h>
 
 #include <stm32f1xx_ll_gpio.h>
@@ -27,6 +28,7 @@ volatile uint16_t usbTransmitting = 0;
 SemaphoreHandle_t usbMutex = NULL;
 
 USBD_HandleTypeDef hUsbDeviceFS;
+extern PCD_HandleTypeDef hpcd_USB_FS;
 
 void reenumerateUSB()
 {
@@ -41,27 +43,46 @@ void reenumerateUSB()
 
 }
 
-extern void blink(uint8_t);
-extern "C" PCD_HandleTypeDef hpcd_USB_FS;
-
 void initUSB()
 {
-	HAL_PCD_Stop(&hpcd_USB_FS);
+	HAL_Delay(2000);
+	blink(1);
+	//HAL_PCD_Stop(&hpcd_USB_FS);
 
 	reenumerateUSB();
 
-	USBD_StatusTypeDef res = USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
+	HAL_Delay(1000);
+	blink(2);
+
+	USBD_StatusTypeDef res = USBD_Init(&hUsbDeviceFS, &FS_Desc, 0);
 	if(res)
 		halt(res);
+
+	halt(6);
+
+	HAL_Delay(1000);
+	blink(3);
 
 	HAL_Delay(2);
 
-	res = USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC);
+	res = USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC_CDC_ClassDriver);
 	if(res)
 		halt(res);
 
+	HAL_Delay(1000);
+	blink(4);
+
+	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
 	USBD_MSC_RegisterStorage(&hUsbDeviceFS, &SdMscDriver);
+
+	HAL_Delay(1000);
+	blink(5);
+
 	USBD_Start(&hUsbDeviceFS);
+
+	HAL_Delay(1000);
+	blink(6);
+
 
 	// Restore pin mode
 	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
@@ -69,8 +90,6 @@ void initUSB()
 
 	usbMutex = xSemaphoreCreateMutex();
 }
-
-extern PCD_HandleTypeDef hpcd_USB_FS;
 
 extern "C" void USB_LP_CAN1_RX0_IRQHandler(void) {
   HAL_PCD_IRQHandler(&hpcd_USB_FS);

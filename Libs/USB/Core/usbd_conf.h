@@ -71,24 +71,30 @@
   */ 
 
 /*---------- -----------*/
-#define USBD_MAX_NUM_INTERFACES     1
+#define USBD_MAX_NUM_INTERFACES     3
 /*---------- -----------*/
 #define USBD_MAX_NUM_CONFIGURATION     1
 /*---------- -----------*/
-#define USBD_MAX_STR_DESC_SIZ     512
+#define USBD_MAX_STR_DESC_SIZ     128
 /*---------- -----------*/
 #define USBD_SUPPORT_USER_STRING     0
 /*---------- -----------*/
 #define USBD_DEBUG_LEVEL     0
 /*---------- -----------*/
 #define USBD_SELF_POWERED     1
-/*---------- -----------*/
-#define USBD_CDC_INTERVAL     1000
-/*---------- -----------*/
-#define MAX_STATIC_ALLOC_SIZE     512
-/****************************************/
-/* #define for FS and HS identification */
-#define DEVICE_FS 		0
+
+#define MSC_INTERFACE_IDX 0x0			// Index of MSC interface
+#define CDC_INTERFACE_IDX 0x1			// Index of CDC interface
+
+
+// endpoints numbers
+#define CDC_IN_EP                       0x81  /* EP1 for data IN */
+#define CDC_OUT_EP                      0x01  /* EP1 for data OUT */
+#define CDC_CMD_EP                      0x82  /* EP2 for CDC commands */
+
+#define MSC_IN_EP                       0x83 /* EP3 for BULK IN */
+#define MSC_OUT_EP                      0x03 /* EP3 for BULK OUT */
+
 
 /** @defgroup USBD_Exported_Macros
   * @{
@@ -101,11 +107,6 @@
 #define USBD_memcpy               /* Not used */
 
 #define USBD_Delay   HAL_Delay
-
-/* For footprint reasons and since only one allocation is handled in the HID class
-   driver, the malloc/free is changed into a static allocation method */
-void *USBD_static_malloc(uint32_t size);
-void USBD_static_free(void *p);    
 
 /* DEBUG macros */    
 #if (USBD_DEBUG_LEVEL > 0)
