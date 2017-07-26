@@ -13,7 +13,7 @@ namespace NeoGPS
 }
 
 // Base class for char consumer functor
-struct CharConsumer
+struct PrintTarget
 {
 	virtual void operator()(char c) = 0;
 	virtual void operator()(const char *buffer, size_t size, bool reverse = false)
@@ -33,12 +33,13 @@ struct CharConsumer
 };
 
 // Print formatted string to a passed char consumer
-void print(CharConsumer & consumeChars, const char * fmt, ...);
+void print(PrintTarget & target, const char * fmt, ...);
 
 // Print a formatted string to a buffer
 void bufprint(char * buf, size_t n, const char * fmt, ...);
 
-
+// Print a formatted string to display at current position
+void printToDisplay(const char * fmt, ...);
 
 
 

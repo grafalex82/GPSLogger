@@ -2,14 +2,17 @@
 #include <NeoTime.h>
 
 #include "PrintUtils.h"
+#include "Adafruit_SSD1306.h"
+
+extern Adafruit_SSD1306 display;
 
 // Stores provided chars into the buffer (respecting capacity and terminating zeroes)
-struct CharBufConsumer : public CharConsumer
+struct CharBufTarget : public PrintTarget
 {
 	char * m_buf;
 	size_t m_capacityLeft;
 
-	CharBufConsumer(char * buf, size_t n)
+	CharBufTarget(char * buf, size_t n)
 		: m_buf(buf), m_capacityLeft(n)
 	{}
 
@@ -67,7 +70,7 @@ static size_t PrintNum(unsigned int value, uint8_t radix, char * buf, uint8_t wi
 	return len;
 }
 
-void print(CharConsumer & consumeChars, const char * fmt, va_list args)
+void print(PrintTarget & printToTarget, const char * fmt, va_list args)
 {
 	const char * chunkStart = fmt;
 	size_t chunkSize = 0;
@@ -87,7 +90,7 @@ void print(CharConsumer & consumeChars, const char * fmt, va_list args)
 
 		// We hit a special symbol. Dump string that we processed so far
 		if(chunkSize)
-			consumeChars(chunkStart, chunkSize);
+			printToTarget(chunkStart, chunkSize);
 
 		// Process special symbols
 
@@ -116,7 +119,7 @@ void print(CharConsumer & consumeChars, const char * fmt, va_list args)
 			{
 				char buf[12];
 				size_t len = PrintNum(va_arg(args, int), 10, buf, width, padSymbol);
-				consumeChars(buf + len, len, true);
+				printToTarget(buf + len, len, true);
 				break;
 			}
 			case 'x':
@@ -124,18 +127,18 @@ void print(CharConsumer & consumeChars, const char * fmt, va_list args)
 			{
 				char buf[9];
 				size_t len = PrintNum(va_arg(args, int), 16, buf, width, padSymbol);
-				consumeChars(buf + len, len, true);
+				printToTarget(buf + len, len, true);
 				break;
 			}
 			case 's':
 			{
 				char * str = va_arg(args, char*);
-				consumeChars(str, strlen(str));
+				printToTarget(str, strlen(str));
 				break;
 			}
 			case '%':
 			{
-				consumeChars(fmt-1, 1);
+				printToTarget(fmt-1, 1);
 				break;
 			}
 			default:
@@ -150,14 +153,14 @@ void print(CharConsumer & consumeChars, const char * fmt, va_list args)
 	while(ch != 0);
 
 	if(chunkSize)
-		consumeChars(chunkStart, chunkSize); // Including terminating NULL
+		printToTarget(chunkStart, chunkSize); // Including terminating NULL
 }
 
-void cprintf(CharConsumer & consumeChars, const char * fmt, ...)
+void print(PrintTarget & printToTarget, const char * fmt, ...)
 {
 	va_list args;
 	va_start(args, fmt);
-	print(consumeChars, fmt, args);
+	print(printToTarget, fmt, args);
 	va_end(args);
 }
 
@@ -165,11 +168,28 @@ void bufprint(char * buf, size_t n, const char * fmt, ...)
 {
 	va_list args;
 	va_start(args, fmt);
-	CharBufConsumer cons(buf, n);
-	print(cons, fmt, args);
+	CharBufTarget target(buf, n);
+	print(target, fmt, args);
 	va_end(args);
 }
 
+struct DisplayTarget: public PrintTarget
+{
+	virtual void operator()(char c)
+	{
+		if(c != '\0')
+			display.write(c);
+	}
+};
+
+void printToDisplay(const char * fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+	DisplayTarget target;
+	print(target, fmt, args);
+	va_end(args);
+}
 
 // TODO: port this to print to Stream one day
 void printNumber(char * buf, uint16_t value, uint8_t digits, bool leadingZeros)
