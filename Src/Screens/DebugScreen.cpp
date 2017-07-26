@@ -2,7 +2,7 @@
 #include <Arduino_FreeRTOS.h>
 
 #include "DebugScreen.h"
-#include "Utils.h"
+#include "PrintUtils.h"
 #include "8x12Font.h"
 #include "ScreenManager.h"
 #include "IdleThread.h"

@@ -57,6 +57,8 @@ SET(SOURCE_FILES
 	IdleThread.h
 	LEDThread.cpp
 	LEDThread.h
+	PrintUtils.cpp
+	PrintUtils.h
 	SdFatSPIDriver.cpp
 	SdFatSPIDriver.h
 	SDThread.cpp
@@ -65,8 +67,6 @@ SET(SOURCE_FILES
 	TimeFont.h
 	USBDebugLogger.cpp
 	USBDebugLogger.h
-	Utils.cpp
-	Utils.h
 )
 
 INCLUDE_DIRECTORIES(

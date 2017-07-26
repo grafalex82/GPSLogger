@@ -4,7 +4,7 @@
 #include "TimeZoneScreen.h"
 #include "ScreenManager.h"
 #include "TimeFont.h"
-#include "Utils.h"
+#include "PrintUtils.h"
 
 #include "GPS/GPSDataModel.h"
 

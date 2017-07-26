@@ -9,7 +9,7 @@
 #include "ScreenManager.h"
 #include "TimeFont.h"
 #include "8x12Font.h"
-#include "Utils.h"
+#include "PrintUtils.h"
 
 extern Adafruit_SSD1306 display;
 

@@ -1,7 +1,7 @@
 #include <Print.h>
 #include <NeoTime.h>
 
-#include "Utils.h"
+#include "PrintUtils.h"
 
 // TODO: port this to print to Stream one day
 void printNumber(char * buf, uint16_t value, uint8_t digits, bool leadingZeros)

@@ -4,7 +4,7 @@
 
 #include "SatellitesScreen.h"
 #include "8x12Font.h"
-#include "Utils.h"
+#include "PrintUtils.h"
 
 #include "GPS/GPSDataModel.h"
 
