@@ -210,21 +210,6 @@ void printNumber(char * buf, uint16_t value, uint8_t digits, bool leadingZeros)
 }
 
 
-TimePrinter::TimePrinter(const NeoGPS::time_t & time)
-{
-	printNumber(buf, time.hours, 2);
-	buf[2] = ':';
-	printNumber(buf+3, time.minutes, 2);
-	buf[5] = ':';
-	printNumber(buf+6, time.seconds, 2);
-	buf[8] = '\0';
-}
-
-size_t TimePrinter::printTo(Print& p) const
-{
-	return p.print(buf);
-}
-
 FloatPrinter::FloatPrinter(float value, uint8_t width, bool leadingZeros, bool alwaysPrintSign)
 {
     // reserve a space for sign

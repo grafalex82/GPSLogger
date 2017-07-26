@@ -24,7 +24,7 @@ void CurrentTimeScreen::drawScreen() const
 
 	// Draw a '~' symbol if no time is available from GPS.
 	display.print(gpsFix.valid.time ? '<' : ';'); // '<' is remapeed to space, ';' is remapped to '~'
-	display.print(TimePrinter(dateTime));
+	printToDisplay("%02d:%02d:%02d", dateTime.hours, dateTime.minutes, dateTime.seconds);
 }
 
 CurrentTimeScreen::CurrentTimeScreen()

@@ -47,20 +47,6 @@ void printToDisplay(const char * fmt, ...);
 void printNumber(char * buf, uint16_t value, uint8_t digits, bool leadingZeros = true);
 
 
-/// Helper class to print time values as HH:MM:SS
-class TimePrinter : public Printable
-{
-	char buf[9]; // 6 digits, 2 x ':' and terminating 0
-	
-public:
-	//TimePrinter(clock_t time);
-	TimePrinter(const NeoGPS::time_t & time);
-	//TimePrinter(uint8_t h, uint8_t m, uint8_t s);
-	
-	virtual size_t printTo(Print& p) const;
-};
-
-
 /// Helper class to print float numbers according to specified options
 class FloatPrinter : public Printable
 {
