@@ -80,7 +80,7 @@ void OdometerScreen::drawDetailsScreen() const
 
 	display.setCursor(64,24);
 	NeoGPS::time_t activeTime(odometer.getActiveTime());
-	printToDisplay("T:%02d:%02d:%02d", activeTime.hours, activeTime.minutes, activeTime.seconds); // TODO: This may not fit if total time is more that 1 day
+	printToDisplay("A:%02d:%02d:%02d", activeTime.hours, activeTime.minutes, activeTime.seconds); // TODO: This may not fit if total time is more that 1 day
 }
 
 const char * OdometerScreen::getOkButtonText() const

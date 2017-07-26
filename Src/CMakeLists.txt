@@ -13,6 +13,8 @@ SET(SOURCE_FILES
 	Screens/DebugScreen.h
 	Screens/DisplayDriver.cpp
 	Screens/DisplayDriver.h
+	Screens/MemDumpScreen.cpp
+	Screens/MemDumpScreen.h
 	Screens/OdometerActionScreen.cpp
 	Screens/OdometerActionScreen.h
 	Screens/OdometerScreen.cpp
