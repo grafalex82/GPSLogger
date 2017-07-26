@@ -143,7 +143,7 @@ extern "C" void USBSerialTransferCompletedCB()
 
 // Print the number to the buffer (in reverse order)
 // Returns number of printed symbols
-size_t PrintNum(unsigned int value, uint8_t radix, char * buf, uint8_t width, char padSymbol)
+static size_t PrintNum(unsigned int value, uint8_t radix, char * buf, uint8_t width, char padSymbol)
 {
 	//TODO check negative here
 

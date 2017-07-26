@@ -6,43 +6,57 @@
 char outBuf[256];
 uint16_t curPos = 0;
 
-void usbDebugWriteInternal(const char *buffer, size_t size, bool reverse = false)
+//////////////////////////////////////////////////
+// Begin of tested code. Copy stuff from PrintUtils.cpp and PrintUtils.h here
+//////////////////////////////////////////////////
+
+//////////// PrintUtils.h
+// Base class for char consumer functor
+struct CharConsumer
 {
-	while(size > 0)
+	virtual void operator()(char c) = 0;
+	virtual void operator()(const char *buffer, size_t size, bool reverse = false)
 	{
-		if(reverse)
-			buffer--;
+		// Copy data to the buffer
+		for(size_t i=0; i < size; i++)
+		{
+			if(reverse)
+				--buffer;
 
-		outBuf[curPos++] = *buffer;
+			operator()(*buffer);
 
-		if(!reverse)
-			buffer++;
-
-		size--;
+			if(!reverse)
+				buffer++;
+		}
 	}
-}
+};
 
-void printBuffer()
+///////////// PrintUtils.cpp
+
+// Stores provided chars into the buffer (respecting capacity and terminating zeroes)
+struct CharBufConsumer : public CharConsumer
 {
-	outBuf[curPos] = 0;
-	printf("%s\n", outBuf);
-}
+	char * m_buf;
+	size_t m_capacityLeft;
 
-void verifyBuffer(const char * expectedStr)
-{
-	outBuf[curPos] = 0;
-	if(!strcmp(expectedStr, outBuf))
-		printf("OK:     \"%s\"\n", expectedStr);
-	else		
-		printf("FAILED: expected \"%s\" but got \"%s\"\n", expectedStr, outBuf);
-	
-	// Prepare for the next test
-	curPos = 0;	
-}
+	CharBufConsumer(char * buf, size_t n)
+		: m_buf(buf), m_capacityLeft(n)
+	{}
 
-////////////////////////////////////////////////////////
-// Paste code from USBDebugLogger.cpp here
-////////////////////////////////////////////////////////
+	virtual void operator()(char c)
+	{
+		// For the last slot we can set only terminating zero (regardless of input)
+		if(m_capacityLeft <= 1)
+		{
+			*m_buf = '\0';
+			return;
+		}
+
+		*m_buf = c;
+		m_buf++;
+		m_capacityLeft--;
+	}
+};
 
 // sprintf implementation takes more than 10kb and adding heap to the project. I think this is
 // too much for the functionality I need
@@ -57,7 +71,7 @@ void verifyBuffer(const char * expectedStr)
 
 // Print the number to the buffer (in reverse order)
 // Returns number of printed symbols
-size_t PrintNum(unsigned int value, uint8_t radix, char * buf, uint8_t width, char padSymbol)
+static size_t PrintNum(unsigned int value, uint8_t radix, char * buf, uint8_t width, char padSymbol)
 {
 	//TODO check negative here
 
@@ -83,11 +97,8 @@ size_t PrintNum(unsigned int value, uint8_t radix, char * buf, uint8_t width, ch
 	return len;
 }
 
-void usbDebugWrite(const char * fmt, ...)
+void print(CharConsumer & consumeChars, const char * fmt, va_list args)
 {
-	va_list v;
-	va_start(v, fmt);
-
 	const char * chunkStart = fmt;
 	size_t chunkSize = 0;
 
@@ -106,7 +117,7 @@ void usbDebugWrite(const char * fmt, ...)
 
 		// We hit a special symbol. Dump string that we processed so far
 		if(chunkSize)
-			usbDebugWriteInternal(chunkStart, chunkSize);
+			consumeChars(chunkStart, chunkSize);
 
 		// Process special symbols
 
@@ -134,27 +145,27 @@ void usbDebugWrite(const char * fmt, ...)
 			case 'u':
 			{
 				char buf[12];
-				size_t len = PrintNum(va_arg(v, int), 10, buf, width, padSymbol);
-				usbDebugWriteInternal(buf + len, len, true);
+				size_t len = PrintNum(va_arg(args, int), 10, buf, width, padSymbol);
+				consumeChars(buf + len, len, true);
 				break;
 			}
 			case 'x':
 			case 'X':
 			{
 				char buf[9];
-				size_t len = PrintNum(va_arg(v, int), 16, buf, width, padSymbol);
-				usbDebugWriteInternal(buf + len, len, true);
+				size_t len = PrintNum(va_arg(args, int), 16, buf, width, padSymbol);
+				consumeChars(buf + len, len, true);
 				break;
 			}
 			case 's':
 			{
-				char * str = va_arg(v, char*);
-				usbDebugWriteInternal(str, strlen(str));
+				char * str = va_arg(args, char*);
+				consumeChars(str, strlen(str));
 				break;
 			}
 			case '%':
 			{
-				usbDebugWriteInternal(fmt-1, 1);
+				consumeChars(fmt-1, 1);
 				break;
 			}
 			default:
@@ -169,90 +180,121 @@ void usbDebugWrite(const char * fmt, ...)
 	while(ch != 0);
 
 	if(chunkSize)
-		usbDebugWriteInternal(chunkStart, chunkSize - 1); // Not including terminating NULL
-
-	va_end(v);
+		consumeChars(chunkStart, chunkSize); // Including terminating NULL
 }
 
-////////////////////////////////////////////////////////
-// End of tested code
-////////////////////////////////////////////////////////
+void cprintf(CharConsumer & consumeChars, const char * fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+	print(consumeChars, fmt, args);
+	va_end(args);
+}
 
+void bufprint(char * buf, size_t n, const char * fmt, ...)
+{
+	va_list args;
+	va_start(args, fmt);
+	CharBufConsumer cons(buf, n);
+	print(cons, fmt, args);
+	va_end(args);
+}
+//////////////////////////////////////////////////
+// End of tested code
+//////////////////////////////////////////////////
+
+void printBuffer()
+{
+	outBuf[255] = 0;
+	printf("%s\n", outBuf);
+}
+
+void verifyBuffer(const char * expectedStr)
+{
+	outBuf[255] = 0;
+	if(!strcmp(expectedStr, outBuf))
+		printf("OK:     \"%s\"\n", expectedStr);
+	else		
+		printf("FAILED: expected \"%s\" but got \"%s\"\n", expectedStr, outBuf);
+	
+	// Prepare for the next test
+	curPos = 0;	
+}
 
 int main()
 {
 	printf("Running tests\n");
 
-	usbDebugWrite("A test string");
+	bufprint(outBuf, 256, "A test string");
 	verifyBuffer("A test string");
 
-	usbDebugWrite("An string '%s' value", "Test String");
+	bufprint(outBuf, 256, "An string '%s' value", "Test String");
 	verifyBuffer("An string 'Test String' value");
 
-	usbDebugWrite("An string '%s' value", "");
+	bufprint(outBuf, 256, "An string '%s' value", "");
 	verifyBuffer("An string '' value");
 
-	usbDebugWrite("A percent '%%' symbol");
+	bufprint(outBuf, 256, "A percent '%%' symbol");
 	verifyBuffer("A percent '%' symbol");
 
-	usbDebugWrite("An integer '%d' value", 0);
+	bufprint(outBuf, 256, "An integer '%d' value", 0);
 	verifyBuffer("An integer '0' value");
 
-	usbDebugWrite("An integer '%d' value", 5);
+	bufprint(outBuf, 256, "An integer '%d' value", 5);
 	verifyBuffer("An integer '5' value");
 
-	usbDebugWrite("An integer '%d' value", 12345678);
+	bufprint(outBuf, 256, "An integer '%d' value", 12345678);
 	verifyBuffer("An integer '12345678' value");
 
-	usbDebugWrite("An integer '%4d' with width", 0);
+	bufprint(outBuf, 256, "An integer '%4d' with width", 0);
 	verifyBuffer("An integer '   0' with width");
 
-	usbDebugWrite("An integer '%04d' with width", 0);
+	bufprint(outBuf, 256, "An integer '%04d' with width", 0);
 	verifyBuffer("An integer '0000' with width");
 
-	usbDebugWrite("An integer '%4d' with width", 7);
+	bufprint(outBuf, 256, "An integer '%4d' with width", 7);
 	verifyBuffer("An integer '   7' with width");
 
-	usbDebugWrite("An integer '%04d' with width", 8);
+	bufprint(outBuf, 256, "An integer '%04d' with width", 8);
 	verifyBuffer("An integer '0008' with width");
 
-	usbDebugWrite("An integer '%4d' with width", 123);
+	bufprint(outBuf, 256, "An integer '%4d' with width", 123);
 	verifyBuffer("An integer ' 123' with width");
 
-	usbDebugWrite("An integer '%04d' with width", 456);
+	bufprint(outBuf, 256, "An integer '%04d' with width", 456);
 	verifyBuffer("An integer '0456' with width");
 
-	usbDebugWrite("An integer '%4d' with width", 4321);
+	bufprint(outBuf, 256, "An integer '%4d' with width", 4321);
 	verifyBuffer("An integer '4321' with width");
 
-	usbDebugWrite("An integer '%04d' with width", 8765);
+	bufprint(outBuf, 256, "An integer '%04d' with width", 8765);
 	verifyBuffer("An integer '8765' with width");
 
-	usbDebugWrite("An integer '%4d' with width", 123456); //Value does not fit to 4 digits, but will be printed as 6 digit one
+	bufprint(outBuf, 256, "An integer '%4d' with width", 123456); //Value does not fit to 4 digits, but will be printed as 6 digit one
 	verifyBuffer("An integer '123456' with width");
 
-	usbDebugWrite("A hex '%x' value", 0);
+	bufprint(outBuf, 256, "A hex '%x' value", 0);
 	verifyBuffer("A hex '0' value");
 
-	usbDebugWrite("A hex '%x' value", 0xA);
+	bufprint(outBuf, 256, "A hex '%x' value", 0xA);
 	verifyBuffer("A hex 'A' value");
 
-	usbDebugWrite("A hex '%x' value", 0xABCDEF01);
+	bufprint(outBuf, 256, "A hex '%x' value", 0xABCDEF01);
 	verifyBuffer("A hex 'ABCDEF01' value");
 
-	usbDebugWrite("A hex '%03x' value", 0xc);
+	bufprint(outBuf, 256, "A hex '%03x' value", 0xc);
 	verifyBuffer("A hex '00C' value");
 
-	usbDebugWrite("A hex '%3x' value", 0xd);
+	bufprint(outBuf, 256, "A hex '%3x' value", 0xd);
 	verifyBuffer("A hex '  D' value");
 
-	usbDebugWrite("A hex '%03x' value", 0xDEF);
+	bufprint(outBuf, 256, "A hex '%03x' value", 0xDEF);
 	verifyBuffer("A hex 'DEF' value");
 
-	usbDebugWrite("A hex '%03x' value", 0xABCD);  //Value does not fit to 3 digits, but will be printed as 4 digit one
+	bufprint(outBuf, 256, "A hex '%03x' value", 0xABCD);  //Value does not fit to 3 digits, but will be printed as 4 digit one
 	verifyBuffer("A hex 'ABCD' value");
 
-	usbDebugWrite("Multiple '%d' Integer '%d' values", 3, 5);
+	bufprint(outBuf, 256, "Multiple '%d' Integer '%d' values", 3, 5);
 	verifyBuffer("Multiple '3' Integer '5' values");
 
 

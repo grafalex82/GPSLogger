@@ -2,6 +2,7 @@
 #define __UTILS_H__
 
 #include <stdint.h> // for uint16_t
+#include <stdarg.h>
 #include <Printable.h>
 
 // Forward declarations
@@ -10,6 +11,36 @@ namespace NeoGPS
 {
 	struct time_t;	
 }
+
+// Base class for char consumer functor
+struct CharConsumer
+{
+	virtual void operator()(char c) = 0;
+	virtual void operator()(const char *buffer, size_t size, bool reverse = false)
+	{
+		// Copy data to the buffer
+		for(size_t i=0; i < size; i++)
+		{
+			if(reverse)
+				--buffer;
+
+			operator()(*buffer);
+
+			if(!reverse)
+				buffer++;
+		}
+	}
+};
+
+// Print formatted string to a passed char consumer
+void print(CharConsumer & consumeChars, const char * fmt, ...);
+
+// Print a formatted string to a buffer
+void bufprint(char * buf, size_t n, const char * fmt, ...);
+
+
+
+
 
 /// Helper function to print a single integer with specified width to a passed buffer
 void printNumber(char * buf, uint16_t value, uint8_t digits, bool leadingZeros = true);
