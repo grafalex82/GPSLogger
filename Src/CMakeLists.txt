@@ -13,6 +13,8 @@ SET(SOURCE_FILES
 	Screens/DebugScreen.h
 	Screens/DisplayDriver.cpp
 	Screens/DisplayDriver.h
+	Screens/MemDumpScreen.cpp
+	Screens/MemDumpScreen.h
 	Screens/OdometerActionScreen.cpp
 	Screens/OdometerActionScreen.h
 	Screens/OdometerScreen.cpp
@@ -57,6 +59,8 @@ SET(SOURCE_FILES
 	IdleThread.h
 	LEDThread.cpp
 	LEDThread.h
+	PrintUtils.cpp
+	PrintUtils.h
 	SdFatSPIDriver.cpp
 	SdFatSPIDriver.h
 	SdMscDriver.cpp
@@ -67,8 +71,6 @@ SET(SOURCE_FILES
 	TimeFont.h
 	USBDebugLogger.cpp
 	USBDebugLogger.h
-	Utils.cpp
-	Utils.h
 )
 
 INCLUDE_DIRECTORIES(

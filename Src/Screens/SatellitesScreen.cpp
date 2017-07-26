@@ -4,19 +4,21 @@
 
 #include "SatellitesScreen.h"
 #include "8x12Font.h"
-#include "Utils.h"
+#include "PrintUtils.h"
 
 #include "GPS/GPSDataModel.h"
 
 // DebugScreen should not be here. I just needed to attach DebugScreen somewhere
 #include "DebugScreen.h"
+#include "MemDumpScreen.h"
 DebugScreen debugScreen;
+MemDumpScreen dumpScreen;
 
 extern Adafruit_SSD1306 display;
 
 SatellitesScreen::SatellitesScreen()
 {
-	addChildScreen(&debugScreen);
+	addChildScreen(&dumpScreen);
 }
 
 void SatellitesScreen::drawScreen() const
