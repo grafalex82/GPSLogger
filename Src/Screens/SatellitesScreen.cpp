@@ -18,7 +18,7 @@ extern Adafruit_SSD1306 display;
 
 SatellitesScreen::SatellitesScreen()
 {
-	addChildScreen(&dumpScreen);
+	addChildScreen(&debugScreen);
 }
 
 void SatellitesScreen::drawScreen() const

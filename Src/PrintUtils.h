@@ -33,6 +33,7 @@ struct PrintTarget
 };
 
 // Print formatted string to a passed char consumer
+void print(PrintTarget & target, const char * fmt, va_list args);
 void print(PrintTarget & target, const char * fmt, ...);
 
 // Print a formatted string to a buffer
