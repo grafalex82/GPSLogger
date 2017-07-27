@@ -2,7 +2,7 @@
 #include <Arduino_FreeRTOS.h>
 
 #include "DebugScreen.h"
-#include "Utils.h"
+#include "PrintUtils.h"
 #include "8x12Font.h"
 #include "ScreenManager.h"
 #include "IdleThread.h"
@@ -44,8 +44,8 @@ void DebugScreen::drawScreen() const
 			display.setCursor(0, 19);
 			display.print("Max Stack:");
 			
-			//display.setCursor(0, 32);
-			//display.print(uxTaskGetStackHighWaterMark(NULL));
+			display.setCursor(0, 32);
+			//printToDisplay("%d", uxTaskGetStackHighWaterMark(NULL));
 			break;
 			
 		default:

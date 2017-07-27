@@ -28,7 +28,7 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	(void)chipSelectPin;
 
 	// Initialize GPS Thread handle
-	xSema = xSemaphoreCreateBinary();
+	//xSema = xSemaphoreCreateBinary();
 
 	// Enable clocking of corresponding periperhal
 	__HAL_RCC_GPIOA_CLK_ENABLE();

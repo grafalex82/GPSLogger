@@ -3,7 +3,7 @@
 #include <NMEAGPS.h>
 
 #include "8x12Font.h"
-#include "Utils.h"
+#include "PrintUtils.h"
 #include "ScreenManager.h"
 #include "CurrentPositionScreen.h"
 #include "GPS/GPSDataModel.h"

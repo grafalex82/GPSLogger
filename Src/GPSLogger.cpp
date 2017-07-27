@@ -15,8 +15,18 @@ int main(void)
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
 
+	/*
+	blink(0);
+	blink(7);
+	blink(0);
+	HAL_Delay(1000);
+
 	initUSB();
 
+	blink(0);
+	blink(7);
+	blink(0);
+*/
 	//initDisplay();
 	initButtons();
 	//initScreens();
@@ -27,8 +37,8 @@ int main(void)
 	// TODO: Consider encapsulating init and task functions into a class(es)
 	//xTaskCreate(vSDThread, "SD Thread", 512, NULL, tskIDLE_PRIORITY + 1, NULL);
 	xTaskCreate(vLEDThread, "LED Thread",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
-	//xTaskCreate(vDisplayTask, "Display Task", 768, NULL, tskIDLE_PRIORITY + 2, NULL);
-	//xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vDisplayTask, "Display Task", 768, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	//xTaskCreate(vGPSTask, "GPS Task", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
 
 	// Run scheduler and all the threads

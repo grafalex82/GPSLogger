@@ -267,8 +267,6 @@ void HAL_PCD_DisconnectCallback(PCD_HandleTypeDef *hpcd)
   */
 USBD_StatusTypeDef  USBD_LL_Init (USBD_HandleTypeDef *pdev)
 { 
-	return USBD_OK;
-
   /* Init USB_IP */
   /* Link The driver to the stack */
   hpcd_USB_FS.pData = pdev;

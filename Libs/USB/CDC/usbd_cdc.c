@@ -128,12 +128,6 @@ static uint8_t  USBD_CDC_EP0_RxReady (USBD_HandleTypeDef *pdev);
 
 static const uint8_t  *USBD_CDC_GetFSCfgDesc (uint16_t *length);
 
-static const uint8_t  *USBD_CDC_GetHSCfgDesc (uint16_t *length);
-
-static const uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length);
-
-static const uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length);
-
 const uint8_t  *USBD_CDC_GetDeviceQualifierDescriptor (uint16_t *length);
 
 /* USB Standard Device Descriptor */
@@ -173,9 +167,7 @@ const USBD_ClassTypeDef  USBD_CDC =
   NULL,
   NULL,
   NULL,     
-  USBD_CDC_GetHSCfgDesc,  
   USBD_CDC_GetFSCfgDesc,    
-  USBD_CDC_GetOtherSpeedCfgDesc, 
   USBD_CDC_GetDeviceQualifierDescriptor,
 };
 
@@ -483,35 +475,18 @@ static uint8_t  USBD_CDC_Init (USBD_HandleTypeDef *pdev,
   uint8_t ret = 0;
   USBD_CDC_HandleTypeDef   *hcdc;
   
-  if(pdev->dev_speed == USBD_SPEED_HIGH  ) 
-  {  
-    /* Open EP IN */
-    USBD_LL_OpenEP(pdev,
-                   CDC_IN_EP,
-                   USBD_EP_TYPE_BULK,
-                   CDC_DATA_HS_IN_PACKET_SIZE);
-    
-    /* Open EP OUT */
-    USBD_LL_OpenEP(pdev,
-                   CDC_OUT_EP,
-                   USBD_EP_TYPE_BULK,
-                   CDC_DATA_HS_OUT_PACKET_SIZE);
-    
-  }
-  else
-  {
-    /* Open EP IN */
-    USBD_LL_OpenEP(pdev,
-                   CDC_IN_EP,
-                   USBD_EP_TYPE_BULK,
-                   CDC_DATA_FS_IN_PACKET_SIZE);
-    
-    /* Open EP OUT */
-    USBD_LL_OpenEP(pdev,
-                   CDC_OUT_EP,
-                   USBD_EP_TYPE_BULK,
-                   CDC_DATA_FS_OUT_PACKET_SIZE);
-  }
+  /* Open EP IN */
+  USBD_LL_OpenEP(pdev,
+				 CDC_IN_EP,
+				 USBD_EP_TYPE_BULK,
+				 CDC_DATA_FS_IN_PACKET_SIZE);
+
+  /* Open EP OUT */
+  USBD_LL_OpenEP(pdev,
+				 CDC_OUT_EP,
+				 USBD_EP_TYPE_BULK,
+				 CDC_DATA_FS_OUT_PACKET_SIZE);
+
   /* Open Command IN EP */
   USBD_LL_OpenEP(pdev,
                  CDC_CMD_EP,
@@ -521,40 +496,21 @@ static uint8_t  USBD_CDC_Init (USBD_HandleTypeDef *pdev,
     
   pdev->pClassData = &cdcInstance;
   
-  if(pdev->pClassData == NULL)
-  {
-    ret = 1; 
-  }
-  else
-  {
-    hcdc = (USBD_CDC_HandleTypeDef*) pdev->pClassData;
+  hcdc = (USBD_CDC_HandleTypeDef*) pdev->pClassData;
     
-    /* Init  physical Interface components */
-    ((USBD_CDC_ItfTypeDef *)pdev->pUserData)->Init();
+  /* Init  physical Interface components */
+  ((USBD_CDC_ItfTypeDef *)pdev->pUserData)->Init();
     
-    /* Init Xfer states */
-    hcdc->TxState =0;
-    hcdc->RxState =0;
+  /* Init Xfer states */
+  hcdc->TxState =0;
+  hcdc->RxState =0;
        
-    if(pdev->dev_speed == USBD_SPEED_HIGH  ) 
-    {      
-      /* Prepare Out endpoint to receive next packet */
-      USBD_LL_PrepareReceive(pdev,
-                             CDC_OUT_EP,
-                             hcdc->RxBuffer,
-                             CDC_DATA_HS_OUT_PACKET_SIZE);
-    }
-    else
-    {
-      /* Prepare Out endpoint to receive next packet */
-      USBD_LL_PrepareReceive(pdev,
-                             CDC_OUT_EP,
-                             hcdc->RxBuffer,
-                             CDC_DATA_FS_OUT_PACKET_SIZE);
-    }
-    
-    
-  }
+  /* Prepare Out endpoint to receive next packet */
+  USBD_LL_PrepareReceive(pdev,
+						 CDC_OUT_EP,
+						 hcdc->RxBuffer,
+						 CDC_DATA_FS_OUT_PACKET_SIZE);
+
   return ret;
 }
 
@@ -748,32 +704,6 @@ static const uint8_t  *USBD_CDC_GetFSCfgDesc (uint16_t *length)
 }
 
 /**
-  * @brief  USBD_CDC_GetHSCfgDesc 
-  *         Return configuration descriptor
-  * @param  speed : current device speed
-  * @param  length : pointer data length
-  * @retval pointer to descriptor buffer
-  */
-static const uint8_t  *USBD_CDC_GetHSCfgDesc (uint16_t *length)
-{
-  *length = sizeof (USBD_CDC_CfgHSDesc);
-  return USBD_CDC_CfgHSDesc;
-}
-
-/**
-  * @brief  USBD_CDC_GetCfgDesc 
-  *         Return configuration descriptor
-  * @param  speed : current device speed
-  * @param  length : pointer data length
-  * @retval pointer to descriptor buffer
-  */
-static const uint8_t  *USBD_CDC_GetOtherSpeedCfgDesc (uint16_t *length)
-{
-  *length = sizeof (USBD_CDC_OtherSpeedCfgDesc);
-  return USBD_CDC_OtherSpeedCfgDesc;
-}
-
-/**
 * @brief  DeviceQualifierDescriptor 
 *         return Device Qualifier descriptor
 * @param  length : pointer data length
@@ -891,22 +821,11 @@ uint8_t  USBD_CDC_ReceivePacket(USBD_HandleTypeDef *pdev)
   /* Suspend or Resume USB Out process */
   if(pdev->pClassData != NULL)
   {
-    if(pdev->dev_speed == USBD_SPEED_HIGH  ) 
-    {      
-      /* Prepare Out endpoint to receive next packet */
-      USBD_LL_PrepareReceive(pdev,
-                             CDC_OUT_EP,
-                             hcdc->RxBuffer,
-                             CDC_DATA_HS_OUT_PACKET_SIZE);
-    }
-    else
-    {
-      /* Prepare Out endpoint to receive next packet */
-      USBD_LL_PrepareReceive(pdev,
-                             CDC_OUT_EP,
-                             hcdc->RxBuffer,
-                             CDC_DATA_FS_OUT_PACKET_SIZE);
-    }
+	/* Prepare Out endpoint to receive next packet */
+	USBD_LL_PrepareReceive(pdev,
+						   CDC_OUT_EP,
+						   hcdc->RxBuffer,
+						   CDC_DATA_FS_OUT_PACKET_SIZE);
     return USBD_OK;
   }
   else
