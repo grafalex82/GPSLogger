@@ -220,6 +220,9 @@ typedef struct
   uint32_t                maxpacket;   
 } USBD_EndpointTypeDef;
 
+//Forward declaration
+typedef PCD_HandleTypeDef PCD_HandleTypeDef;
+
 /* USB Device handle structure */
 typedef struct _USBD_HandleTypeDef
 {
@@ -244,7 +247,8 @@ typedef struct _USBD_HandleTypeDef
   const USBD_ClassTypeDef       *pClass;
   void                    *pClassData;  
   const void                    *pUserData;
-  void                    *pData;    
+
+  PCD_HandleTypeDef             *pPCDHandle;
 } USBD_HandleTypeDef;
 
 /**

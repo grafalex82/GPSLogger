@@ -109,5 +109,7 @@ void vLEDThread(void *pvParameters)
 		{
 			blink(ledStatus);
 		}
+
+		usbDebugWrite("Test\n");
 	}
 }
