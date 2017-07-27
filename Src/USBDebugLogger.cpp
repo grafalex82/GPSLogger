@@ -1,5 +1,5 @@
 #include <usbd_cdc_if.h>
-//#include <usbd_cdc.h>
+#include <usbd_cdc.h>
 #include <usbd_msc.h>
 #include <usbd_desc.h>
 
@@ -39,25 +39,30 @@ void reenumerateUSB()
 
 	// Let host know to enumerate USB devices on the bus
 	LL_GPIO_ResetOutputPin(GPIOA, GPIO_PIN_12);
-	HAL_Delay(1);
+	HAL_Delay(200);
 
 	// Restore pin mode
 	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
-	HAL_Delay(1);
+	HAL_Delay(200);
 }
 
 void initUSB()
 {
 	reenumerateUSB();
 	USBD_Init(&hUsbDeviceFS, &FS_Desc, DEVICE_FS);
-	return;
-	USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC);
 
-	//USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
+#ifndef USE_USB_MSC
+	USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC);
+	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
+#else
+	USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC);
 	USBD_MSC_RegisterStorage(&hUsbDeviceFS, &SdMscDriver);
+#endif
 	USBD_Start(&hUsbDeviceFS);
 
+	portDISABLE_INTERRUPTS();
 	usbMutex = xSemaphoreCreateMutex();
+	portENABLE_INTERRUPTS();
 }
 
 extern PCD_HandleTypeDef hpcd_USB_FS;

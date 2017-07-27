@@ -4,6 +4,7 @@
 
 #include "LEDThread.h"
 #include <Arduino_FreeRTOS.h>
+#include "USBDebugLogger.h"
 
 volatile uint8_t ledStatus = 0xff;
 
@@ -108,5 +109,7 @@ void vLEDThread(void *pvParameters)
 		{
 			blink(ledStatus);
 		}
+
+		usbDebugWrite("test\n");
 	}
 }
