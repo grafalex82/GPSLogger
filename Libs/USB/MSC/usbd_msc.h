@@ -85,7 +85,7 @@ typedef struct _USBD_STORAGE
 }USBD_StorageTypeDef;
 
 
-typedef struct
+typedef struct _USBD_MSC_BOT_HandleTypeDef
 {
   uint32_t                 max_lun;   
   uint32_t                 interface; 

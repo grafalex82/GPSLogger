@@ -222,6 +222,13 @@ typedef struct
 
 //Forward declaration
 typedef PCD_HandleTypeDef PCD_HandleTypeDef;
+struct _USBD_CDC_HandleTypeDef;
+typedef struct _USBD_CDC_HandleTypeDef USBD_CDC_HandleTypeDef;
+typedef struct _USBD_CDC_Itf USBD_CDC_ItfTypeDef;
+struct _USBD_MSC_BOT_HandleTypeDef;
+typedef struct _USBD_MSC_BOT_HandleTypeDef USBD_MSC_BOT_HandleTypeDef;
+struct _USBD_STORAGE;
+typedef struct _USBD_STORAGE USBD_StorageTypeDef;
 
 /* USB Device handle structure */
 typedef struct _USBD_HandleTypeDef
@@ -245,8 +252,11 @@ typedef struct _USBD_HandleTypeDef
   USBD_SetupReqTypedef    request;
   const USBD_DescriptorsTypeDef *pDesc;
   const USBD_ClassTypeDef       *pClass;
-  void                    *pClassData;  
-  const void                    *pUserData;
+
+  USBD_MSC_BOT_HandleTypeDef    *pClassDataMSC;
+  const USBD_StorageTypeDef     *pClassSpecificInterfaceMSC;
+  USBD_CDC_HandleTypeDef        *pClassDataCDC;
+  const USBD_CDC_ItfTypeDef     *pClassSpecificInterfaceCDC;
 
   PCD_HandleTypeDef             *pPCDHandle;
 } USBD_HandleTypeDef;

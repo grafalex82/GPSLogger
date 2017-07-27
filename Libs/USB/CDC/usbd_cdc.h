@@ -108,7 +108,7 @@ typedef struct _USBD_CDC_Itf
 }USBD_CDC_ItfTypeDef;
 
 
-typedef struct
+typedef struct _USBD_CDC_HandleTypeDef
 {
   uint32_t data[CDC_DATA_HS_MAX_PACKET_SIZE/4];      /* Force 32bits alignment */
   uint8_t  CmdOpCode;

@@ -223,7 +223,7 @@ uint8_t  USBD_MSC_Init (USBD_HandleTypeDef *pdev,
 				 USBD_EP_TYPE_BULK,
 				 MSC_MAX_FS_PACKET);
 
-  pdev->pClassData = &mscObject;
+  pdev->pClassDataMSC = &mscObject;
 
   /* Init the BOT  layer */
   MSC_BOT_Init(pdev);
@@ -255,8 +255,8 @@ uint8_t  USBD_MSC_DeInit (USBD_HandleTypeDef *pdev,
   MSC_BOT_DeInit(pdev);
   
   /* Free MSC Class Resources */
-  if(pdev->pClassData != NULL)
-    pdev->pClassData  = NULL; 
+  if(pdev->pClassDataMSC != NULL)
+    pdev->pClassDataMSC  = NULL; 
 
   return 0;
 }
@@ -269,7 +269,7 @@ uint8_t  USBD_MSC_DeInit (USBD_HandleTypeDef *pdev,
 */
 uint8_t  USBD_MSC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
 {
-  USBD_MSC_BOT_HandleTypeDef     *hmsc = (USBD_MSC_BOT_HandleTypeDef*) pdev->pClassData;
+  USBD_MSC_BOT_HandleTypeDef * hmsc = pdev->pClassDataMSC;
   
   switch (req->bmRequest & USB_REQ_TYPE_MASK)
   {
@@ -284,7 +284,7 @@ uint8_t  USBD_MSC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
          (req->wLength == 1) &&
          ((req->bmRequest & 0x80) == 0x80))
       {
-        hmsc->max_lun = ((USBD_StorageTypeDef *)pdev->pUserData)->GetMaxLun();
+        hmsc->max_lun = pdev->pClassSpecificInterfaceMSC->GetMaxLun();
         USBD_CtlSendData (pdev,
                           (uint8_t *)&hmsc->max_lun,
                           1);
@@ -450,7 +450,7 @@ uint8_t  USBD_MSC_RegisterStorage  (USBD_HandleTypeDef   *pdev,
 {
   if(fops != NULL)
   {
-    pdev->pUserData= fops;
+	pdev->pClassSpecificInterfaceMSC = fops;
   }
   return 0;
 }
