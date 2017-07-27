@@ -17,11 +17,23 @@ int main(void)
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
 
+	blink(5);
+	blink(5);
+	blink(5);
+
 	// Initialize SD card before initializing USB
 	if(!initSD())
 		halt(7);
 
+	blink(0);
+	blink(7);
+	blink(0);
+
 	initUSB();
+
+	blink(7);
+	blink(0);
+	blink(7);
 
 	//initDisplay();
 	initButtons();
