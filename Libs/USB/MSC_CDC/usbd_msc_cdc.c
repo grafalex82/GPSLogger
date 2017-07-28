@@ -105,13 +105,26 @@ static const uint8_t USBD_MSC_CDC_CfgDesc[USB_MSC_CDC_CONFIG_DESC_SIZ] =
 	USB_DESC_TYPE_CONFIGURATION, /* bDescriptorType: Configuration */
 	USB_MSC_CDC_CONFIG_DESC_SIZ, /* wTotalLength: Bytes returned */
 	0x00,
-	0x01,         /*bNumInterfaces: 1 interface*/
+	0x03,         /*bNumInterfaces: 3 interface*/
 	0x01,         /*bConfigurationValue: Configuration value*/
 	0x02,         /*iConfiguration: Index of string descriptor describing the configuration*/
 	0xC0,         /*bmAttributes: bus powered and Supports Remote Wakeup */
 	0x32,         /*MaxPower 100 mA: this current is used for detecting Vbus*/
 	/* 09 bytes */
+#if 0
+	/******** IAD should be positioned just before the CDC interfaces ******
+			 IAD to associate the two CDC interfaces */
 
+	0x08, /* bLength */
+	0x0B, /* bDescriptorType */
+	MSC_INTERFACE_IDX, /* bFirstInterface */
+	0x01, /* bInterfaceCount */
+	0x08, /* bFunctionClass */
+	0x06, /* bFunctionSubClass */
+	0x50, /* bFunctionProtocol */
+	0x00, /* iFunction (Index of string descriptor describing this function) */
+	/* 08 bytes */
+#endif
 	/********************  Mass Storage interface ********************/
 	0x09,   /* bLength: Interface Descriptor size */
 	0x04,   /* bDescriptorType: */
