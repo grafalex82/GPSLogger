@@ -4,6 +4,7 @@
 
 #include "LEDThread.h"
 #include <Arduino_FreeRTOS.h>
+#include "USBDebugLogger.h"
 
 #include "USBDebugLogger.h"
 
@@ -112,5 +113,7 @@ void vLEDThread(void *pvParameters)
 		{
 			blink(ledStatus);
 		}
+
+		usbDebugWrite("Test\n");
 	}
 }

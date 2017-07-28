@@ -89,8 +89,6 @@ USBD_ClassTypeDef  USBD_MSC_CDC_ClassDriver =
 	NULL, //USBD_MSC_CDC_IsoINIncomplete,
 	NULL, //USBD_MSC_CDC_IsoOutIncomplete,
 	USBD_MSC_CDC_GetCfgDesc,
-	USBD_MSC_CDC_GetCfgDesc,
-	USBD_MSC_CDC_GetCfgDesc,
 	USBD_MSC_CDC_GetDeviceQualifierDesc,
 };
 
@@ -131,8 +129,8 @@ static const uint8_t USBD_MSC_CDC_CfgDesc[USB_MSC_CDC_CONFIG_DESC_SIZ] =
 	0x05,   /*Endpoint descriptor type */
 	MSC_IN_EP,   /*Endpoint address (IN, address 1) */
 	0x02,   /*Bulk endpoint type */
-	LOBYTE(USB_FS_MAX_PACKET_SIZE),
-	HIBYTE(USB_FS_MAX_PACKET_SIZE),
+	LOBYTE(USB_MAX_PACKET_SIZE),
+	HIBYTE(USB_MAX_PACKET_SIZE),
 	0x00,   /*Polling interval in milliseconds */
 	/* 07 bytes */
 
@@ -140,8 +138,8 @@ static const uint8_t USBD_MSC_CDC_CfgDesc[USB_MSC_CDC_CONFIG_DESC_SIZ] =
 	0x05,   /*Endpoint descriptor type */
 	MSC_OUT_EP,   /*Endpoint address (OUT, address 1) */
 	0x02,   /*Bulk endpoint type */
-	LOBYTE(USB_FS_MAX_PACKET_SIZE),
-	HIBYTE(USB_FS_MAX_PACKET_SIZE),
+	LOBYTE(USB_MAX_PACKET_SIZE),
+	HIBYTE(USB_MAX_PACKET_SIZE),
 	0x00,     /*Polling interval in milliseconds*/
 	/* 07 bytes */
 
@@ -261,7 +259,7 @@ static uint8_t USBD_MSC_CDC_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] =
 	0x00,
 	0x00,
 	0x00,
-	USB_FS_MAX_PACKET_SIZE,
+	USB_MAX_PACKET_SIZE,
 	0x01,
 	0x00,
 };

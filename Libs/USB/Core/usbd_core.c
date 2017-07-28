@@ -433,7 +433,7 @@ USBD_StatusTypeDef USBD_LL_Reset(USBD_HandleTypeDef  *pdev)
   /* Upon Reset call user call back */
   pdev->dev_state = USBD_STATE_DEFAULT;
   
-  if (pdev->pClass)
+  if (pdev->pClassDataMSC)
     pdev->pClass->DeInit(pdev, pdev->dev_config);  
  
   

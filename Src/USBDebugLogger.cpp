@@ -14,9 +14,8 @@
 
 #include "USBDebugLogger.h"
 #include "PrintUtils.h"
-
-#include "SdMscDriver.h"
 #include "LEDThread.h"
+#include "SdMscDriver.h"
 
 #define USB_SERIAL_BUFFER_SIZE 256
 
@@ -42,14 +41,13 @@ void reenumerateUSB()
 	LL_GPIO_ResetOutputPin(GPIOA, GPIO_PIN_12);
 	HAL_Delay(200);
 
+	// Restore pin mode
+	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
+	HAL_Delay(200);
 }
 
 void initUSB()
 {
-	HAL_Delay(2000);
-	blink(1);
-	//HAL_PCD_Stop(&hpcd_USB_FS);
-
 	reenumerateUSB();
 
 	HAL_Delay(1000);
@@ -84,12 +82,9 @@ void initUSB()
 	HAL_Delay(1000);
 	blink(6);
 
-
-	// Restore pin mode
-	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
-	HAL_Delay(200);
-
+	portDISABLE_INTERRUPTS();
 	usbMutex = xSemaphoreCreateMutex();
+	portENABLE_INTERRUPTS();
 }
 
 extern "C" void USB_LP_CAN1_RX0_IRQHandler(void) {

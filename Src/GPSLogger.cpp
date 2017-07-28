@@ -24,12 +24,15 @@ int main(void)
 	if(!initSD())
 		halt(7);
 
+	blink(0);
+	blink(7);
+	blink(0);
+
+	initUSB();
+
 	blink(7);
 	blink(0);
 	blink(7);
-
-	initUSB();
-	//halt(5);
 */
 	//initDisplay();
 	initButtons();

@@ -102,11 +102,7 @@ uint8_t  USBD_MSC_DataIn (USBD_HandleTypeDef *pdev,
 uint8_t  USBD_MSC_DataOut (USBD_HandleTypeDef *pdev, 
                                uint8_t epnum);
 
-const uint8_t  *USBD_MSC_GetHSCfgDesc (uint16_t *length);
-
 const uint8_t  *USBD_MSC_GetFSCfgDesc (uint16_t *length);
-
-const uint8_t  *USBD_MSC_GetOtherSpeedCfgDesc (uint16_t *length);
 
 const uint8_t  *USBD_MSC_GetDeviceQualifierDescriptor (uint16_t *length);
 
@@ -132,54 +128,8 @@ USBD_ClassTypeDef  USBD_MSC =
   NULL, /*SOF */ 
   NULL,  
   NULL,     
-  USBD_MSC_GetHSCfgDesc,
   USBD_MSC_GetFSCfgDesc,  
-  USBD_MSC_GetOtherSpeedCfgDesc,
   USBD_MSC_GetDeviceQualifierDescriptor,
-};
-
-/* USB Mass storage device Configuration Descriptor */
-/*   All Descriptors (Configuration, Interface, Endpoint, Class, Vendor */
-__ALIGN_BEGIN uint8_t USBD_MSC_CfgHSDesc[USB_MSC_CONFIG_DESC_SIZ]  __ALIGN_END =
-{
-  
-  0x09,   /* bLength: Configuation Descriptor size */
-  USB_DESC_TYPE_CONFIGURATION,   /* bDescriptorType: Configuration */
-  USB_MSC_CONFIG_DESC_SIZ,
-  
-  0x00,
-  0x01,   /* bNumInterfaces: 1 interface */
-  0x01,   /* bConfigurationValue: */
-  0x04,   /* iConfiguration: */
-  0xC0,   /* bmAttributes: */
-  0x32,   /* MaxPower 100 mA */
-  
-  /********************  Mass Storage interface ********************/
-  0x09,   /* bLength: Interface Descriptor size */
-  0x04,   /* bDescriptorType: */
-  0x00,   /* bInterfaceNumber: Number of Interface */
-  0x00,   /* bAlternateSetting: Alternate setting */
-  0x02,   /* bNumEndpoints*/
-  0x08,   /* bInterfaceClass: MSC Class */
-  0x06,   /* bInterfaceSubClass : SCSI transparent*/
-  0x50,   /* nInterfaceProtocol */
-  0x05,          /* iInterface: */
-  /********************  Mass Storage Endpoints ********************/
-  0x07,   /*Endpoint descriptor length = 7*/
-  0x05,   /*Endpoint descriptor type */
-  MSC_IN_EP,   /*Endpoint address (IN, address 1) */
-  0x02,   /*Bulk endpoint type */
-  LOBYTE(USB_FS_MAX_PACKET_SIZE),
-  HIBYTE(USB_FS_MAX_PACKET_SIZE),
-  0x00,   /*Polling interval in milliseconds */
-  
-  0x07,   /*Endpoint descriptor length = 7 */
-  0x05,   /*Endpoint descriptor type */
-  MSC_OUT_EP,   /*Endpoint address (OUT, address 1) */
-  0x02,   /*Bulk endpoint type */
-  LOBYTE(USB_FS_MAX_PACKET_SIZE),
-  HIBYTE(USB_FS_MAX_PACKET_SIZE),
-  0x00     /*Polling interval in milliseconds*/
 };
 
 /* USB Mass storage device Configuration Descriptor */
@@ -213,58 +163,16 @@ uint8_t USBD_MSC_CfgFSDesc[USB_MSC_CONFIG_DESC_SIZ]  __ALIGN_END =
   0x05,   /*Endpoint descriptor type */
   MSC_IN_EP,   /*Endpoint address (IN, address 1) */
   0x02,   /*Bulk endpoint type */
-  LOBYTE(USB_FS_MAX_PACKET_SIZE),
-  HIBYTE(USB_FS_MAX_PACKET_SIZE),
+  LOBYTE(USB_MAX_PACKET_SIZE),
+  HIBYTE(USB_MAX_PACKET_SIZE),
   0x00,   /*Polling interval in milliseconds */
 
   0x07,   /*Endpoint descriptor length = 7 */
   0x05,   /*Endpoint descriptor type */
   MSC_OUT_EP,   /*Endpoint address (OUT, address 1) */
   0x02,   /*Bulk endpoint type */
-  LOBYTE(USB_FS_MAX_PACKET_SIZE),
-  HIBYTE(USB_FS_MAX_PACKET_SIZE),
-  0x00     /*Polling interval in milliseconds*/
-};
-
-__ALIGN_BEGIN uint8_t USBD_MSC_OtherSpeedCfgDesc[USB_MSC_CONFIG_DESC_SIZ]   __ALIGN_END  =
-{
-  
-  0x09,   /* bLength: Configuation Descriptor size */
-  USB_DESC_TYPE_OTHER_SPEED_CONFIGURATION,   
-  USB_MSC_CONFIG_DESC_SIZ,
-  
-  0x00,
-  0x01,   /* bNumInterfaces: 1 interface */
-  0x01,   /* bConfigurationValue: */
-  0x04,   /* iConfiguration: */
-  0xC0,   /* bmAttributes: */
-  0x32,   /* MaxPower 100 mA */
-  
-  /********************  Mass Storage interface ********************/
-  0x09,   /* bLength: Interface Descriptor size */
-  0x04,   /* bDescriptorType: */
-  0x00,   /* bInterfaceNumber: Number of Interface */
-  0x00,   /* bAlternateSetting: Alternate setting */
-  0x02,   /* bNumEndpoints*/
-  0x08,   /* bInterfaceClass: MSC Class */
-  0x06,   /* bInterfaceSubClass : SCSI transparent command set*/
-  0x50,   /* nInterfaceProtocol */
-  0x05,          /* iInterface: */
-  /********************  Mass Storage Endpoints ********************/
-  0x07,   /*Endpoint descriptor length = 7*/
-  0x05,   /*Endpoint descriptor type */
-  MSC_IN_EP,   /*Endpoint address (IN, address 1) */
-  0x02,   /*Bulk endpoint type */
-  LOBYTE(USB_FS_MAX_PACKET_SIZE),
-  HIBYTE(USB_FS_MAX_PACKET_SIZE),
-  0x00,   /*Polling interval in milliseconds */
-
-  0x07,   /*Endpoint descriptor length = 7 */
-  0x05,   /*Endpoint descriptor type */
-  MSC_OUT_EP,   /*Endpoint address (OUT, address 1) */
-  0x02,   /*Bulk endpoint type */
-  LOBYTE(USB_FS_MAX_PACKET_SIZE),
-  HIBYTE(USB_FS_MAX_PACKET_SIZE),
+  LOBYTE(USB_MAX_PACKET_SIZE),
+  HIBYTE(USB_MAX_PACKET_SIZE),
   0x00     /*Polling interval in milliseconds*/
 };
 
@@ -278,7 +186,7 @@ __ALIGN_BEGIN  uint8_t USBD_MSC_DeviceQualifierDesc[USB_LEN_DEV_QUALIFIER_DESC] 
   0x00,
   0x00,
   0x00,
-  USB_FS_MAX_PACKET_SIZE,
+  USB_MAX_PACKET_SIZE,
   0x01,
   0x00,
 };
@@ -303,47 +211,23 @@ uint8_t  USBD_MSC_Init (USBD_HandleTypeDef *pdev,
 {
   int16_t ret = 0;
    
-  if(pdev->dev_speed == USBD_SPEED_HIGH  ) 
-  {
-    /* Open EP OUT */
-    USBD_LL_OpenEP(pdev,
-				   MSC_OUT_EP,
-                   USBD_EP_TYPE_BULK,
-				   USB_FS_MAX_PACKET_SIZE);
+  /* Open EP OUT */
+  USBD_LL_OpenEP(pdev,
+				 MSC_OUT_EP,
+				 USBD_EP_TYPE_BULK,
+				 USB_MAX_PACKET_SIZE);
     
-    /* Open EP IN */
-    USBD_LL_OpenEP(pdev,
-				   MSC_IN_EP,
-                   USBD_EP_TYPE_BULK,
-				   USB_FS_MAX_PACKET_SIZE);
-  }
-  else
-  {
-    /* Open EP OUT */
-    USBD_LL_OpenEP(pdev,
-				   MSC_OUT_EP,
-                   USBD_EP_TYPE_BULK,
-				   USB_FS_MAX_PACKET_SIZE);
-    
-    /* Open EP IN */
-    USBD_LL_OpenEP(pdev,
-				   MSC_IN_EP,
-                   USBD_EP_TYPE_BULK,
-				   USB_FS_MAX_PACKET_SIZE);
-  }
+  /* Open EP IN */
+  USBD_LL_OpenEP(pdev,
+				 MSC_IN_EP,
+				 USBD_EP_TYPE_BULK,
+				 USB_MAX_PACKET_SIZE);
 
   pdev->pClassDataMSC = &mscObject;
 
-  if(pdev->pClassDataMSC == NULL)
-  {
-    ret = 1; 
-  }
-  else
-  {
-    /* Init the BOT  layer */
-    MSC_BOT_Init(pdev); 
-    ret = 0;
-  }
+  /* Init the BOT  layer */
+  MSC_BOT_Init(pdev);
+  ret = 0;
   
   return ret;
 }
@@ -385,7 +269,7 @@ uint8_t  USBD_MSC_DeInit (USBD_HandleTypeDef *pdev,
 */
 uint8_t  USBD_MSC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
 {
-  USBD_MSC_BOT_HandleTypeDef     *hmsc = (USBD_MSC_BOT_HandleTypeDef*) pdev->pClassDataMSC;
+  USBD_MSC_BOT_HandleTypeDef * hmsc = pdev->pClassDataMSC;
   
   switch (req->bmRequest & USB_REQ_TYPE_MASK)
   {
@@ -400,7 +284,7 @@ uint8_t  USBD_MSC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
          (req->wLength == 1) &&
          ((req->bmRequest & 0x80) == 0x80))
       {
-        hmsc->max_lun = ((USBD_StorageTypeDef *)pdev->pClassSpecificInterfaceMSC)->GetMaxLun();
+        hmsc->max_lun = pdev->pClassSpecificInterfaceMSC->GetMaxLun();
         USBD_CtlSendData (pdev,
                           (uint8_t *)&hmsc->max_lun,
                           1);
@@ -454,41 +338,19 @@ uint8_t  USBD_MSC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
       USBD_LL_CloseEP (pdev , (uint8_t)req->wIndex);
       if((((uint8_t)req->wIndex) & 0x80) == 0x80)
       {
-        if(pdev->dev_speed == USBD_SPEED_HIGH  ) 
-        {
-          /* Open EP IN */
-          USBD_LL_OpenEP(pdev,
+		/* Open EP IN */
+		USBD_LL_OpenEP(pdev,
 						 MSC_IN_EP,
                          USBD_EP_TYPE_BULK,
-						 USB_FS_MAX_PACKET_SIZE);
-        }
-        else
-        {   
-          /* Open EP IN */
-          USBD_LL_OpenEP(pdev,
-						 MSC_IN_EP,
-                         USBD_EP_TYPE_BULK,
-						 USB_FS_MAX_PACKET_SIZE);
-        }
+						 USB_MAX_PACKET_SIZE);
       }
       else
       {
-        if(pdev->dev_speed == USBD_SPEED_HIGH  ) 
-        {
-          /* Open EP IN */
-          USBD_LL_OpenEP(pdev,
+		/* Open EP IN */
+		USBD_LL_OpenEP(pdev,
 						 MSC_OUT_EP,
                          USBD_EP_TYPE_BULK,
-						 USB_FS_MAX_PACKET_SIZE);
-        }
-        else
-        {   
-          /* Open EP IN */
-          USBD_LL_OpenEP(pdev,
-						 MSC_OUT_EP,
-                         USBD_EP_TYPE_BULK,
-						 USB_FS_MAX_PACKET_SIZE);
-        }
+						 USB_MAX_PACKET_SIZE);
       }
       
       /* Handle BOT error */
@@ -533,18 +395,6 @@ uint8_t  USBD_MSC_DataOut (USBD_HandleTypeDef *pdev,
 }
 
 /**
-* @brief  USBD_MSC_GetHSCfgDesc 
-*         return configuration descriptor
-* @param  length : pointer data length
-* @retval pointer to descriptor buffer
-*/
-const uint8_t  *USBD_MSC_GetHSCfgDesc (uint16_t *length)
-{
-  *length = sizeof (USBD_MSC_CfgHSDesc);
-  return USBD_MSC_CfgHSDesc;
-}
-
-/**
 * @brief  USBD_MSC_GetFSCfgDesc 
 *         return configuration descriptor
 * @param  length : pointer data length
@@ -556,17 +406,6 @@ const uint8_t  *USBD_MSC_GetFSCfgDesc (uint16_t *length)
   return USBD_MSC_CfgFSDesc;
 }
 
-/**
-* @brief  USBD_MSC_GetOtherSpeedCfgDesc 
-*         return other speed configuration descriptor
-* @param  length : pointer data length
-* @retval pointer to descriptor buffer
-*/
-const uint8_t  *USBD_MSC_GetOtherSpeedCfgDesc (uint16_t *length)
-{
-  *length = sizeof (USBD_MSC_OtherSpeedCfgDesc);
-  return USBD_MSC_OtherSpeedCfgDesc;
-}
 /**
 * @brief  DeviceQualifierDescriptor 
 *         return Device Qualifier descriptor
@@ -589,7 +428,7 @@ uint8_t  USBD_MSC_RegisterStorage  (USBD_HandleTypeDef   *pdev,
 {
   if(fops != NULL)
   {
-    pdev->pClassSpecificInterfaceMSC= fops;
+    pdev->pClassSpecificInterfaceMSC = fops;
   }
   return 0;
 }
