@@ -50,37 +50,23 @@ void initUSB()
 {
 	reenumerateUSB();
 
-	HAL_Delay(1000);
-	blink(2);
-
 	USBD_StatusTypeDef res = USBD_Init(&hUsbDeviceFS, &FS_Desc, 0);
 	if(res)
 		halt(res);
 
-	halt(6);
-
-	HAL_Delay(1000);
-	blink(3);
-
-	HAL_Delay(2);
-
-	res = USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC_CDC_ClassDriver);
-	if(res)
-		halt(res);
-
-	HAL_Delay(1000);
-	blink(4);
-
+#ifdef USE_USB_COMPOSITE
+	USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC_CDC_ClassDriver);
 	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
 	USBD_MSC_RegisterStorage(&hUsbDeviceFS, &SdMscDriver);
-
-	HAL_Delay(1000);
-	blink(5);
+#elif defined(USE_USB_MSC)
+	USBD_RegisterClass(&hUsbDeviceFS, &USBD_MSC);
+	USBD_MSC_RegisterStorage(&hUsbDeviceFS, &SdMscDriver);
+#else
+	USBD_RegisterClass(&hUsbDeviceFS, &USBD_CDC);
+	USBD_CDC_RegisterInterface(&hUsbDeviceFS, &USBD_Interface_fops_FS);
+#endif
 
 	USBD_Start(&hUsbDeviceFS);
-
-	HAL_Delay(1000);
-	blink(6);
 
 	portDISABLE_INTERRUPTS();
 	usbMutex = xSemaphoreCreateMutex();
