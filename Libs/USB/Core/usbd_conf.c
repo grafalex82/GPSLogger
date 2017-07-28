@@ -298,15 +298,15 @@ USBD_StatusTypeDef  USBD_LL_Init (USBD_HandleTypeDef *pdev)
   // MSC buffers
   HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x00, PCD_SNG_BUF, 0x18);
   HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x80, PCD_SNG_BUF, 0x58);
-  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x81, PCD_SNG_BUF, 0x98);
-  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x01, PCD_SNG_BUF, 0xD8);
+  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, MSC_IN_EP, PCD_SNG_BUF, 0x98);
+  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, MSC_OUT_EP, PCD_SNG_BUF, 0xD8);
 #else
   // CDC buffers
   HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x00, PCD_SNG_BUF, 0x18);
   HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x80, PCD_SNG_BUF, 0x58);
-  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x81, PCD_SNG_BUF, 0xC0);  
-  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x01, PCD_SNG_BUF, 0x110);
-  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, 0x82, PCD_SNG_BUF, 0x100);  
+  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, CDC_IN_EP, PCD_SNG_BUF, 0xC0);  
+  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, CDC_OUT_EP, PCD_SNG_BUF, 0x110);
+  HAL_PCDEx_PMAConfig(pdev->pPCDHandle, CDC_CMD_EP, PCD_SNG_BUF, 0x100);  
 #endif //USE_USB_MSC
 
   return USBD_OK;
