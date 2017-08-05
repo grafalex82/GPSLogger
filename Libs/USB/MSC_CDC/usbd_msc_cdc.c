@@ -111,20 +111,7 @@ static const uint8_t USBD_MSC_CDC_CfgDesc[USB_MSC_CDC_CONFIG_DESC_SIZ] =
 	0xC0,         /*bmAttributes: bus powered and Supports Remote Wakeup */
 	0x32,         /*MaxPower 100 mA: this current is used for detecting Vbus*/
 	/* 09 bytes */
-#if 0
-	/******** IAD should be positioned just before the CDC interfaces ******
-			 IAD to associate the two CDC interfaces */
 
-	0x08, /* bLength */
-	0x0B, /* bDescriptorType */
-	MSC_INTERFACE_IDX, /* bFirstInterface */
-	0x01, /* bInterfaceCount */
-	0x08, /* bFunctionClass */
-	0x06, /* bFunctionSubClass */
-	0x50, /* bFunctionProtocol */
-	0x00, /* iFunction (Index of string descriptor describing this function) */
-	/* 08 bytes */
-#endif
 	/********************  Mass Storage interface ********************/
 	0x09,   /* bLength: Interface Descriptor size */
 	0x04,   /* bDescriptorType: */
@@ -355,7 +342,7 @@ static uint8_t  USBD_MSC_CDC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTyped
 static uint8_t  USBD_MSC_CDC_DataIn (USBD_HandleTypeDef *pdev,
 									 uint8_t epnum)
 {
-	if((epnum & 0x7f) == MSC_OUT_EP)
+	if(epnum  == MSC_IN_EP)
 		return USBD_MSC_DataIn(pdev, epnum);
 
 	return USBD_CDC_DataIn(pdev, epnum);
@@ -371,7 +358,7 @@ static uint8_t  USBD_MSC_CDC_DataIn (USBD_HandleTypeDef *pdev,
 static uint8_t  USBD_MSC_CDC_DataOut (USBD_HandleTypeDef *pdev,
 									  uint8_t epnum)
 {
-	if((epnum & 0x7f) == MSC_OUT_EP)
+	if(epnum == MSC_OUT_EP)
 		return USBD_MSC_DataOut(pdev, epnum);
 
 	return USBD_CDC_DataOut(pdev, epnum);
