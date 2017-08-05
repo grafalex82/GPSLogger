@@ -315,8 +315,7 @@ static uint8_t  USBD_MSC_CDC_Init (USBD_HandleTypeDef *pdev,
   * @param  cfgidx: Configuration index
   * @retval status
   */
-static uint8_t  USBD_MSC_CDC_DeInit (USBD_HandleTypeDef *pdev, 
-									 uint8_t cfgidx)
+static uint8_t  USBD_MSC_CDC_DeInit (USBD_HandleTypeDef *pdev, uint8_t cfgidx)
 {
 	/* MSC De-initialization */
 	USBD_MSC_DeInit(pdev, cfgidx);
@@ -334,11 +333,14 @@ static uint8_t  USBD_MSC_CDC_DeInit (USBD_HandleTypeDef *pdev,
   * @param  req: usb requests
   * @retval status
   */
-static uint8_t  USBD_MSC_CDC_Setup (USBD_HandleTypeDef *pdev, 
-									USBD_SetupReqTypedef *req)
+static uint8_t  USBD_MSC_CDC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *req)
 {
-	if(req->wIndex == MSC_INTERFACE_IDX)
+	// Route requests to MSC interface or its endpoints to MSC class implementaion
+	if(((req->bmRequest & USB_REQ_RECIPIENT_MASK) == USB_REQ_RECIPIENT_INTERFACE && req->wIndex == MSC_INTERFACE_IDX) ||
+		((req->bmRequest & USB_REQ_RECIPIENT_MASK) == USB_REQ_RECIPIENT_ENDPOINT && (req->wIndex == MSC_IN_EP || req->wIndex == MSC_OUT_EP)))
+	{
 		return USBD_MSC_Setup(pdev, req);
+	}
 
 	return USBD_CDC_Setup(pdev, req);
 }

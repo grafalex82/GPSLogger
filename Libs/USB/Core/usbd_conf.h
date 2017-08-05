@@ -83,17 +83,16 @@
 /*---------- -----------*/
 #define USBD_SELF_POWERED     1
 
+// Interface numbers
 #define MSC_INTERFACE_IDX 0x0			// Index of MSC interface
 #define CDC_INTERFACE_IDX 0x1			// Index of CDC interface
 
-
 // endpoints numbers
-#define CDC_IN_EP                       0x81  /* EP1 for data IN */
-#define CDC_OUT_EP                      0x01  /* EP1 for data OUT */
+#define MSC_IN_EP                       0x81 /* EP3 for BULK IN */
+#define MSC_OUT_EP                      0x01 /* EP3 for BULK OUT */
 #define CDC_CMD_EP                      0x82  /* EP2 for CDC commands */
-
-#define MSC_IN_EP                       0x83 /* EP3 for BULK IN */
-#define MSC_OUT_EP                      0x03 /* EP3 for BULK OUT */
+#define CDC_IN_EP                       0x83  /* EP1 for data IN */
+#define CDC_OUT_EP                      0x03  /* EP1 for data OUT */
 
 
 /** @defgroup USBD_Exported_Macros
