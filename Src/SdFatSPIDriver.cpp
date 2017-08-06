@@ -199,7 +199,7 @@ void SdFatSPIDriver::send(uint8_t data)
 
 void SdFatSPIDriver::send(const uint8_t* buf, size_t n)
 {
-	vTaskDelay(1);
+	//vTaskDelay(1);
 #ifdef USB_DEBUG
 	if(debugEnabled)
 	usbDebugWrite("== sending %d bytes\n", n);
