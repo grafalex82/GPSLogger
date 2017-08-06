@@ -324,7 +324,7 @@ static uint8_t  USBD_MSC_CDC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTyped
 {
 	// Route requests to MSC interface or its endpoints to MSC class implementaion
 	if(((req->bmRequest & USB_REQ_RECIPIENT_MASK) == USB_REQ_RECIPIENT_INTERFACE && req->wIndex == MSC_INTERFACE_IDX) ||
-		((req->bmRequest & USB_REQ_RECIPIENT_MASK) == USB_REQ_RECIPIENT_ENDPOINT && (req->wIndex == MSC_IN_EP || req->wIndex == MSC_OUT_EP)))
+		((req->bmRequest & USB_REQ_RECIPIENT_MASK) == USB_REQ_RECIPIENT_ENDPOINT && ((req->wIndex & 0x7F) == MSC_EP_IDX)))
 	{
 		return USBD_MSC_Setup(pdev, req);
 	}
@@ -342,7 +342,7 @@ static uint8_t  USBD_MSC_CDC_Setup (USBD_HandleTypeDef *pdev, USBD_SetupReqTyped
 static uint8_t  USBD_MSC_CDC_DataIn (USBD_HandleTypeDef *pdev,
 									 uint8_t epnum)
 {
-	if(epnum  == MSC_IN_EP)
+	if(epnum == MSC_EP_IDX)
 		return USBD_MSC_DataIn(pdev, epnum);
 
 	return USBD_CDC_DataIn(pdev, epnum);
@@ -358,7 +358,7 @@ static uint8_t  USBD_MSC_CDC_DataIn (USBD_HandleTypeDef *pdev,
 static uint8_t  USBD_MSC_CDC_DataOut (USBD_HandleTypeDef *pdev,
 									  uint8_t epnum)
 {
-	if(epnum == MSC_OUT_EP)
+	if(epnum == MSC_EP_IDX)
 		return USBD_MSC_DataOut(pdev, epnum);
 
 	return USBD_CDC_DataOut(pdev, epnum);
