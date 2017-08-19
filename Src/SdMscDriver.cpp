@@ -1,16 +1,46 @@
+#include <Arduino_FreeRTOS.h>
+
 #include "SdMscDriver.h"
 #include "SdCard/SdSpiCard.h"
 
 #include "SdFatSPIDriver.h"
 
+#include "USBDebugLogger.h"
+
 extern SdFatSPIDriver spiDriver;
 SdSpiCard card;
 
-bool initSD()
+
+volatile bool bReady = false;
+
+enum IOOperation
 {
+	IO_Read,
+	IO_Write
+};
+
+struct IOMsg
+{
+	IOOperation op;
+	uint32_t lba;
+	uint8_t * buf;
+	uint16_t len;
+};
+
+// A queue of IO commands to execute in a separate thread and command results
+QueueHandle_t sdCmdQueue = NULL;
+
+
+// Initialize thread responsible for communication with SD card
+bool initSDIOThread()
+{
+	// Initialize queues
+	sdCmdQueue = xQueueCreate(1, sizeof(IOMsg));
+
 	bool res = card.begin(&spiDriver, PA4, SPI_FULL_SPEED);
 	return res;
 }
+
 
 const uint8_t SD_MSC_Inquirydata[] = {/* 36 */
   /* LUN 0 */
@@ -51,7 +81,7 @@ int8_t  SD_MSC_IsReady (uint8_t lun)
 {
 	(void)lun; // Not used
 
-	return (USBD_OK);
+	return bReady ? USBD_OK : USBD_FAIL;
 }
 
 int8_t  SD_MSC_IsWriteProtected (uint8_t lun)
@@ -66,9 +96,14 @@ int8_t SD_MSC_Read (uint8_t lun,
 						uint32_t blk_addr,
 						uint16_t blk_len)
 {
-	(void)lun; // Not used
+	// Send read command to IO executor thread
+	IOMsg msg;
+	msg.op = IO_Read;
+	msg.lba = blk_addr;
+	msg.len = blk_len;
+	msg.buf = buf;
 
-	if(!card.readBlocks(blk_addr, buf, blk_len))
+	if(xQueueSendFromISR(sdCmdQueue, &msg, NULL) != pdPASS)
 		return USBD_FAIL;
 
 	return (USBD_OK);
@@ -79,9 +114,14 @@ int8_t SD_MSC_Write (uint8_t lun,
 						 uint32_t blk_addr,
 						 uint16_t blk_len)
 {
-	(void)lun; // Not used
+	// Send read command to IO executor thread
+	IOMsg msg;
+	msg.op = IO_Write;
+	msg.lba = blk_addr;
+	msg.len = blk_len;
+	msg.buf = buf;
 
-	if(!card.writeBlocks(blk_addr, buf, blk_len))
+	if(xQueueSendFromISR(sdCmdQueue, &msg, NULL) != pdPASS)
 		return USBD_FAIL;
 
 	return (USBD_OK);
@@ -103,3 +143,106 @@ USBD_StorageTypeDef SdMscDriver =
 	SD_MSC_GetMaxLun,
 	(int8_t *)SD_MSC_Inquirydata,
 };
+
+
+void cardReadCompletedCB(bool res);
+void cardWriteCompletedCB(bool res);
+
+void xSDIOThread(void *pvParameters)
+{
+	vTaskDelay(3000);
+	//serialDebugWrite("   SD : Listening for SD commands\r\n");
+
+	//enable clock to the GPIOC peripheral
+	__HAL_RCC_GPIOB_IS_CLK_ENABLED();
+
+	uint32_t pin = LL_GPIO_PIN_11;
+	LL_GPIO_SetPinMode(GPIOB, pin, LL_GPIO_MODE_OUTPUT);
+	LL_GPIO_SetPinOutputType(GPIOB, pin, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(GPIOB, pin, LL_GPIO_SPEED_FREQ_HIGH);
+
+//	bReady = true;
+
+	while(true)
+	{
+		IOMsg msg;
+		if(xQueueReceive(sdCmdQueue, &msg, portMAX_DELAY))
+		{
+			//serialDebugWrite("   SD : Received IO message %d for lba %d\r\n", msg.op, msg.lba);
+
+			LL_GPIO_SetOutputPin(GPIOB, pin);
+
+			switch(msg.op)
+			{
+				case IO_Read:
+				{
+					bool res = card.readBlocks(msg.lba, msg.buf, msg.len);
+					cardReadCompletedCB(res);
+					break;
+				}
+				case IO_Write:
+				{
+					bool res = card.writeBlocks(msg.lba, msg.buf, msg.len);
+					cardWriteCompletedCB(res);
+					break;
+				}
+				default:
+					break;
+			}
+
+			LL_GPIO_ResetOutputPin(GPIOB, pin);
+
+			//serialDebugWrite("   SD : Operation finished for LBA %d. Sending result back\r\n", msg.lba);
+		}
+	}
+
+}
+
+uint8_t io_buf[1024];
+static TaskHandle_t xTestTask = NULL;
+
+void cardReadCompletedCB(bool res)
+{
+	xTaskNotifyGive(xTestTask);
+}
+
+void cardWriteCompletedCB(bool res)
+{
+	xTaskNotifyGive(xTestTask);
+}
+
+void xSDTestThread(void *pvParameters)
+{
+	xTestTask = xTaskGetCurrentTaskHandle();
+
+	vTaskDelay(3500);
+	usbDebugWrite("Reading SD card\r\n");
+
+	uint32_t prev = HAL_GetTick();
+	uint32_t opsPer1s = 0;
+	uint32_t cardSize = card.cardSize();
+	for(uint32_t i=0; i<cardSize; i++)
+	{
+		opsPer1s++;
+
+		//serialDebugWrite("Reading block %d\r\n", i);
+
+		if(SD_MSC_Read(0, io_buf, i, 2) != 0)
+			usbDebugWrite("Failed to read block %d\r\n", i);
+		//else
+		//	serialDebugWrite("Successfully read block %d\r\n", i);
+
+		ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+
+		if(HAL_GetTick() - prev > 1000)
+		{
+			prev = HAL_GetTick();
+			usbDebugWrite("Reading speed: %d kbytes/s\r\n", opsPer1s);
+			opsPer1s = 0;
+		}
+	}
+
+	while(true)
+		;
+}
+
