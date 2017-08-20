@@ -31,7 +31,7 @@
 #include "usbd_msc.h"
 #include "usbd_msc_data.h"
 
-
+#include "stm32f1xx_ll_gpio.h"
 
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
@@ -507,7 +507,7 @@ static int8_t SCSI_Read10(USBD_HandleTypeDef  *pdev, uint8_t lun , uint8_t *para
                      ILLEGAL_REQUEST, 
                      INVALID_CDB);
       return -1;
-    }
+	}
   }
   hmsc->bot_data_length = MSC_MEDIA_PACKET;  
   
@@ -660,6 +660,10 @@ static int8_t SCSI_CheckAddressRange (USBD_HandleTypeDef  *pdev, uint8_t lun , u
   return 0;
 }
 
+USBD_HandleTypeDef  * g_pdev = NULL;
+uint8_t g_lun;
+uint32_t g_len;
+
 /**
 * @brief  SCSI_ProcessRead
 *         Handle Read Process
@@ -668,42 +672,63 @@ static int8_t SCSI_CheckAddressRange (USBD_HandleTypeDef  *pdev, uint8_t lun , u
 */
 static int8_t SCSI_ProcessRead (USBD_HandleTypeDef  *pdev, uint8_t lun)
 {
-  USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;   
-  uint32_t len;
-  
-  len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET); 
-  
-  if( pdev->pClassSpecificInterfaceMSC->Read(lun ,
-                              hmsc->bot_data, 
-                              hmsc->scsi_blk_addr / hmsc->scsi_blk_size, 
-                              len / hmsc->scsi_blk_size) < 0)
-  {
-    
-    SCSI_SenseCode(pdev,
-                   lun, 
-                   HARDWARE_ERROR, 
-                   UNRECOVERED_READ_ERROR);
-    return -1; 
-  }
-  
-  
-  USBD_LL_Transmit (pdev, 
-			 MSC_IN_EP,
-             hmsc->bot_data,
-             len);
-  
-  
-  hmsc->scsi_blk_addr   += len; 
-  hmsc->scsi_blk_len    -= len;  
-  
-  /* case 6 : Hi = Di */
-  hmsc->csw.dDataResidue -= len;
-  
-  if (hmsc->scsi_blk_len == 0)
-  {
-    hmsc->bot_state = USBD_BOT_LAST_DATA_IN;
-  }
-  return 0;
+	USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;
+	uint32_t len;
+
+	g_pdev = pdev;
+	g_lun = lun;
+
+	len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET);
+	g_len = len;
+
+	if( pdev->pClassSpecificInterfaceMSC->Read(lun ,
+											   hmsc->bot_data,
+											   hmsc->scsi_blk_addr / hmsc->scsi_blk_size,
+											   len / hmsc->scsi_blk_size) < 0)
+	{
+
+		SCSI_SenseCode(pdev,
+					   lun,
+					   HARDWARE_ERROR,
+					   UNRECOVERED_READ_ERROR);
+		return -1;
+	}
+
+	hmsc->bot_state = USBD_BOT_DATA_IN;
+	return 0;
+}
+
+void cardReadCompletedCB(uint8_t res)
+{
+	USBD_MSC_BOT_HandleTypeDef  *hmsc = g_pdev->pClassDataMSC;
+	uint32_t len = g_len;
+
+	if(res != 0)
+	{
+		SCSI_SenseCode(g_pdev,
+					   g_lun,
+					   HARDWARE_ERROR,
+					   UNRECOVERED_READ_ERROR);
+		return;
+	}
+
+	LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_10);
+	USBD_LL_Transmit (g_pdev,
+					  MSC_IN_EP,
+					  hmsc->bot_data,
+					  len);
+
+
+	hmsc->scsi_blk_addr   += len;
+	hmsc->scsi_blk_len    -= len;
+
+	/* case 6 : Hi = Di */
+	hmsc->csw.dDataResidue -= len;
+
+	if (hmsc->scsi_blk_len == 0)
+	{
+		hmsc->bot_state = USBD_BOT_LAST_DATA_IN;
+	}
 }
 
 /**
@@ -754,6 +779,12 @@ static int8_t SCSI_ProcessWrite (USBD_HandleTypeDef  *pdev, uint8_t lun)
   
   return 0;
 }
+
+void cardWriteCompletedCB(uint8_t res)
+{
+
+}
+
 /**
   * @}
   */ 

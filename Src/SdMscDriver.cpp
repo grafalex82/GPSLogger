@@ -114,6 +114,8 @@ int8_t SD_MSC_Write (uint8_t lun,
 						 uint32_t blk_addr,
 						 uint16_t blk_len)
 {
+	return USBD_FAIL;
+
 	// Send read command to IO executor thread
 	IOMsg msg;
 	msg.op = IO_Write;
@@ -145,8 +147,8 @@ USBD_StorageTypeDef SdMscDriver =
 };
 
 
-void cardReadCompletedCB(bool res);
-void cardWriteCompletedCB(bool res);
+extern "C" void cardReadCompletedCB(uint8_t res);
+extern "C" void cardWriteCompletedCB(uint8_t res);
 
 void xSDIOThread(void *pvParameters)
 {
@@ -156,12 +158,16 @@ void xSDIOThread(void *pvParameters)
 	//enable clock to the GPIOC peripheral
 	__HAL_RCC_GPIOB_IS_CLK_ENABLED();
 
-	uint32_t pin = LL_GPIO_PIN_11;
+	uint32_t pin = LL_GPIO_PIN_10;
+	LL_GPIO_SetPinMode(GPIOB, pin, LL_GPIO_MODE_OUTPUT);
+	LL_GPIO_SetPinOutputType(GPIOB, pin, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(GPIOB, pin, LL_GPIO_SPEED_FREQ_HIGH);
+	pin = LL_GPIO_PIN_11;
 	LL_GPIO_SetPinMode(GPIOB, pin, LL_GPIO_MODE_OUTPUT);
 	LL_GPIO_SetPinOutputType(GPIOB, pin, LL_GPIO_OUTPUT_PUSHPULL);
 	LL_GPIO_SetPinSpeed(GPIOB, pin, LL_GPIO_SPEED_FREQ_HIGH);
 
-//	bReady = true;
+	bReady = true;
 
 	while(true)
 	{
@@ -177,13 +183,13 @@ void xSDIOThread(void *pvParameters)
 				case IO_Read:
 				{
 					bool res = card.readBlocks(msg.lba, msg.buf, msg.len);
-					cardReadCompletedCB(res);
+					cardReadCompletedCB(res ? 0 : 0xff);
 					break;
 				}
 				case IO_Write:
 				{
 					bool res = card.writeBlocks(msg.lba, msg.buf, msg.len);
-					cardWriteCompletedCB(res);
+					cardWriteCompletedCB(res? 0 : 0xff);
 					break;
 				}
 				default:
@@ -198,15 +204,16 @@ void xSDIOThread(void *pvParameters)
 
 }
 
+/*
 uint8_t io_buf[1024];
 static TaskHandle_t xTestTask = NULL;
 
-void cardReadCompletedCB(bool res)
+extern "C" void cardReadCompletedCB(uint8_t res)
 {
 	xTaskNotifyGive(xTestTask);
 }
 
-void cardWriteCompletedCB(bool res)
+extern "C" void cardWriteCompletedCB(uint8_t res)
 {
 	xTaskNotifyGive(xTestTask);
 }
@@ -246,3 +253,4 @@ void xSDTestThread(void *pvParameters)
 		;
 }
 
+*/
