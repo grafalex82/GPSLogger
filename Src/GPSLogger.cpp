@@ -8,11 +8,13 @@
 #include "ButtonsThread.h"
 #include "SDThread.h"
 #include "USBDebugLogger.h"
+#include "SerialDebugLogger.h"
 #include "SdMscDriver.h"
 
 int main(void)
 {
 	InitBoard();
+	initDebugSerial();
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
 

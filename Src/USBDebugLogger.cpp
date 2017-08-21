@@ -1,7 +1,5 @@
 #include <usbd_cdc_if.h>
-//#include <usbd_cdc.h>
 #include <usbd_msc_cdc.h>
-//#include <usbd_msc.h>
 #include <usbd_desc.h>
 
 #include <stm32f1xx_ll_gpio.h>

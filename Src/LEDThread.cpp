@@ -5,8 +5,7 @@
 #include "LEDThread.h"
 #include <Arduino_FreeRTOS.h>
 #include "USBDebugLogger.h"
-
-#include "USBDebugLogger.h"
+#include "SerialDebugLogger.h"
 
 volatile uint8_t ledStatus = 0xff;
 
@@ -113,5 +112,6 @@ void vLEDThread(void *pvParameters)
 		}
 
 		usbDebugWrite("Test\n");
+		serialDebugWrite("SerialTest\n");
 	}
 }
