@@ -27,7 +27,7 @@ void initDebugSerial()
 	LL_USART_Disable(USART2);
 
 	// Init
-	LL_USART_SetBaudRate(USART2, HAL_RCC_GetPCLK1Freq(), 115200);
+	LL_USART_SetBaudRate(USART2, HAL_RCC_GetPCLK1Freq(), 115200*8);
 	LL_USART_SetDataWidth(USART2, LL_USART_DATAWIDTH_8B);
 	LL_USART_SetStopBitsLength(USART2, LL_USART_STOPBITS_1);
 	LL_USART_SetParity(USART2, LL_USART_PARITY_NONE);
@@ -37,6 +37,7 @@ void initDebugSerial()
 	// Finally enable the peripheral
 	LL_USART_Enable(USART2);
 
+	serialDebugWrite("\n\n\n\n=================================================\n\n\n\n");
 }
 
 struct SerialTarget: public PrintTarget
@@ -53,7 +54,7 @@ struct SerialTarget: public PrintTarget
 	}
 };
 
-void serialDebugWrite(const char * fmt, ...)
+extern "C" void serialDebugWrite(const char * fmt, ...)
 {
 	va_list args;
 	va_start(args, fmt);
@@ -62,7 +63,7 @@ void serialDebugWrite(const char * fmt, ...)
 	va_end(args);
 }
 
-void serialDebugWrite(char c)
+extern "C" void serialDebugWriteC(char c)
 {
 	SerialTarget target;
 	target(c);

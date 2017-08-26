@@ -39,6 +39,13 @@ void SdFatSPIDriver::begin(uint8_t chipSelectPin)
 	__HAL_RCC_SPI1_CLK_ENABLE();
 
 
+	LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_1, LL_GPIO_MODE_OUTPUT);
+	LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_1, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(GPIOB, LL_GPIO_PIN_1, LL_GPIO_SPEED_FREQ_HIGH);
+	LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_0, LL_GPIO_MODE_OUTPUT);
+	LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_0, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(GPIOB, LL_GPIO_PIN_0, LL_GPIO_SPEED_FREQ_HIGH);
+
 	// Init pins
 	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_7, LL_GPIO_MODE_ALTERNATE);			// MOSI: AF PP
 	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_7, LL_GPIO_OUTPUT_PUSHPULL);
@@ -168,6 +175,7 @@ uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 	usbDebugWrite("== reading %d bytes over DMA\n", n);
 #endif
 
+		LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0);
 	// Start data transfer
 	HAL_SPI_TransmitReceive_DMA(&spiHandle, buf, buf, n);
 
@@ -178,6 +186,8 @@ uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 
 	// Wait until transfer is completed
 	xSemaphoreTake(xSema, 100);
+	LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0);
+	LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_10);
 
 #ifdef USB_DEBUG
 	if(debugEnabled)

@@ -6,7 +6,8 @@
 
 void initDebugSerial();
 void serialDebugWrite(char c);
-void serialDebugWrite(const char * fmt, ...);
+extern "C" void serialDebugWrite(const char * fmt, ...);
+extern "C" void serialDebugWriteC(char c);
 
 
 #endif // SERIALDEBUGLOGGER_H

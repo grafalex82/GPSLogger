@@ -71,9 +71,11 @@ typedef struct _USBD_STORAGE
   int8_t (* GetCapacity) (uint8_t lun, uint32_t *block_num, uint16_t *block_size);
   int8_t (* IsReady) (uint8_t lun);
   int8_t (* IsWriteProtected) (uint8_t lun);
-  int8_t (* Read) (uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len);
-  int8_t (* Write)(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len);
+  int8_t (* Read) (uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len, void * context);
+  int8_t (* Write)(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len, void * context);
   int8_t (* GetMaxLun)(void);
+  void   (* OnStartOp)(void);
+  void   (* OnFinishOp)(void);
   int8_t *pInquiry;
   
 }USBD_StorageTypeDef;
@@ -85,10 +87,11 @@ typedef struct _USBD_MSC_BOT_HandleTypeDef
   uint32_t                 interface; 
   uint8_t                  bot_state;
   uint8_t                  bot_status;  
-  uint16_t                 bot_data_length;
-  uint8_t                  bot_data[MSC_MEDIA_PACKET];  
   USBD_MSC_BOT_CBWTypeDef  cbw;
   USBD_MSC_BOT_CSWTypeDef  csw;
+  uint16_t                 bot_data_length;
+  uint8_t                  bot_data[2 * MSC_MEDIA_PACKET];
+  uint8_t                  bot_data_idx;
   
   USBD_SCSI_SenseTypeDef   scsi_sense [SENSE_LIST_DEEPTH];
   uint8_t                  scsi_sense_head;

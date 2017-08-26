@@ -33,6 +33,9 @@
 
 #include "stm32f1xx_ll_gpio.h"
 
+extern void serialDebugWrite(const char * fmt, ...);
+extern void serialDebugWriteC(char c);
+
 /** @addtogroup STM32_USB_DEVICE_LIBRARY
   * @{
   */
@@ -122,7 +125,6 @@ int8_t SCSI_ProcessCmd(USBD_HandleTypeDef  *pdev,
                            uint8_t lun, 
                            uint8_t *params)
 {
-  
   switch (params[0])
   {
   case SCSI_TEST_UNIT_READY:
@@ -422,6 +424,9 @@ static int8_t SCSI_RequestSense (USBD_HandleTypeDef  *pdev, uint8_t lun, uint8_t
 */
 void SCSI_SenseCode(USBD_HandleTypeDef  *pdev, uint8_t lun, uint8_t sKey, uint8_t ASC)
 {
+  //serialDebugWriteC('S');
+
+
   USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC; 
   
   hmsc->scsi_sense[hmsc->scsi_sense_tail].Skey  = sKey;
@@ -456,10 +461,15 @@ static int8_t SCSI_StartStopUnit(USBD_HandleTypeDef  *pdev, uint8_t lun, uint8_t
 static int8_t SCSI_Read10(USBD_HandleTypeDef  *pdev, uint8_t lun , uint8_t *params)
 {
   USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC; 
-  
+
+  // Synchronization to avoid several transmits at a time
+  pdev->pClassSpecificInterfaceMSC->OnStartOp();
+
+  //serialDebugWrite("Read command in state %d\n", hmsc->bot_state);
+
   if(hmsc->bot_state == USBD_BOT_IDLE)  /* Idle */
   {
-    
+	//serialDebugWriteC('\n');
     /* case 10 : Ho <> Di */
     
     if ((hmsc->cbw.bmFlags & 0x80) != 0x80)
@@ -494,7 +504,9 @@ static int8_t SCSI_Read10(USBD_HandleTypeDef  *pdev, uint8_t lun , uint8_t *para
     {
       return -1; /* error */
     }
-    
+
+	//serialDebugWrite("Starting new read operation LBA=%08x, len=%d\n", hmsc->scsi_blk_addr, hmsc->scsi_blk_len);
+
     hmsc->bot_state = USBD_BOT_DATA_IN;
     hmsc->scsi_blk_addr *= hmsc->scsi_blk_size;
     hmsc->scsi_blk_len  *= hmsc->scsi_blk_size;
@@ -506,12 +518,19 @@ static int8_t SCSI_Read10(USBD_HandleTypeDef  *pdev, uint8_t lun , uint8_t *para
                      hmsc->cbw.bLUN, 
                      ILLEGAL_REQUEST, 
                      INVALID_CDB);
+	  serialDebugWrite("Failed at point 1: cbw.dDataLength=%d != scsi_blk_len=%d\n", hmsc->cbw.dDataLength, hmsc->scsi_blk_len);
       return -1;
-	}
+    }
+
+	hmsc->bot_data_idx = 0;
+	hmsc->bot_data_length = MSC_MEDIA_PACKET;
+
+	return SCSI_ProcessRead(pdev, lun);
   }
-  hmsc->bot_data_length = MSC_MEDIA_PACKET;  
-  
-  return SCSI_ProcessRead(pdev, lun);
+  //else
+	  //serialDebugWriteC('-');
+
+  return 0;
 }
 
 /**
@@ -660,10 +679,6 @@ static int8_t SCSI_CheckAddressRange (USBD_HandleTypeDef  *pdev, uint8_t lun , u
   return 0;
 }
 
-USBD_HandleTypeDef  * g_pdev = NULL;
-uint8_t g_lun;
-uint32_t g_len;
-
 /**
 * @brief  SCSI_ProcessRead
 *         Handle Read Process
@@ -675,22 +690,21 @@ static int8_t SCSI_ProcessRead (USBD_HandleTypeDef  *pdev, uint8_t lun)
 	USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;
 	uint32_t len;
 
-	g_pdev = pdev;
-	g_lun = lun;
-
+	//serialDebugWriteC('R');
 	len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET);
-	g_len = len;
 
 	if( pdev->pClassSpecificInterfaceMSC->Read(lun ,
-											   hmsc->bot_data,
+											   hmsc->bot_data + hmsc->bot_data_idx * MSC_MEDIA_PACKET,
 											   hmsc->scsi_blk_addr / hmsc->scsi_blk_size,
-											   len / hmsc->scsi_blk_size) < 0)
+											   len / hmsc->scsi_blk_size,
+											   pdev) < 0)
 	{
 
 		SCSI_SenseCode(pdev,
 					   lun,
 					   HARDWARE_ERROR,
 					   UNRECOVERED_READ_ERROR);
+		serialDebugWrite("Faled at point 2\n");
 		return -1;
 	}
 
@@ -698,37 +712,69 @@ static int8_t SCSI_ProcessRead (USBD_HandleTypeDef  *pdev, uint8_t lun)
 	return 0;
 }
 
-void cardReadCompletedCB(uint8_t res)
+void cardReadCompletedCB(uint8_t res, void * context)
 {
-	USBD_MSC_BOT_HandleTypeDef  *hmsc = g_pdev->pClassDataMSC;
-	uint32_t len = g_len;
+	USBD_HandleTypeDef * pdev = (USBD_HandleTypeDef *)context;
+	USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;
+
+	uint8_t lun = hmsc->cbw.bLUN;
+	uint32_t len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET);
+
+	// Synchronization to avoid several transmits at a time
+	// This must be located here as it waits finishing previous USB transfer
+	// while the code below prepares next one
+	pdev->pClassSpecificInterfaceMSC->OnFinishOp();
+
+	//serialDebugWriteC('C');
 
 	if(res != 0)
 	{
-		SCSI_SenseCode(g_pdev,
-					   g_lun,
+		SCSI_SenseCode(pdev,
+					   lun,
 					   HARDWARE_ERROR,
 					   UNRECOVERED_READ_ERROR);
+		serialDebugWrite("Last read operation completed with errors\n");
 		return;
 	}
 
+	//serialDebugWrite("Transmitting LBA=%08x, len=%d, buf=%08x\n", hmsc->scsi_blk_addr/512, len/512, hmsc->bot_data + hmsc->bot_data_idx * MSC_MEDIA_PACKET);
 	LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_10);
-	USBD_LL_Transmit (g_pdev,
-					  MSC_IN_EP,
-					  hmsc->bot_data,
-					  len);
+	for(uint16_t i = 0; i< 1000; i++)
+		i+=1;
 
+	// Save these values for transmitting data
+	uint8_t * txBuf = hmsc->bot_data + hmsc->bot_data_idx * MSC_MEDIA_PACKET;
+	uint16_t txSize = len;
 
+	// But before transmitting set the correct state
+	// Note: we are in context of SD thread, not the USB interrupt
+	// So values have to be correct when DataIn interrupt occurrs
 	hmsc->scsi_blk_addr   += len;
 	hmsc->scsi_blk_len    -= len;
 
 	/* case 6 : Hi = Di */
 	hmsc->csw.dDataResidue -= len;
 
+	//serialDebugWrite("%d bytes to go\n", hmsc->scsi_blk_len);
+
 	if (hmsc->scsi_blk_len == 0)
 	{
 		hmsc->bot_state = USBD_BOT_LAST_DATA_IN;
 	}
+	else
+	{
+		hmsc->bot_data_idx ^= 1;
+		hmsc->bot_data_length = MSC_MEDIA_PACKET;
+		SCSI_ProcessRead(pdev, lun); // Not checking error code - SCSI_ProcessRead() already enters error state in case of read failure
+	}
+
+	//serialDebugWriteC('T');
+
+	// Now we can transmit data read from SD
+	USBD_LL_Transmit (pdev,
+					  MSC_IN_EP,
+					  txBuf,
+					  txSize);
 }
 
 /**
@@ -748,7 +794,8 @@ static int8_t SCSI_ProcessWrite (USBD_HandleTypeDef  *pdev, uint8_t lun)
   if(pdev->pClassSpecificInterfaceMSC->Write(lun ,
                               hmsc->bot_data, 
                               hmsc->scsi_blk_addr / hmsc->scsi_blk_size, 
-                              len / hmsc->scsi_blk_size) < 0)
+							  len / hmsc->scsi_blk_size,
+							  NULL) < 0)
   {
     SCSI_SenseCode(pdev,
                    lun, 

@@ -112,6 +112,6 @@ void vLEDThread(void *pvParameters)
 		}
 
 		usbDebugWrite("Test\n");
-		serialDebugWrite("SerialTest\n");
+		//serialDebugWrite("SerialTest\n");
 	}
 }
