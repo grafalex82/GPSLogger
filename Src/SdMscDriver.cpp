@@ -127,8 +127,6 @@ int8_t SD_MSC_Write (uint8_t lun,
 					 uint16_t blk_len,
 					 void * context)
 {
-	return USBD_FAIL;
-
 	// Send read command to IO executor thread
 	IOMsg msg;
 	msg.op = IO_Write;
@@ -209,15 +207,15 @@ void xSDIOThread(void *pvParameters)
 			{
 				case IO_Read:
 				{
-					LL_GPIO_SetOutputPin(GPIOB, pin);
 					bool res = card.readBlocks(msg.lba, msg.buf, msg.len);
 					cardReadCompletedCB(res ? 0 : 0xff, msg.context);
-					LL_GPIO_ResetOutputPin(GPIOB, pin);
 					break;
 				}
 				case IO_Write:
 				{
+					LL_GPIO_SetOutputPin(GPIOB, pin);
 					bool res = card.writeBlocks(msg.lba, msg.buf, msg.len);
+					LL_GPIO_ResetOutputPin(GPIOB, pin);
 					cardWriteCompletedCB(res? 0 : 0xff, msg.context);
 					break;
 				}

@@ -786,50 +786,65 @@ void cardReadCompletedCB(uint8_t res, void * context)
 
 static int8_t SCSI_ProcessWrite (USBD_HandleTypeDef  *pdev, uint8_t lun)
 {
-  uint32_t len;
-  USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC; 
-  
-  len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET); 
-  
-  if(pdev->pClassSpecificInterfaceMSC->Write(lun ,
-                              hmsc->bot_data, 
-                              hmsc->scsi_blk_addr / hmsc->scsi_blk_size, 
-							  len / hmsc->scsi_blk_size,
-							  NULL) < 0)
-  {
-    SCSI_SenseCode(pdev,
-                   lun, 
-                   HARDWARE_ERROR, 
-                   WRITE_FAULT);     
-    return -1; 
-  }
-  
-  
-  hmsc->scsi_blk_addr  += len; 
-  hmsc->scsi_blk_len   -= len; 
-  
-  /* case 12 : Ho = Do */
-  hmsc->csw.dDataResidue -= len;
-  
-  if (hmsc->scsi_blk_len == 0)
-  {
-    MSC_BOT_SendCSW (pdev, USBD_CSW_CMD_PASSED);
-  }
-  else
-  {
-    /* Prepare EP to Receive next packet */
-    USBD_LL_PrepareReceive (pdev,
-							MSC_OUT_EP,
-                            hmsc->bot_data, 
-                            MIN (hmsc->scsi_blk_len, MSC_MEDIA_PACKET)); 
-  }
-  
-  return 0;
+	uint32_t len;
+	USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;
+
+	len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET);
+
+	if(pdev->pClassSpecificInterfaceMSC->Write(lun ,
+											   hmsc->bot_data,
+											   hmsc->scsi_blk_addr / hmsc->scsi_blk_size,
+											   len / hmsc->scsi_blk_size,
+											   pdev) < 0)
+	{
+		SCSI_SenseCode(pdev,
+					   lun,
+					   HARDWARE_ERROR,
+					   WRITE_FAULT);
+		return -1;
+	}
+
+	return 0;
 }
 
-void cardWriteCompletedCB(uint8_t res)
+void cardWriteCompletedCB(uint8_t res, void * context)
 {
+	USBD_HandleTypeDef * pdev = (USBD_HandleTypeDef *)context;
+	USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;
 
+	uint8_t lun = hmsc->cbw.bLUN;
+	uint32_t len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET);
+
+	// Check error code first
+	if(res != 0)
+	{
+		SCSI_SenseCode(pdev,
+					   lun,
+					   HARDWARE_ERROR,
+					   WRITE_FAULT);
+		return;
+	}
+
+
+
+	hmsc->scsi_blk_addr  += len;
+	hmsc->scsi_blk_len   -= len;
+
+	/* case 12 : Ho = Do */
+	hmsc->csw.dDataResidue -= len;
+
+	if (hmsc->scsi_blk_len == 0)
+	{
+		MSC_BOT_SendCSW (pdev, USBD_CSW_CMD_PASSED);
+	}
+	else
+	{
+		/* Prepare EP to Receive next packet */
+		USBD_LL_PrepareReceive (pdev,
+								MSC_OUT_EP,
+								hmsc->bot_data,
+								MIN (hmsc->scsi_blk_len, MSC_MEDIA_PACKET));
+	}
 }
 
 /**
