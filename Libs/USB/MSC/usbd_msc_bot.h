@@ -55,6 +55,7 @@
 #define USBD_BOT_LAST_DATA_IN              3       /* Last Data In Last */
 #define USBD_BOT_SEND_DATA                 4       /* Send Immediate data */
 #define USBD_BOT_NO_DATA                   5       /* No data Stage */
+#define USBD_BOT_DATA_OUT_1ST              6       /* Data Out state for the first receiving block */
 
 #define USBD_BOT_CBW_SIGNATURE             0x43425355
 #define USBD_BOT_CSW_SIGNATURE             0x53425355

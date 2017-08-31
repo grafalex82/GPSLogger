@@ -102,7 +102,7 @@ static int8_t SCSI_ProcessRead (USBD_HandleTypeDef  *pdev,
                                 uint8_t lun);
 
 static int8_t SCSI_ProcessWrite (USBD_HandleTypeDef  *pdev,
-                                 uint8_t lun);
+								 uint8_t lun);
 /**
   * @}
   */ 
@@ -543,84 +543,89 @@ static int8_t SCSI_Read10(USBD_HandleTypeDef  *pdev, uint8_t lun , uint8_t *para
 
 static int8_t SCSI_Write10 (USBD_HandleTypeDef  *pdev, uint8_t lun , uint8_t *params)
 {
-  USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC; 
-  
-  if (hmsc->bot_state == USBD_BOT_IDLE) /* Idle */
-  {
-    
-    /* case 8 : Hi <> Do */
-    
-    if ((hmsc->cbw.bmFlags & 0x80) == 0x80)
-    {
-      SCSI_SenseCode(pdev,
-                     hmsc->cbw.bLUN, 
-                     ILLEGAL_REQUEST, 
-                     INVALID_CDB);
-      return -1;
-    }
-    
-    /* Check whether Media is ready */
-    if(pdev->pClassSpecificInterfaceMSC->IsReady(lun) !=0 )
-    {
-      SCSI_SenseCode(pdev,
-                     lun,
-                     NOT_READY, 
-                     MEDIUM_NOT_PRESENT);
-      return -1;
-    } 
-    
-    /* Check If media is write-protected */
-    if(pdev->pClassSpecificInterfaceMSC->IsWriteProtected(lun) !=0 )
-    {
-      SCSI_SenseCode(pdev,
-                     lun,
-                     NOT_READY, 
-                     WRITE_PROTECTED);
-      return -1;
-    } 
-    
-    
-    hmsc->scsi_blk_addr = (params[2] << 24) | \
-      (params[3] << 16) | \
-        (params[4] <<  8) | \
-          params[5];
-    hmsc->scsi_blk_len = (params[7] <<  8) | \
-      params[8];  
-    
-    /* check if LBA address is in the right range */
-    if(SCSI_CheckAddressRange(pdev,
-                              lun,
-                              hmsc->scsi_blk_addr,
-                              hmsc->scsi_blk_len) < 0)
-    {
-      return -1; /* error */      
-    }
-    
-    hmsc->scsi_blk_addr *= hmsc->scsi_blk_size;
-    hmsc->scsi_blk_len  *= hmsc->scsi_blk_size;
-    
-    /* cases 3,11,13 : Hn,Ho <> D0 */
-    if (hmsc->cbw.dDataLength != hmsc->scsi_blk_len)
-    {
-      SCSI_SenseCode(pdev,
-                     hmsc->cbw.bLUN, 
-                     ILLEGAL_REQUEST, 
-                     INVALID_CDB);
-      return -1;
-    }
-    
-    /* Prepare EP to receive first data packet */
-    hmsc->bot_state = USBD_BOT_DATA_OUT;  
-    USBD_LL_PrepareReceive (pdev,
-					  MSC_OUT_EP,
-                      hmsc->bot_data, 
-                      MIN (hmsc->scsi_blk_len, MSC_MEDIA_PACKET));  
-  }
-  else /* Write Process ongoing */
-  {
-    return SCSI_ProcessWrite(pdev, lun);
-  }
-  return 0;
+	USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;
+
+	if (hmsc->bot_state == USBD_BOT_IDLE) /* Idle */
+	{
+		//serialDebugWriteC('\n');
+		/* case 8 : Hi <> Do */
+
+		if ((hmsc->cbw.bmFlags & 0x80) == 0x80)
+		{
+			SCSI_SenseCode(pdev,
+						   hmsc->cbw.bLUN,
+						   ILLEGAL_REQUEST,
+						   INVALID_CDB);
+			return -1;
+		}
+
+		/* Check whether Media is ready */
+		if(pdev->pClassSpecificInterfaceMSC->IsReady(lun) !=0 )
+		{
+			SCSI_SenseCode(pdev,
+						   lun,
+						   NOT_READY,
+						   MEDIUM_NOT_PRESENT);
+			return -1;
+		}
+
+		/* Check If media is write-protected */
+		if(pdev->pClassSpecificInterfaceMSC->IsWriteProtected(lun) !=0 )
+		{
+			SCSI_SenseCode(pdev,
+						   lun,
+						   NOT_READY,
+						   WRITE_PROTECTED);
+			return -1;
+		}
+
+
+		hmsc->scsi_blk_addr = (params[2] << 24) | \
+				(params[3] << 16) | \
+				(params[4] <<  8) | \
+				params[5];
+		hmsc->scsi_blk_len = (params[7] <<  8) | \
+				params[8];
+
+		/* check if LBA address is in the right range */
+		if(SCSI_CheckAddressRange(pdev,
+								  lun,
+								  hmsc->scsi_blk_addr,
+								  hmsc->scsi_blk_len) < 0)
+		{
+			return -1; /* error */
+		}
+
+		hmsc->scsi_blk_addr *= hmsc->scsi_blk_size;
+		hmsc->scsi_blk_len  *= hmsc->scsi_blk_size;
+
+		/* cases 3,11,13 : Hn,Ho <> D0 */
+		if (hmsc->cbw.dDataLength != hmsc->scsi_blk_len)
+		{
+			SCSI_SenseCode(pdev,
+						   hmsc->cbw.bLUN,
+						   ILLEGAL_REQUEST,
+						   INVALID_CDB);
+			return -1;
+		}
+
+		//serialDebugWrite("Starting write operation for LBA=%08x, len=%d\n", hmsc->scsi_blk_addr, hmsc->scsi_blk_len);
+		//serialDebugWrite("Receiving first block into buf=%d\n", hmsc->bot_data_idx);
+
+		/* Prepare EP to receive first data packet */
+		hmsc->bot_state = USBD_BOT_DATA_OUT_1ST;
+		hmsc->bot_data_idx = 0;
+		//serialDebugWriteC('R');
+		USBD_LL_PrepareReceive (pdev,
+								MSC_OUT_EP,
+								hmsc->bot_data,
+								MIN (hmsc->scsi_blk_len, MSC_MEDIA_PACKET));
+	}
+	else /* Write Process ongoing */
+	{
+		return SCSI_ProcessWrite(pdev, lun);
+	}
+	return 0;
 }
 
 
@@ -738,9 +743,6 @@ void cardReadCompletedCB(uint8_t res, void * context)
 	}
 
 	//serialDebugWrite("Transmitting LBA=%08x, len=%d, buf=%08x\n", hmsc->scsi_blk_addr/512, len/512, hmsc->bot_data + hmsc->bot_data_idx * MSC_MEDIA_PACKET);
-	LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_10);
-	for(uint16_t i = 0; i< 1000; i++)
-		i+=1;
 
 	// Save these values for transmitting data
 	uint8_t * txBuf = hmsc->bot_data + hmsc->bot_data_idx * MSC_MEDIA_PACKET;
@@ -783,25 +785,76 @@ void cardReadCompletedCB(uint8_t res, void * context)
 * @param  lun: Logical unit number
 * @retval status
 */
-
 static int8_t SCSI_ProcessWrite (USBD_HandleTypeDef  *pdev, uint8_t lun)
 {
 	uint32_t len;
 	USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;
-
 	len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET);
 
+	USBD_WriteBlockContext * ctxt = hmsc->write_ctxt + hmsc->bot_data_idx;
+
+	// Figure out what to do after writing the block
+	if(hmsc->scsi_blk_len == len)
+	{
+		//serialDebugWrite("  This will be the last block\n");
+		ctxt->next_write_len = 0xffffffff;
+	}
+	else if(hmsc->scsi_blk_len == len + MSC_MEDIA_PACKET)
+	{
+		//serialDebugWrite("  This will be one before the last block\n");
+		ctxt->next_write_len = 0;
+	}
+	else
+	{
+		//serialDebugWrite("  This will be regular block\n");
+		ctxt->next_write_len = MIN(hmsc->scsi_blk_len - 2 * MSC_MEDIA_PACKET, MSC_MEDIA_PACKET);
+	}
+
+	// Prepare other fields of the context
+	ctxt->buf = hmsc->bot_data + hmsc->bot_data_idx * MSC_MEDIA_PACKET;
+	ctxt->pdev = pdev;
+
+
+	// Do not allow several receives at a time
+	if(hmsc->bot_state != USBD_BOT_DATA_OUT_1ST)
+		pdev->pClassSpecificInterfaceMSC->OnStartOp();
+
+	// Write received data
+	serialDebugWriteC('W');
+
 	if(pdev->pClassSpecificInterfaceMSC->Write(lun ,
-											   hmsc->bot_data,
+											   ctxt->buf,
 											   hmsc->scsi_blk_addr / hmsc->scsi_blk_size,
 											   len / hmsc->scsi_blk_size,
-											   pdev) < 0)
+											   ctxt) < 0)
 	{
 		SCSI_SenseCode(pdev,
 					   lun,
 					   HARDWARE_ERROR,
 					   WRITE_FAULT);
+		serialDebugWrite("Write failed at point 1\n");
 		return -1;
+	}
+
+	// Switching blocks
+	hmsc->bot_data_idx ^= 1;
+	hmsc->scsi_blk_addr  += len;
+	hmsc->scsi_blk_len   -= len;
+
+	/* case 12 : Ho = Do */
+	hmsc->csw.dDataResidue -= len;
+
+	// Performing one extra receive for the first time in order to run receive and write operations in parallel
+	if(hmsc->bot_state == USBD_BOT_DATA_OUT_1ST && hmsc->scsi_blk_len != 0)
+	{
+		//serialDebugWrite("Receiving an extra block into buf=%d\n", hmsc->bot_data_idx);
+
+		hmsc->bot_state = USBD_BOT_DATA_OUT;
+		//serialDebugWriteC('X');
+		USBD_LL_PrepareReceive (pdev,
+								MSC_OUT_EP,
+								hmsc->bot_data + hmsc->bot_data_idx * MSC_MEDIA_PACKET, // Second buffer
+								MIN (hmsc->scsi_blk_len, MSC_MEDIA_PACKET));
 	}
 
 	return 0;
@@ -809,11 +862,14 @@ static int8_t SCSI_ProcessWrite (USBD_HandleTypeDef  *pdev, uint8_t lun)
 
 void cardWriteCompletedCB(uint8_t res, void * context)
 {
-	USBD_HandleTypeDef * pdev = (USBD_HandleTypeDef *)context;
+	USBD_WriteBlockContext * ctxt = (USBD_WriteBlockContext*)context;
+	USBD_HandleTypeDef * pdev = ctxt->pdev;
 	USBD_MSC_BOT_HandleTypeDef  *hmsc = pdev->pClassDataMSC;
 
 	uint8_t lun = hmsc->cbw.bLUN;
-	uint32_t len = MIN(hmsc->scsi_blk_len , MSC_MEDIA_PACKET);
+
+	//serialDebugWrite("Write completed callback with status %d (buf=%d)\n", res, (ctxt->buf - hmsc->bot_data) / MSC_MEDIA_PACKET);
+	//serialDebugWriteC('C');
 
 	// Check error code first
 	if(res != 0)
@@ -822,30 +878,34 @@ void cardWriteCompletedCB(uint8_t res, void * context)
 					   lun,
 					   HARDWARE_ERROR,
 					   WRITE_FAULT);
+		serialDebugWrite("Write failed at point 2\n");
 		return;
 	}
 
-
-
-	hmsc->scsi_blk_addr  += len;
-	hmsc->scsi_blk_len   -= len;
-
-	/* case 12 : Ho = Do */
-	hmsc->csw.dDataResidue -= len;
-
-	if (hmsc->scsi_blk_len == 0)
+	if (ctxt->next_write_len == 0xffffffff)
 	{
+		//serialDebugWrite("Write finished. Sending CSW\n");
+		//serialDebugWriteC('!');
 		MSC_BOT_SendCSW (pdev, USBD_CSW_CMD_PASSED);
 	}
 	else
 	{
-		/* Prepare EP to Receive next packet */
-		USBD_LL_PrepareReceive (pdev,
-								MSC_OUT_EP,
-								hmsc->bot_data,
-								MIN (hmsc->scsi_blk_len, MSC_MEDIA_PACKET));
+		pdev->pClassSpecificInterfaceMSC->OnFinishOp();
+
+		if(ctxt->next_write_len != 0)
+		{
+			//serialDebugWrite("Preparing next receive into buf=%d\n", (ctxt->buf - hmsc->bot_data) / MSC_MEDIA_PACKET);
+
+			/* Prepare EP to Receive next packet */
+			//serialDebugWriteC('-');
+			USBD_LL_PrepareReceive (pdev,
+									MSC_OUT_EP,
+									ctxt->buf,
+									ctxt->next_write_len);
+		}
 	}
 }
+
 
 /**
   * @}

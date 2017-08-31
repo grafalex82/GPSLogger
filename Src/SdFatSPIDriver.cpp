@@ -187,7 +187,6 @@ uint8_t SdFatSPIDriver::receive(uint8_t* buf, size_t n)
 	// Wait until transfer is completed
 	xSemaphoreTake(xSema, 100);
 	LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0);
-	LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_10);
 
 #ifdef USB_DEBUG
 	if(debugEnabled)
@@ -272,7 +271,9 @@ void SdFatSPIDriver::unselect()
 void SdFatSPIDriver::dmaTransferCompletedCB()
 {
 	// Resume SD thread
-	xSemaphoreGiveFromISR(xSema, NULL);
+	BaseType_t xHigherPriorityTaskWoken;
+	xSemaphoreGiveFromISR(xSema, &xHigherPriorityTaskWoken);
+	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
 extern SdFatSPIDriver spiDriver;

@@ -208,7 +208,8 @@ void MSC_BOT_DataOut (USBD_HandleTypeDef  *pdev,
     break;
     
   case USBD_BOT_DATA_OUT:
-    
+  case USBD_BOT_DATA_OUT_1ST:
+
     if(SCSI_ProcessCmd(pdev,
                         hmsc->cbw.bLUN,
                         &hmsc->cbw.CB[0]) < 0)
@@ -270,8 +271,9 @@ static void  MSC_BOT_CBW_Decode (USBD_HandleTypeDef  *pdev)
     }
     /*Burst xfer handled internally*/
     else if ((hmsc->bot_state != USBD_BOT_DATA_IN) && 
-             (hmsc->bot_state != USBD_BOT_DATA_OUT) &&
-             (hmsc->bot_state != USBD_BOT_LAST_DATA_IN)) 
+			 (hmsc->bot_state != USBD_BOT_DATA_OUT) &&
+			 (hmsc->bot_state != USBD_BOT_DATA_OUT_1ST) &&
+			 (hmsc->bot_state != USBD_BOT_LAST_DATA_IN))
     {
       if (hmsc->bot_data_length > 0)
       {

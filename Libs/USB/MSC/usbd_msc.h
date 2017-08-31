@@ -81,6 +81,13 @@ typedef struct _USBD_STORAGE
 }USBD_StorageTypeDef;
 
 
+ typedef struct
+ {
+	 uint32_t                 next_write_len;
+	 uint8_t *                buf;
+	 USBD_HandleTypeDef *     pdev;
+ } USBD_WriteBlockContext;
+
 typedef struct _USBD_MSC_BOT_HandleTypeDef
 {
   uint32_t                 max_lun;   
@@ -89,10 +96,11 @@ typedef struct _USBD_MSC_BOT_HandleTypeDef
   uint8_t                  bot_status;  
   USBD_MSC_BOT_CBWTypeDef  cbw;
   USBD_MSC_BOT_CSWTypeDef  csw;
+  USBD_WriteBlockContext   write_ctxt[2];
   uint16_t                 bot_data_length;
   uint8_t                  bot_data[2 * MSC_MEDIA_PACKET];
   uint8_t                  bot_data_idx;
-  
+
   USBD_SCSI_SenseTypeDef   scsi_sense [SENSE_LIST_DEEPTH];
   uint8_t                  scsi_sense_head;
   uint8_t                  scsi_sense_tail;
