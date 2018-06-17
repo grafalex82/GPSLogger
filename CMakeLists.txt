@@ -6,19 +6,38 @@ SET(GPSLOGGER_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Libs)
 
 # All compiler related stuff is defined in the toolchain file
 SET(STM32_CHIP "STM32F103CB")
+#SET(STM32_CHIP "STM32F407VE")
 
-# Using Maple's linker script that corresponds maple/stm32duino code
-#SET(STM32_LINKER_SCRIPT ${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/ldscript_bootloader_2000.ld)
-#LINK_DIRECTORIES(${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/)
+if(${STM32_CHIP} STREQUAL "STM32F103CB")   	# Settings specific to Blue Pill Board
+	# Using Maple's linker script that corresponds maple/stm32duino code
+	#SET(STM32_LINKER_SCRIPT ${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/ldscript_bootloader_2000.ld)
+	#LINK_DIRECTORIES(${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/)
 
-# Flash offset due to bootloader
-SET(VECT_TAB_ADDR "0x2000")
-SET(STM32_FLASH_ORIGIN "0x08002000")
+	# Flash offset due to bootloader
+	SET(VECT_TAB_ADDR "0x2000")
+	SET(STM32_FLASH_ORIGIN "0x08002000")
+
+	ADD_DEFINITIONS(
+		-DSTM32F1
+		-DSTM32F103CB
+		-DSTM32F103xB
+		-DMCU_STM32F103CB
+		-DF_CPU=72000000L
+	)
+
+elseif(${STM32_CHIP} STREQUAL "STM32F407VE")    # Settings specific to F407VE board
+	ADD_DEFINITIONS(
+		-DSTM32F4
+		#-DSTM32F407VE
+		#-DSTM32F407xE
+		#-DMCU_STM32F407VE
+		-DF_CPU=168000000L
+	)
+endif()
+
 
 # Load the toolchain file that uses vars above
 SET(CMAKE_TOOLCHAIN_FILE cmake/gcc_stm32.cmake)
-
-
 
 # Project definition
 PROJECT(GPSLogger)
@@ -29,13 +48,8 @@ ENABLE_LANGUAGE(ASM)
 
 # Project wide definitions
 ADD_DEFINITIONS(
-	-DSTM32F1
-	-DSTM32F103CB
-	-DSTM32F103xB
 	-DUSE_USB_COMPOSITE
 #	-DUSE_USB_MSC
-	-DMCU_STM32F103CB
-	-DF_CPU=72000000L
 	-DARDUINO=10801
 )
 
