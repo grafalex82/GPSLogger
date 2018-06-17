@@ -1,6 +1,9 @@
 # TODO: Add support for external RAM
 
-IF(STM32_FAMILY STREQUAL "F4")
+IF((NOT STM32_CCRAM_SIZE) OR (STM32_CCRAM_SIZE STREQUAL "0K"))
+  SET(STM32_CCRAM_DEF "")
+  SET(STM32_CCRAM_SECTION "")
+ELSE()
   SET(STM32_CCRAM_DEF "  CCMRAM (rw) : ORIGIN = ${STM32_CCRAM_ORIGIN}, LENGTH = ${STM32_CCRAM_SIZE}\n")
   SET(STM32_CCRAM_SECTION 
   "  _siccmram = LOADADDR(.ccmram)\;\n"
@@ -14,9 +17,6 @@ IF(STM32_FAMILY STREQUAL "F4")
   "    _eccmram = .\;\n"
   "  } >CCMRAM AT> FLASH\n"
   )
-ELSE()
-  SET(STM32_CCRAM_DEF "")
-  SET(STM32_CCRAM_SECTION "")
 ENDIF()
 
 SET(STM32_LINKER_SCRIPT_TEXT
@@ -36,7 +36,7 @@ SET(STM32_LINKER_SCRIPT_TEXT
   "  {\n"
   "    . = ALIGN(4)\;\n"
   "    KEEP(*(.isr_vector))\n"
-  "    . = ALIGN(8)\;\n"
+  "    . = ALIGN(4)\;\n"
   "  } >FLASH\n"
   "  .text :\n"
   "  {\n"
@@ -48,7 +48,7 @@ SET(STM32_LINKER_SCRIPT_TEXT
   "    *(.eh_frame)\n"
   "    KEEP (*(.init))\n"
   "    KEEP (*(.fini))\n"
-  "    . = ALIGN(8)\;\n"
+  "    . = ALIGN(4)\;\n"
   "    _etext = .\;\n"
   "  } >FLASH\n"
   "  .rodata :\n"
