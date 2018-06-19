@@ -1,6 +1,11 @@
-#include <stm32f1xx_hal.h>
-#include <stm32f1xx_hal_rcc.h>
-#include <stm32f1xx_ll_gpio.h>
+#ifdef STM32F1
+	#include <stm32f1xx_hal.h>
+	#include <stm32f1xx_hal_rcc.h>
+	#include <stm32f1xx_ll_gpio.h>
+#elif STM32F4
+	#include <stm32f4xx_hal.h>
+	#include <stm32f4xx_ll_gpio.h>
+#endif
 
 #include "LEDThread.h"
 #include <Arduino_FreeRTOS.h>
@@ -111,7 +116,7 @@ void vLEDThread(void *pvParameters)
 			blink(ledStatus);
 		}
 
-		usbDebugWrite("Test\n");
+		//usbDebugWrite("Test\n");
 		//serialDebugWrite("SerialTest\n");
 	}
 }

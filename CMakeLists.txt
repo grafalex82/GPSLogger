@@ -5,8 +5,8 @@ SET(CMAKE_BUILD_TYPE Release)
 SET(GPSLOGGER_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Libs)
 
 # All compiler related stuff is defined in the toolchain file
-SET(STM32_CHIP "STM32F103CB")
-#SET(STM32_CHIP "STM32F407VE")
+#SET(STM32_CHIP "STM32F103CB")
+SET(STM32_CHIP "STM32F407VE")
 
 if(${STM32_CHIP} STREQUAL "STM32F103CB")   	# Settings specific to Blue Pill Board
 	# Using Maple's linker script that corresponds maple/stm32duino code
@@ -29,6 +29,7 @@ elseif(${STM32_CHIP} STREQUAL "STM32F407VE")    # Settings specific to F407VE bo
 	ADD_DEFINITIONS(
 		-DSTM32F4
 		-DSTM32F407VE
+		-DSTM32F407xx
 		#-DSTM32F407xE
 		#-DMCU_STM32F407VE
 		-DF_CPU=168000000L

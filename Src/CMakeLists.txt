@@ -3,37 +3,37 @@
 
 SET(SOURCE_FILES
 	# Screens and screen management stuff
-	Screens/AltitudeScreen.cpp
+#	Screens/AltitudeScreen.cpp
 	Screens/AltitudeScreen.h
-	Screens/CurrentPositionScreen.cpp
+#	Screens/CurrentPositionScreen.cpp
 	Screens/CurrentPositionScreen.h
-	Screens/CurrentTimeScreen.cpp
+#	Screens/CurrentTimeScreen.cpp
 	Screens/CurrentTimeScreen.h
-	Screens/DebugScreen.cpp
+#	Screens/DebugScreen.cpp
 	Screens/DebugScreen.h
-	Screens/DisplayDriver.cpp
+#	Screens/DisplayDriver.cpp
 	Screens/DisplayDriver.h
-	Screens/MemDumpScreen.cpp
+#	Screens/MemDumpScreen.cpp
 	Screens/MemDumpScreen.h
-	Screens/OdometerActionScreen.cpp
+#	Screens/OdometerActionScreen.cpp
 	Screens/OdometerActionScreen.h
-	Screens/OdometerScreen.cpp
+#	Screens/OdometerScreen.cpp
 	Screens/OdometerScreen.h
-	Screens/ParentScreen.cpp
+#	Screens/ParentScreen.cpp
 	Screens/ParentScreen.h
-	Screens/SatellitesScreen.cpp
+#	Screens/SatellitesScreen.cpp
 	Screens/SatellitesScreen.h
-	Screens/Screen.cpp
+#	Screens/Screen.cpp
 	Screens/Screen.h
-	Screens/ScreenManager.cpp
+#	Screens/ScreenManager.cpp
 	Screens/ScreenManager.h
-	Screens/SelectorScreen.cpp
+#	Screens/SelectorScreen.cpp
 	Screens/SelectorScreen.h
-	Screens/SettingsGroupScreen.cpp
+#	Screens/SettingsGroupScreen.cpp
 	Screens/SettingsGroupScreen.h
-	Screens/SpeedScreen.cpp
+#	Screens/SpeedScreen.cpp
 	Screens/SpeedScreen.h
-	Screens/TimeZoneScreen.cpp
+#	Screens/TimeZoneScreen.cpp
 	Screens/TimeZoneScreen.h
 
 	GPS/GPSDataModel.cpp
@@ -42,7 +42,7 @@ SET(SOURCE_FILES
 	GPS/GPSOdometer.h
 	GPS/GPSSatellitesData.cpp
 	GPS/GPSSatellitesData.h
-	GPS/GPSThread.cpp
+#	GPS/GPSThread.cpp
 	GPS/GPSThread.h
 
 	8x12Font.cpp
@@ -61,17 +61,17 @@ SET(SOURCE_FILES
 	LEDThread.h
 	PrintUtils.cpp
 	PrintUtils.h
-	SdFatSPIDriver.cpp
+#	SdFatSPIDriver.cpp
 	SdFatSPIDriver.h
-	SdMscDriver.cpp
+#	SdMscDriver.cpp
 	SdMscDriver.h
-	SDThread.cpp
+#	SDThread.cpp
 	SDThread.h
-	SerialDebugLogger.cpp
+#	SerialDebugLogger.cpp
 	SerialDebugLogger.h
 	TimeFont.cpp
 	TimeFont.h
-	USBDebugLogger.cpp
+#	USBDebugLogger.cpp
 	USBDebugLogger.h
 )
 
@@ -100,7 +100,7 @@ TARGET_LINK_LIBRARIES(GPSLogger
 	SDFAT
 	AdafruitGFX
 	AdafruitSSD1306
-	USB
+	#USB
 	STM32generic
 	HAL
 	m
