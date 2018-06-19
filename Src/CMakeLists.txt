@@ -45,10 +45,11 @@ SET(SOURCE_FILES
 #	GPS/GPSThread.cpp
 	GPS/GPSThread.h
 
+	TargetCPU/TargetCPU.cpp
+	TargetCPU/TargetCPU.h
+
 	8x12Font.cpp
 	8x12Font.h
-	BoardInit.cpp
-	BoardInit.h
 	ButtonsThread.cpp
 	ButtonsThread.h
 #	FontTest.cpp
@@ -74,6 +75,12 @@ SET(SOURCE_FILES
 #	USBDebugLogger.cpp
 	USBDebugLogger.h
 )
+
+IF(STM32_CHIP STREQUAL "STM32F103CB")
+	LIST(APPEND SOURCE_FILES TargetCPU/STM32F103CB.cpp)
+ELSEIF(STM32_CHIP STREQUAL "STM32F407VE")
+	LIST(APPEND SOURCE_FILES TargetCPU/STM32F407VE.cpp)
+ENDIF()
 
 INCLUDE_DIRECTORIES(
 	.

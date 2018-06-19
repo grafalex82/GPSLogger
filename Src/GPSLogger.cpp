@@ -3,7 +3,7 @@
 #include "Screens/ScreenManager.h"
 #include "GPS/GPSThread.h"
 
-#include "BoardInit.h"
+#include "TargetCPU/TargetCPU.h"
 #include "LEDThread.h"
 #include "ButtonsThread.h"
 #include "SDThread.h"
@@ -18,7 +18,7 @@ int main(void)
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
 
-	halt(7);
+	halt(5);
 
 	// Initialize SD card before initializing USB
 	//if(!initSDIOThread())
@@ -47,4 +47,28 @@ int main(void)
 
 	// Never going to be here
 	return 0;
+}
+
+extern "C"
+void vApplicationStackOverflowHook(xTaskHandle *pxTask,
+								   signed char *pcTaskName)
+{
+	/* This function will get called if a task overflows its stack.
+	 * If the parameters are corrupt then inspect pxCurrentTCB to find
+	 * which was the offending task. */
+
+	(void) pxTask;
+	(void) pcTaskName;
+
+	while (1)
+		;
+}
+
+extern "C" void vApplicationMallocFailedHook( void )
+{
+	/* vApplicationMallocFailedHook() will only be called if
+	configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h.  It is a hook
+	function that will get called if a call to pvPortMalloc() fails.*/
+	//taskDISABLE_INTERRUPTS();
+	for( ;; );
 }
