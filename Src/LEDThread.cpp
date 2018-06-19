@@ -20,7 +20,14 @@ volatile uint8_t ledStatus = 0xff;
 //       May not be working properly if objects of this class are created as global variables
 class LEDDriver
 {
+#ifdef STM32F1
 	const uint32_t pin = LL_GPIO_PIN_13;
+	GPIO_TypeDef * port = GPIOC;
+#elif STM32F4
+	const uint32_t pin = LL_GPIO_PIN_6;
+	GPIO_TypeDef * port = GPIOA;
+#endif
+
 	bool inited = false;
 public:
 	LEDDriver()
@@ -34,29 +41,30 @@ public:
 			return;
 
 		//enable clock to the GPIOC peripheral
-		__HAL_RCC_GPIOC_IS_CLK_ENABLED();
+		__HAL_RCC_GPIOA_IS_CLK_ENABLED();
+		//__HAL_RCC_GPIOC_IS_CLK_ENABLED();
 
 		// Init PC 13 as output
-		LL_GPIO_SetPinMode(GPIOC, pin, LL_GPIO_MODE_OUTPUT);
-		LL_GPIO_SetPinOutputType(GPIOC, pin, LL_GPIO_OUTPUT_PUSHPULL);
-		LL_GPIO_SetPinSpeed(GPIOC, pin, LL_GPIO_SPEED_FREQ_LOW);
+		LL_GPIO_SetPinMode(port, pin, LL_GPIO_MODE_OUTPUT);
+		LL_GPIO_SetPinOutputType(port, pin, LL_GPIO_OUTPUT_PUSHPULL);
+		LL_GPIO_SetPinSpeed(port, pin, LL_GPIO_SPEED_FREQ_LOW);
 
 		inited = true;
 	}
 
 	void turnOn()
 	{
-		LL_GPIO_ResetOutputPin(GPIOC, pin);
+		LL_GPIO_ResetOutputPin(port, pin);
 	}
 
 	void turnOff()
 	{
-		LL_GPIO_SetOutputPin(GPIOC, pin);
+		LL_GPIO_SetOutputPin(port, pin);
 	}
 
 	void toggle()
 	{
-		LL_GPIO_TogglePin(GPIOC, pin);
+		LL_GPIO_TogglePin(port, pin);
 	}
 } led;
 

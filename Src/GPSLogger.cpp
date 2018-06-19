@@ -18,6 +18,8 @@ int main(void)
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
 
+	halt(7);
+
 	// Initialize SD card before initializing USB
 	//if(!initSDIOThread())
 	//	halt(7);
