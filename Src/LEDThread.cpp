@@ -32,7 +32,6 @@ class LEDDriver
 public:
 	LEDDriver()
 	{
-
 	}
 
 	void init()
@@ -41,8 +40,8 @@ public:
 			return;
 
 		//enable clock to the GPIOC peripheral
-		__HAL_RCC_GPIOA_IS_CLK_ENABLED();
-		//__HAL_RCC_GPIOC_IS_CLK_ENABLED();
+		__HAL_RCC_GPIOA_CLK_ENABLE();
+		//__HAL_RCC_GPIOC_CLK_ENABLE();
 
 		// Init PC 13 as output
 		LL_GPIO_SetPinMode(port, pin, LL_GPIO_MODE_OUTPUT);

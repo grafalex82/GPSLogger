@@ -120,3 +120,9 @@ extern "C" void vApplicationMallocFailedHook( void )
 	//taskDISABLE_INTERRUPTS();
 	for( ;; );
 }
+
+extern "C" void SysTick_Handler(void)
+{
+	HAL_IncTick();
+	HAL_SYSTICK_IRQHandler();
+}
