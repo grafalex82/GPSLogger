@@ -45,8 +45,10 @@ SET(SOURCE_FILES
 #	GPS/GPSThread.cpp
 	GPS/GPSThread.h
 
-	TargetCPU/TargetCPU.cpp
-	TargetCPU/TargetCPU.h
+	TargetPlatform/LEDDriver.cpp
+	TargetPlatform/LEDDriver.h
+	TargetPlatform/TargetPlatform.cpp
+	TargetPlatform/TargetPlatform.h
 
 	8x12Font.cpp
 	8x12Font.h
@@ -77,9 +79,9 @@ SET(SOURCE_FILES
 )
 
 IF(STM32_CHIP STREQUAL "STM32F103CB")
-	LIST(APPEND SOURCE_FILES TargetCPU/STM32F103CB.cpp)
+	LIST(APPEND SOURCE_FILES TargetPlatform/STM32F103CB.cpp)
 ELSEIF(STM32_CHIP STREQUAL "STM32F407VE")
-	LIST(APPEND SOURCE_FILES TargetCPU/STM32F407VE.cpp)
+	LIST(APPEND SOURCE_FILES TargetPlatform/STM32F407VE.cpp)
 ENDIF()
 
 INCLUDE_DIRECTORIES(

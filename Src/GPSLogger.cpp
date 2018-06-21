@@ -3,7 +3,7 @@
 #include "Screens/ScreenManager.h"
 #include "GPS/GPSThread.h"
 
-#include "TargetCPU/TargetCPU.h"
+#include "TargetPlatform/TargetPlatform.h"
 #include "LEDThread.h"
 #include "ButtonsThread.h"
 #include "SDThread.h"

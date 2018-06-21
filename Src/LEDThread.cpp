@@ -1,71 +1,12 @@
-#ifdef STM32F1
-	#include <stm32f1xx_hal.h>
-	#include <stm32f1xx_hal_rcc.h>
-	#include <stm32f1xx_ll_gpio.h>
-#elif STM32F4
-	#include <stm32f4xx_hal.h>
-	#include <stm32f4xx_ll_gpio.h>
-#endif
-
 #include "LEDThread.h"
+#include "TargetPlatform\LEDDriver.h"
 #include <Arduino_FreeRTOS.h>
 #include "USBDebugLogger.h"
 #include "SerialDebugLogger.h"
 
+LEDDriver led;
+
 volatile uint8_t ledStatus = 0xff;
-
-// Class to encapsulate working with onboard LED(s)
-//
-// Note: this class initializes corresponding pins in the constructor.
-//       May not be working properly if objects of this class are created as global variables
-class LEDDriver
-{
-#ifdef STM32F1
-	const uint32_t pin = LL_GPIO_PIN_13;
-	GPIO_TypeDef * port = GPIOC;
-#elif STM32F4
-	const uint32_t pin = LL_GPIO_PIN_6;
-	GPIO_TypeDef * port = GPIOA;
-#endif
-
-	bool inited = false;
-public:
-	LEDDriver()
-	{
-	}
-
-	void init()
-	{
-		if(inited)
-			return;
-
-		//enable clock to the GPIOC peripheral
-		__HAL_RCC_GPIOA_CLK_ENABLE();
-		//__HAL_RCC_GPIOC_CLK_ENABLE();
-
-		// Init PC 13 as output
-		LL_GPIO_SetPinMode(port, pin, LL_GPIO_MODE_OUTPUT);
-		LL_GPIO_SetPinOutputType(port, pin, LL_GPIO_OUTPUT_PUSHPULL);
-		LL_GPIO_SetPinSpeed(port, pin, LL_GPIO_SPEED_FREQ_LOW);
-
-		inited = true;
-	}
-
-	void turnOn()
-	{
-		LL_GPIO_ResetOutputPin(port, pin);
-	}
-
-	void turnOff()
-	{
-		LL_GPIO_SetOutputPin(port, pin);
-	}
-
-	void toggle()
-	{
-		LL_GPIO_TogglePin(port, pin);
-	}
-} led;
 
 void blink(uint8_t status)
 {

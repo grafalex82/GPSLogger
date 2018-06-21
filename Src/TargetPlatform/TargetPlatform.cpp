@@ -4,7 +4,7 @@
 	#include <stm32f4xx_hal.h>
 #endif
 
-#include "TargetCPU.h"
+#include "TargetPlatform.h"
 
 // Libc requires _init() to perform some initialization before global constructors run.
 // I would love if this symbol is defined as weak in newlib-nano (libc), but it is not.
