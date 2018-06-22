@@ -128,6 +128,7 @@ void vDisplayTask(void *pvParameters)
 	
 	for (;;)
 	{
+/*
 		// Poll the buttons queue for an event. Process button if pressed, or show current screen as usual if no button pressed
 		ButtonMessage msg;
 		if(waitForButtonMessage(&msg, DISPLAY_CYCLE))
@@ -137,7 +138,7 @@ void vDisplayTask(void *pvParameters)
 			// Reset display off timer
 			lastActionTicks = xTaskGetTickCount();
 		}
-		
+
 		// Enter display off mode if needed
 		if(xTaskGetTickCount() - lastActionTicks > 10000) // TODO Store display off duration in settings
 		{
@@ -151,7 +152,7 @@ void vDisplayTask(void *pvParameters)
 			display.ssd1306_command(SSD1306_DISPLAYON);
 			lastActionTicks = xTaskGetTickCount();
 		}
-		
+*/
 		// Draw the current page
 		drawDisplay();
 	}
