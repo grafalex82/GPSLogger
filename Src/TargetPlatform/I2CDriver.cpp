@@ -18,6 +18,7 @@ I2CDriver i2cDriver;
 
 I2CDriver::I2CDriver()
 {
+	xDMATransferThread = NULL;
 }
 
 bool I2CDriver::init()
@@ -40,8 +41,6 @@ bool I2CDriver::init()
 	GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
 	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-
-
 	// Initialie I2C
 	handle.Instance = I2C1;
 	handle.Init.ClockSpeed = 400000;
@@ -54,7 +53,6 @@ bool I2CDriver::init()
 	handle.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
 	HAL_I2C_Init(&handle);
 
-/*
 	// DMA controller clock enable
 	__HAL_RCC_DMA1_CLK_ENABLE();
 
@@ -77,19 +75,29 @@ bool I2CDriver::init()
 	// DMA interrupt init
 	HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 7, 0);
 	HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
-*/
 
 	return true;
 }
 
 bool I2CDriver::writeMem(uint16_t devAddr, uint16_t memAddr, uint8_t *pData, uint16_t size)
 {
+	// TODO Add mutex here
+
 	return HAL_I2C_Mem_Write(&handle, devAddr, memAddr, 1, pData, size, 20) == HAL_OK;
 }
 
 bool I2CDriver::writeMemDMA(uint16_t devAddr, uint16_t memAddr, uint8_t *pData, uint16_t size)
 {
-	return HAL_I2C_Mem_Write_DMA(&handle, devAddr, memAddr, 1, pData, size) == HAL_OK;
+	// TODO Add mutex here
+
+	xDMATransferThread = xTaskGetCurrentTaskHandle();
+	if(HAL_I2C_Mem_Write_DMA(&handle, devAddr, memAddr, 1, pData, size) != HAL_OK)
+		return false;
+\
+	// Wait until transfer is completed
+	ulTaskNotifyTake(pdTRUE, 100);
+	xDMATransferThread = NULL;
+	return true;
 }
 
 DMA_HandleTypeDef * I2CDriver::getDMAHandle()
@@ -100,7 +108,7 @@ DMA_HandleTypeDef * I2CDriver::getDMAHandle()
 void I2CDriver::transferCompletedCB()
 {
 	// Resume display thread
-	//vTaskNotifyGiveFromISR(xDisplayThread, NULL);
+	vTaskNotifyGiveFromISR(xDMATransferThread, NULL);
 }
 
 #ifdef STM32F1

@@ -11,11 +11,16 @@
 	#include <stm32f4xx_hal_i2c.h>
 #endif //STM32F1
 
+#include <Arduino_FreeRTOS.h>
+
 class I2CDriver
 {
 	// I2C device handlers
 	I2C_HandleTypeDef handle;
 	DMA_HandleTypeDef hdma_tx;
+
+	// DMA transfer synchronization object
+	TaskHandle_t xDMATransferThread;
 
 public:
 	I2CDriver();
