@@ -5,7 +5,7 @@
 #elif STM32F4
 	#include <stm32f4xx_hal_rcc.h>
 	#include <stm32f4xx_hal_cortex.h>
-	#include <stm32f4xx_hal_gpio.h>
+	#include <stm32f4xx_ll_gpio.h>
 
 	#define DMA1_Channel6 DMA1_Stream6
 	#define DMA1_Channel6_IRQn DMA1_Stream6_IRQn
@@ -29,17 +29,14 @@ bool I2CDriver::init()
 	__HAL_RCC_I2C1_CLK_ENABLE();
 
 	// Initialize I2C pins
-	//LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_6 , LL_GPIO_MODE_ALTERNATE);
-	//LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_6, LL_GPIO_OUTPUT_OPENDRAIN);
-	//LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_7 , LL_GPIO_MODE_ALTERNATE);
-	//LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_7, LL_GPIO_OUTPUT_OPENDRAIN);
-	GPIO_InitTypeDef GPIO_InitStruct;
-	GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_7;
-	GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
-	GPIO_InitStruct.Pull = GPIO_PULLUP;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
-	GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
-	HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+	LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_6 , LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_6, LL_GPIO_OUTPUT_OPENDRAIN);
+	LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_7 , LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_7, LL_GPIO_OUTPUT_OPENDRAIN);
+#ifdef STM32F4
+	LL_GPIO_SetAFPin_0_7(GPIOB, LL_GPIO_PIN_6, LL_GPIO_AF_4);
+	LL_GPIO_SetAFPin_0_7(GPIOB, LL_GPIO_PIN_7, LL_GPIO_AF_4);
+#endif //STM32F4
 
 	// Initialie I2C
 	handle.Instance = I2C1;
