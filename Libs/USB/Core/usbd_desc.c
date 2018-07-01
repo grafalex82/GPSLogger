@@ -84,7 +84,7 @@
 #define USBD_VID     1155
 #define USBD_LANGID_STRING     1033
 #define USBD_MANUFACTURER_STRING     "STMicroelectronics"
-#define USBD_PID_FS     22314
+#define USBD_PID     22314
 #define USBD_PRODUCT_STRING_FS     "STM32 Mass Storage"
 #define USBD_SERIALNUMBER_STRING_FS     "00000000001A"
 #define USBD_CONFIGURATION_STRING_FS     "MSC Config"
@@ -93,7 +93,7 @@
 #define USBD_VID						0x1EAF
 #define USBD_LANGID_STRING				0x409
 #define USBD_MANUFACTURER_STRING		"Leaf Labs"
-#define USBD_PID_FS						0x0004
+#define USBD_PID						0x0004
 #define USBD_PRODUCT_STRING_FS			"Maple"
 #define USBD_SERIALNUMBER_STRING_FS		"00000000001A"
 #define USBD_CONFIGURATION_STRING_FS    "CDC Config"
@@ -166,8 +166,8 @@ __ALIGN_BEGIN const uint8_t USBD_FS_DeviceDesc[USB_LEN_DEV_DESC] __ALIGN_END =
     USB_MAX_EP0_SIZE,          /*bMaxPacketSize*/
     LOBYTE(USBD_VID),           /*idVendor*/
     HIBYTE(USBD_VID),           /*idVendor*/
-	LOBYTE(USBD_PID),           /*idVendor*/
-	HIBYTE(USBD_PID),           /*idVendor*/
+    LOBYTE(USBD_PID),           /*idVendor*/
+    HIBYTE(USBD_PID),           /*idVendor*/
     0x00,                       /*bcdDevice rel. 2.00*/
     0x02,
     USBD_IDX_MFC_STR,           /*Index of manufacturer  string*/
