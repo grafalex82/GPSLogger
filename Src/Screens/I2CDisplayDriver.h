@@ -1,12 +1,12 @@
-#ifndef DISPLAYDRIVER_H
-#define DISPLAYDRIVER_H
+#ifndef I2CDISPLAYDRIVER_H
+#define I2CDISPLAYDRIVER_H
 
 #include <Arduino_FreeRTOS.h>
 #include <Adafruit_SSD1306.h>
 
 #define SSD1306_I2C_ADDRESS   0x3C
 
-class DisplayDriver : public ISSD1306Driver
+class I2CDisplayDriver : public ISSD1306Driver
 {
 	// address of the display on I2C bus
 	int8_t i2c_addr;
@@ -19,7 +19,7 @@ class DisplayDriver : public ISSD1306Driver
 	TaskHandle_t xDisplayThread;
 
 public:
-	DisplayDriver(int8_t i2caddr = SSD1306_I2C_ADDRESS);
+	I2CDisplayDriver(int8_t i2caddr = SSD1306_I2C_ADDRESS);
 
 	virtual void begin();
 	virtual void sendCommand(uint8_t cmd);
@@ -29,4 +29,4 @@ public:
 	void transferCompletedCB();
 };
 
-#endif // DISPLAYDRIVER_H
+#endif // I2CDISPLAYDRIVER_H

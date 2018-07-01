@@ -2,18 +2,18 @@
 #include <stm32f1xx_hal_i2c.h>
 #include <stm32f1xx_ll_gpio.h>
 
-#include "DisplayDriver.h"
+#include "I2CDisplayDriver.h"
 
 // A display driver instance
-DisplayDriver displayDriver;
+I2CDisplayDriver i2cDisplayDriver;
 
-DisplayDriver::DisplayDriver(int8_t i2caddr)
+I2CDisplayDriver::I2CDisplayDriver(int8_t i2caddr)
 {
 	i2c_addr = i2caddr << 1; // account LSB for R/W flag
 	xDisplayThread = NULL;
 }
 
-void DisplayDriver::begin()
+void I2CDisplayDriver::begin()
 {
 	// Init sync object
 	xDisplayThread = xTaskGetCurrentTaskHandle();
@@ -62,12 +62,12 @@ void DisplayDriver::begin()
 	HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
 }
 
-void DisplayDriver::sendCommand(uint8_t cmd)
+void I2CDisplayDriver::sendCommand(uint8_t cmd)
 {
 	HAL_I2C_Mem_Write(&handle, i2c_addr, 0x00, 1, &cmd, 1, 10);
 }
 
-void DisplayDriver::sendData(uint8_t * data, size_t size)
+void I2CDisplayDriver::sendData(uint8_t * data, size_t size)
 {
 	// Start data transfer
 	HAL_I2C_Mem_Write_DMA(&handle, i2c_addr, 0x40, 1, data, size);
@@ -76,12 +76,12 @@ void DisplayDriver::sendData(uint8_t * data, size_t size)
 	ulTaskNotifyTake(pdTRUE, 100);
 }
 
-DMA_HandleTypeDef * DisplayDriver::getDMAHandle()
+DMA_HandleTypeDef * I2CDisplayDriver::getDMAHandle()
 {
 	return &hdma_tx;
 }
 
-void DisplayDriver::transferCompletedCB()
+void I2CDisplayDriver::transferCompletedCB()
 {
 	// Resume display thread
 	vTaskNotifyGiveFromISR(xDisplayThread, NULL);
@@ -89,10 +89,10 @@ void DisplayDriver::transferCompletedCB()
 
 extern "C" void DMA1_Channel6_IRQHandler(void)
 {
-  HAL_DMA_IRQHandler(displayDriver.getDMAHandle());
+  HAL_DMA_IRQHandler(i2cDisplayDriver.getDMAHandle());
 }
 
 extern "C" void HAL_I2C_MemTxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
-	displayDriver.transferCompletedCB();
+	i2cDisplayDriver.transferCompletedCB();
 }

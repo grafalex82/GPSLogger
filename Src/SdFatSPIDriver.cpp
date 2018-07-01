@@ -277,7 +277,8 @@ void SdFatSPIDriver::dmaTransferCompletedCB()
 }
 
 extern SdFatSPIDriver spiDriver;
-
+/*
+ Commended in favor of SPI Display Driver and SDIO
 extern "C" void DMA1_Channel2_IRQHandler(void)
 {
 	HAL_DMA_IRQHandler(spiDriver.getHandle().hdmarx);
@@ -297,3 +298,4 @@ extern "C" void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi)
 {
 	spiDriver.dmaTransferCompletedCB();
 }
+*/
