@@ -11,8 +11,8 @@ SET(SOURCE_FILES
 	Screens/CurrentTimeScreen.h
 	Screens/DebugScreen.cpp
 	Screens/DebugScreen.h
-	Screens/DisplayDriver.cpp
-	Screens/DisplayDriver.h
+	Screens/I2CDisplayDriver.cpp
+	Screens/I2CDisplayDriver.h
 	Screens/MemDumpScreen.cpp
 	Screens/MemDumpScreen.h
 	Screens/OdometerActionScreen.cpp
@@ -33,6 +33,8 @@ SET(SOURCE_FILES
 	Screens/SettingsGroupScreen.h
 	Screens/SpeedScreen.cpp
 	Screens/SpeedScreen.h
+	Screens/SPIDisplayDriver.cpp
+	Screens/SPIDisplayDriver.h
 	Screens/TimeZoneScreen.cpp
 	Screens/TimeZoneScreen.h
 

@@ -10,7 +10,7 @@
 #include "ScreenManager.h"
 #include "ButtonsThread.h"
 
-#include "DisplayDriver.h"
+#include "SPIDisplayDriver.h"
 #include "CurrentPositionScreen.h"
 #include "CurrentTimeScreen.h"
 #include "SpeedScreen.h"
@@ -18,7 +18,7 @@
 #include "OdometerScreen.h"
 #include "SettingsGroupScreen.h"
 
-extern DisplayDriver displayDriver;
+extern SPIDisplayDriver displayDriver;
 Adafruit_SSD1306 display(&displayDriver, -1);
 
 #if (SSD1306_LCDHEIGHT != 64)

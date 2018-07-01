@@ -25,8 +25,8 @@ int main(void)
 	*/
 
 	// Initialize SD card before initializing USB
-	if(!initSDIOThread())
-		halt(7);
+//	if(!initSDIOThread())
+//		halt(7);
 
 	/*
 	blink(0);
@@ -34,7 +34,7 @@ int main(void)
 	blink(0);
 	*/
 
-	initUSB();
+	//initUSB();
 
 	/*
 	blink(7);
@@ -54,7 +54,7 @@ int main(void)
 	xTaskCreate(vLEDThread, "LED Thread",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vDisplayTask, "Display Task", 768, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
-	xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
+	//xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
 	//xTaskCreate(xSDTestThread, "SD test thread", 200, NULL, tskIDLE_PRIORITY + 3, NULL);
 	//xTaskCreate(vGPSTask, "GPS Task", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
 
