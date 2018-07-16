@@ -4,11 +4,9 @@
 
 #include "USBDebugLogger.h"
 
-// TODO: perhaps it would be reasonable to detect button press via pin change interrupt
+#include "TargetPlatform/TargetPlatform.h"
 
-// Pins assignment
-const uint32_t SEL_BUTTON_PIN = LL_GPIO_PIN_14;
-const uint32_t OK_BUTTON_PIN = LL_GPIO_PIN_15;
+// TODO: perhaps it would be reasonable to detect button press via pin change interrupt
 
 // Timing constants
 const uint32_t DEBOUNCE_DURATION = 1 / portTICK_PERIOD_MS;
@@ -24,14 +22,14 @@ QueueHandle_t buttonsQueue;
 // Initialize buttons related stuff
 void initButtons()
 {
-	//enable clock to the GPIOC peripheral
-	__HAL_RCC_GPIOC_IS_CLK_ENABLED();
+	//enable clock buttons GPIO peripheral
+	Board::enableButtonsClock();
 
 	// Set up button pins
-	LL_GPIO_SetPinMode(GPIOC, SEL_BUTTON_PIN, LL_GPIO_MODE_INPUT);
-	LL_GPIO_SetPinPull(GPIOC, SEL_BUTTON_PIN, LL_GPIO_PULL_DOWN);
-	LL_GPIO_SetPinMode(GPIOC, OK_BUTTON_PIN, LL_GPIO_MODE_INPUT);
-	LL_GPIO_SetPinPull(GPIOC, OK_BUTTON_PIN, LL_GPIO_PULL_DOWN);
+	LL_GPIO_SetPinMode(Board::buttonsPort(), Board::selButtonPin, LL_GPIO_MODE_INPUT);
+	LL_GPIO_SetPinPull(Board::buttonsPort(), Board::selButtonPin, LL_GPIO_PULL_DOWN);
+	LL_GPIO_SetPinMode(Board::buttonsPort(), Board::okButtonPin, LL_GPIO_MODE_INPUT);
+	LL_GPIO_SetPinPull(Board::buttonsPort(), Board::okButtonPin, LL_GPIO_PULL_DOWN);
 
 	// Initialize buttons queue
 	buttonsQueue = xQueueCreate(3, sizeof(ButtonMessage)); // 3 clicks more than enough
@@ -56,10 +54,10 @@ inline bool getButtonState(uint32_t pin)
 /// Return ID of the pressed button (perform debounce first)
 ButtonID getPressedButtonID() 
 {
-	if(getButtonState(SEL_BUTTON_PIN))
+	if(getButtonState(Board::selButtonPin))
 		return SEL_BUTTON;
 
-	if(getButtonState(OK_BUTTON_PIN))
+	if(getButtonState(Board::okButtonPin))
 		return OK_BUTTON;
 
 	return NO_BUTTON;

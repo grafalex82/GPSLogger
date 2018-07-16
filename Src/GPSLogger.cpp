@@ -27,7 +27,7 @@ int main(void)
 
 	i2cDriver.init();
 	//initDisplay();
-	//initButtons();
+	initButtons();
 	//initScreens();
 	//initSDThread();
 	//initGPS();
