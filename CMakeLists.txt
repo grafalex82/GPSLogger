@@ -5,7 +5,7 @@ SET(CMAKE_BUILD_TYPE Release)
 SET(GPSLOGGER_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Libs)
 
 # All compiler related stuff is defined in the toolchain file
-SET(STM32_CHIP "STM32F103CB")
+SET(STM32_CHIP "STM32F103RC")
 
 # Using Maple's linker script that corresponds maple/stm32duino code
 #SET(STM32_LINKER_SCRIPT ${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/ldscript_bootloader_2000.ld)
@@ -19,7 +19,6 @@ SET(STM32_FLASH_ORIGIN "0x08002000")
 SET(CMAKE_TOOLCHAIN_FILE cmake/gcc_stm32.cmake)
 
 
-
 # Project definition
 PROJECT(GPSLogger)
 
@@ -30,11 +29,11 @@ ENABLE_LANGUAGE(ASM)
 # Project wide definitions
 ADD_DEFINITIONS(
 	-DSTM32F1
-	-DSTM32F103CB
-	-DSTM32F103xB
-	-DUSE_USB_COMPOSITE
+	-DSTM32F103RC
+	-DSTM32F103xE # That is correct, all chips (F103xC, F103xD, and F103xE) have code under this define
+#	-DUSE_USB_COMPOSITE
 #	-DUSE_USB_MSC
-	-DMCU_STM32F103CB
+	-DMCU_STM32F103RC # TODO: Seems unused. Cleanup?
 	-DF_CPU=72000000L
 	-DARDUINO=10801
 )

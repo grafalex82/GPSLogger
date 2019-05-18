@@ -15,7 +15,7 @@ volatile uint8_t ledStatus = 0xff;
 //       May not be working properly if objects of this class are created as global variables
 class LEDDriver
 {
-	const uint32_t pin = LL_GPIO_PIN_13;
+	const uint32_t pin = LL_GPIO_PIN_14;
 	bool inited = false;
 public:
 	LEDDriver()
@@ -28,30 +28,30 @@ public:
 		if(inited)
 			return;
 
-		//enable clock to the GPIOC peripheral
-		__HAL_RCC_GPIOC_IS_CLK_ENABLED();
+		//enable clock to the GPIOB peripheral
+		__HAL_RCC_GPIOB_CLK_ENABLE();
 
 		// Init PC 13 as output
-		LL_GPIO_SetPinMode(GPIOC, pin, LL_GPIO_MODE_OUTPUT);
-		LL_GPIO_SetPinOutputType(GPIOC, pin, LL_GPIO_OUTPUT_PUSHPULL);
-		LL_GPIO_SetPinSpeed(GPIOC, pin, LL_GPIO_SPEED_FREQ_LOW);
+		LL_GPIO_SetPinMode(GPIOB, pin, LL_GPIO_MODE_OUTPUT);
+		LL_GPIO_SetPinOutputType(GPIOB, pin, LL_GPIO_OUTPUT_PUSHPULL);
+		LL_GPIO_SetPinSpeed(GPIOB, pin, LL_GPIO_SPEED_FREQ_LOW);
 
 		inited = true;
 	}
 
 	void turnOn()
 	{
-		LL_GPIO_ResetOutputPin(GPIOC, pin);
+		LL_GPIO_ResetOutputPin(GPIOB, pin);
 	}
 
 	void turnOff()
 	{
-		LL_GPIO_SetOutputPin(GPIOC, pin);
+		LL_GPIO_SetOutputPin(GPIOB, pin);
 	}
 
 	void toggle()
 	{
-		LL_GPIO_TogglePin(GPIOC, pin);
+		LL_GPIO_TogglePin(GPIOB, pin);
 	}
 } led;
 
