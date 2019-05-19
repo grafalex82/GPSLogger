@@ -7,6 +7,18 @@
 // A display driver instance
 SPIDisplayDriver displayDriver;
 
+// Constants
+static GPIO_TypeDef * const		DC_PIN_PORT		= GPIOA;
+static const uint32_t			DC_PIN_NUM		= LL_GPIO_PIN_4;
+static GPIO_TypeDef * const		MOSI_PIN_PORT	= GPIOA;
+static const uint32_t			MOSI_PIN_NUM	= LL_GPIO_PIN_7;
+static GPIO_TypeDef * const		MISO_PIN_PORT	= GPIOA;
+static const uint32_t			MISO_PIN_NUM	= LL_GPIO_PIN_6;
+static GPIO_TypeDef * const		SCK_PIN_PORT	= GPIOA;
+static const uint32_t			SCK_PIN_NUM		= LL_GPIO_PIN_5;
+static GPIO_TypeDef * const		ENABLE_PIN_PORT	= GPIOC;
+static const uint32_t			ENABLE_PIN_NUM	= LL_GPIO_PIN_2;
+
 
 SPIDisplayDriver::SPIDisplayDriver()
 {
@@ -22,24 +34,29 @@ void SPIDisplayDriver::begin()
 
 	// Enable clocking of corresponding periperhal
 	__HAL_RCC_GPIOA_CLK_ENABLE();
-	__HAL_RCC_GPIOB_CLK_ENABLE();
+	__HAL_RCC_GPIOC_CLK_ENABLE();
 	__HAL_RCC_SPI1_CLK_ENABLE();
 
 
 	// Init pins
-	LL_GPIO_SetPinMode(GPIOB, LL_GPIO_PIN_0, LL_GPIO_MODE_OUTPUT);				// D/C pin
-	LL_GPIO_SetPinOutputType(GPIOB, LL_GPIO_PIN_0, LL_GPIO_OUTPUT_PUSHPULL);
-	LL_GPIO_SetPinSpeed(GPIOB, LL_GPIO_PIN_0, LL_GPIO_SPEED_FREQ_HIGH);
+	LL_GPIO_SetPinMode(DC_PIN_PORT, DC_PIN_NUM, LL_GPIO_MODE_OUTPUT);				// D/C pin
+	LL_GPIO_SetPinOutputType(DC_PIN_PORT, DC_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(DC_PIN_PORT, DC_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
 
-	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_7, LL_GPIO_MODE_ALTERNATE);			// MOSI: AF PP
-	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_7, LL_GPIO_OUTPUT_PUSHPULL);
-	LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_7, LL_GPIO_SPEED_FREQ_HIGH);
+	LL_GPIO_SetPinMode(MOSI_PIN_PORT, MOSI_PIN_NUM, LL_GPIO_MODE_ALTERNATE);		// MOSI: AF PP
+	LL_GPIO_SetPinOutputType(MOSI_PIN_PORT, MOSI_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(MOSI_PIN_PORT, MOSI_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
 
-	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_6, LL_GPIO_MODE_INPUT);				// MISO: Input Floating
+	LL_GPIO_SetPinMode(MISO_PIN_PORT, MISO_PIN_NUM, LL_GPIO_MODE_INPUT);			// MISO: Input Floating
 
-	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_5, LL_GPIO_MODE_ALTERNATE);			// SCK: AF PP
-	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_5, LL_GPIO_OUTPUT_PUSHPULL);
-	LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_5, LL_GPIO_SPEED_FREQ_HIGH);
+	LL_GPIO_SetPinMode(SCK_PIN_PORT, SCK_PIN_NUM, LL_GPIO_MODE_ALTERNATE);			// SCK: AF PP
+	LL_GPIO_SetPinOutputType(SCK_PIN_PORT, SCK_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(SCK_PIN_PORT, SCK_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+
+	LL_GPIO_SetPinMode(ENABLE_PIN_PORT, ENABLE_PIN_NUM, LL_GPIO_MODE_OUTPUT);			// Display Enable pin
+	LL_GPIO_SetPinOutputType(ENABLE_PIN_PORT, ENABLE_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(ENABLE_PIN_PORT, ENABLE_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+	LL_GPIO_SetOutputPin(ENABLE_PIN_PORT, ENABLE_PIN_NUM);							// Turn on display power
 
 	// Init SPI peripheral for 9 MBit/s
 	spiHandle.Instance = SPI1;
@@ -78,14 +95,13 @@ void SPIDisplayDriver::begin()
 
 void SPIDisplayDriver::sendCommand(uint8_t cmd)
 {
-	LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_0);
+	LL_GPIO_ResetOutputPin(DC_PIN_PORT, DC_PIN_NUM);
 	HAL_SPI_Transmit(&spiHandle, &cmd, 1, 10);
 }
 
 void SPIDisplayDriver::sendData(uint8_t * data, size_t size)
 {
-	LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_0);
-	//HAL_SPI_Transmit(&spiHandle, data, size, 10);
+	LL_GPIO_SetOutputPin(DC_PIN_PORT, DC_PIN_NUM);
 
 	// Start data transfer
 	HAL_SPI_Transmit_DMA(&spiHandle, data, size);
