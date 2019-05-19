@@ -28,20 +28,18 @@ SemaphoreHandle_t usbMutex = NULL;
 USBD_HandleTypeDef hUsbDeviceFS;
 extern PCD_HandleTypeDef hpcd_USB_FS;
 
+static GPIO_TypeDef * const		USB_DESC_PIN_PORT	= GPIOC;
+static const uint32_t			USB_DESC_PIN_NUM	= LL_GPIO_PIN_6;
+
 void reenumerateUSB()
 {
-	// Initialize PA12 pin
-	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_OUTPUT);
-	LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_12, LL_GPIO_OUTPUT_PUSHPULL);
-	LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_12, LL_GPIO_SPEED_FREQ_LOW);
+	// Initialize USB Disconnect pin
+	LL_GPIO_SetPinMode(USB_DESC_PIN_PORT, LL_GPIO_PIN_6, LL_GPIO_MODE_OUTPUT);
+	LL_GPIO_SetPinOutputType(USB_DESC_PIN_PORT, LL_GPIO_PIN_6, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(USB_DESC_PIN_PORT, LL_GPIO_PIN_6, LL_GPIO_SPEED_FREQ_LOW);
 
-	// Let host know to enumerate USB devices on the bus
-	LL_GPIO_ResetOutputPin(GPIOA, GPIO_PIN_12);
-	HAL_Delay(200);
-
-	// Restore pin mode
-	LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_12, LL_GPIO_MODE_FLOATING);
-	HAL_Delay(200);
+	// Enable PullUP resistor on D+ line
+	LL_GPIO_ResetOutputPin(USB_DESC_PIN_PORT, LL_GPIO_PIN_6);
 }
 
 void initUSB()

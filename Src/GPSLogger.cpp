@@ -7,7 +7,7 @@
 #include "LEDThread.h"
 #include "ButtonsThread.h"
 //#include "SDThread.h"
-//#include "USBDebugLogger.h"
+#include "USBDebugLogger.h"
 //#include "SerialDebugLogger.h"
 //#include "SdMscDriver.h"
 
@@ -22,6 +22,7 @@ int main(void)
 //	if(!initSDIOThread())
 //		halt(7);
 
+	initUSB();
 
 	initButtons();
 	//initSDThread();
