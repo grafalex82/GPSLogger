@@ -7,8 +7,9 @@
 // TODO: perhaps it would be reasonable to detect button press via pin change interrupt
 
 // Pins assignment
-const uint32_t SEL_BUTTON_PIN = LL_GPIO_PIN_14;
-const uint32_t OK_BUTTON_PIN = LL_GPIO_PIN_15;
+static GPIO_TypeDef * const	BUTTONS_PORT = GPIOB;
+const uint32_t SEL_BUTTON_PIN = LL_GPIO_PIN_12;
+const uint32_t OK_BUTTON_PIN = LL_GPIO_PIN_13;
 
 // Timing constants
 const uint32_t DEBOUNCE_DURATION = 1 / portTICK_PERIOD_MS;
@@ -24,14 +25,13 @@ QueueHandle_t buttonsQueue;
 // Initialize buttons related stuff
 void initButtons()
 {
-	//enable clock to the GPIOC peripheral
-	__HAL_RCC_GPIOC_IS_CLK_ENABLED();
+	//enable clock to the GPIOB peripheral
+	__HAL_RCC_GPIOB_CLK_ENABLE();
 
 	// Set up button pins
-	LL_GPIO_SetPinMode(GPIOC, SEL_BUTTON_PIN, LL_GPIO_MODE_INPUT);
-	LL_GPIO_SetPinPull(GPIOC, SEL_BUTTON_PIN, LL_GPIO_PULL_DOWN);
-	LL_GPIO_SetPinMode(GPIOC, OK_BUTTON_PIN, LL_GPIO_MODE_INPUT);
-	LL_GPIO_SetPinPull(GPIOC, OK_BUTTON_PIN, LL_GPIO_PULL_DOWN);
+	LL_GPIO_SetPinMode(BUTTONS_PORT, SEL_BUTTON_PIN, LL_GPIO_MODE_FLOATING);
+	LL_GPIO_SetPinMode(BUTTONS_PORT, OK_BUTTON_PIN, LL_GPIO_MODE_INPUT);
+	LL_GPIO_SetPinPull(BUTTONS_PORT, OK_BUTTON_PIN, LL_GPIO_PULL_DOWN);
 
 	// Initialize buttons queue
 	buttonsQueue = xQueueCreate(3, sizeof(ButtonMessage)); // 3 clicks more than enough
@@ -41,11 +41,11 @@ void initButtons()
 // Reading button state (perform debounce first)
 inline bool getButtonState(uint32_t pin)
 {
-	if(LL_GPIO_IsInputPinSet(GPIOC, pin))
+	if(LL_GPIO_IsInputPinSet(BUTTONS_PORT, pin))
 	{
 		// dobouncing
 		vTaskDelay(DEBOUNCE_DURATION);
-		if(LL_GPIO_IsInputPinSet(GPIOC, pin))
+		if(LL_GPIO_IsInputPinSet(BUTTONS_PORT, pin))
 			return true;
 	}
 

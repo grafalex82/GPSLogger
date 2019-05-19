@@ -5,7 +5,7 @@
 
 #include "BoardInit.h"
 #include "LEDThread.h"
-//#include "ButtonsThread.h"
+#include "ButtonsThread.h"
 //#include "SDThread.h"
 //#include "USBDebugLogger.h"
 //#include "SerialDebugLogger.h"
@@ -18,9 +18,11 @@ int main(void)
 
 	portENABLE_INTERRUPTS(); // To allow halt() use HAL_Delay()
 
+	/*
 	blink(9);
 	blink(7);
 	blink(0);
+	*/
 
 	// Initialize SD card before initializing USB
 //	if(!initSDIOThread())
@@ -41,7 +43,7 @@ int main(void)
 	*/
 
 	//initDisplay();
-//	initButtons();
+	initButtons();
 	//initScreens();
 	//initSDThread();
 	//initGPS();
@@ -51,7 +53,7 @@ int main(void)
 	//xTaskCreate(vSDThread, "SD Thread", 512, NULL, tskIDLE_PRIORITY + 1, NULL);
 	xTaskCreate(vLEDThread, "LED Thread",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 //	xTaskCreate(vDisplayTask, "Display Task", 768, NULL, tskIDLE_PRIORITY + 2, NULL);
-//	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	//xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
 	//xTaskCreate(xSDTestThread, "SD test thread", 200, NULL, tskIDLE_PRIORITY + 3, NULL);
 	//xTaskCreate(vGPSTask, "GPS Task", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
