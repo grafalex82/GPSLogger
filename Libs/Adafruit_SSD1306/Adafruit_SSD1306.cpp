@@ -123,9 +123,8 @@ void Adafruit_SSD1306::begin(uint8_t vccstate, bool reset)
     { ssd1306_command(0x14); }
   ssd1306_command(SSD1306_MEMORYMODE);                    // 0x20
   ssd1306_command(0x00);                                  // 0x0 act like ks0108
-  ssd1306_command(SSD1306_SEGREMAP);
-  ssd1306_command(SSD1306_COMSCANINC);
-
+  ssd1306_command(SSD1306_SEGREMAP | 0x1);
+  ssd1306_command(SSD1306_COMSCANDEC);
  #if defined SSD1306_128_32
   ssd1306_command(SSD1306_SETCOMPINS);                    // 0xDA
   ssd1306_command(0x02);
