@@ -18,6 +18,15 @@ NMEAGPS gpsParser;
 // Size of UART input buffer
 const uint8_t gpsBufferSize = 128;
 
+// Pin constants
+static GPIO_TypeDef * const		TX_PIN_PORT		= GPIOA;
+static const uint32_t			TX_PIN_NUM		= LL_GPIO_PIN_9;
+static GPIO_TypeDef * const		RX_PIN_PORT		= GPIOA;
+static const uint32_t			RX_PIN_NUM		= LL_GPIO_PIN_10;
+static GPIO_TypeDef * const		ENABLE_PIN_PORT	= GPIOB;
+static const uint32_t			ENABLE_PIN_NUM	= LL_GPIO_PIN_9;
+
+
 // This class handles UART interface that receive chars from GPS and stores them to a buffer
 class GPS_UART
 {
@@ -41,14 +50,22 @@ public:
 
 		// Enable clocking of corresponding periperhal
 		__HAL_RCC_GPIOA_CLK_ENABLE();
+		__HAL_RCC_GPIOB_CLK_ENABLE();
 		__HAL_RCC_USART1_CLK_ENABLE();
 
 		// Init pins in alternate function mode
-		LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_9, LL_GPIO_MODE_ALTERNATE); //TX pin
-		LL_GPIO_SetPinSpeed(GPIOA, LL_GPIO_PIN_9, LL_GPIO_SPEED_FREQ_HIGH);
-		LL_GPIO_SetPinOutputType(GPIOA, LL_GPIO_PIN_9, LL_GPIO_OUTPUT_PUSHPULL);
+		LL_GPIO_SetPinMode(TX_PIN_PORT, TX_PIN_NUM, LL_GPIO_MODE_ALTERNATE);	// TX pin
+		LL_GPIO_SetPinSpeed(TX_PIN_PORT, TX_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+		LL_GPIO_SetPinOutputType(TX_PIN_PORT, TX_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
 
-		LL_GPIO_SetPinMode(GPIOA, LL_GPIO_PIN_10, LL_GPIO_MODE_INPUT); //RX pin
+		LL_GPIO_SetPinMode(RX_PIN_PORT, RX_PIN_NUM, LL_GPIO_MODE_INPUT);		// RX pin
+
+		LL_GPIO_SetPinMode(ENABLE_PIN_PORT, ENABLE_PIN_NUM, LL_GPIO_MODE_OUTPUT);					// Enable pin
+		LL_GPIO_SetPinOutputType(ENABLE_PIN_PORT, ENABLE_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
+		LL_GPIO_SetPinSpeed(ENABLE_PIN_PORT, ENABLE_PIN_NUM, LL_GPIO_SPEED_FREQ_LOW);
+
+		//@TODO: Always enable GPS UART for now. Consider shutting down GPS on idle based on accelerometer values
+		LL_GPIO_ResetOutputPin(ENABLE_PIN_PORT, ENABLE_PIN_NUM);
 
 		// Prepare for initialization
 		LL_USART_Disable(USART1);
@@ -134,7 +151,6 @@ void vGPSTask(void *pvParameters)
 		while(gpsUart.available())
 		{
 			int c = gpsUart.readChar();
-			//usbDebugWrite(c);
 			gpsParser.handle(c);
 			buf[len++] = c;
 
@@ -156,8 +172,10 @@ void vGPSTask(void *pvParameters)
 			usbDebugWrite("=== New max len detected: %d\n", maxLen);
 		}
 
+		usbDebugWrite("GPS message: %s\n", buf);
+
 		//Send received raw data to SD thread
-		ackRawGPSData(len);
+//		ackRawGPSData(len);
 
 		// Update GPS model data
 		if(gpsParser.available())
