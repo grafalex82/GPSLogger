@@ -152,12 +152,16 @@ void vGPSTask(void *pvParameters)
 		{
 			int c = gpsUart.readChar();
 			gpsParser.handle(c);
-			buf[len++] = c;
+			buf[len] = c;
 
 			// Reached end of line
 			if(c == '\n')
+			{
+				buf[len] = '\0';
 				break;
+			}
 
+			len++;
 			// Buffer overrun protection
 			if(len == maxRawGPSDataLen)
 			{
