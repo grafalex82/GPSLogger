@@ -7,10 +7,6 @@ SET(GPSLOGGER_LIBS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/Libs)
 # All compiler related stuff is defined in the toolchain file
 SET(STM32_CHIP "STM32F103RC")
 
-# Using Maple's linker script that corresponds maple/stm32duino code
-#SET(STM32_LINKER_SCRIPT ${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/ldscript_bootloader_2000.ld)
-#LINK_DIRECTORIES(${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL/)
-
 # Flash offset due to bootloader
 SET(VECT_TAB_ADDR "0x2000")
 SET(STM32_FLASH_ORIGIN "0x08002000")
@@ -33,7 +29,6 @@ ADD_DEFINITIONS(
 	-DSTM32F103xE # That is correct, all chips (F103xC, F103xD, and F103xE) have code under this define
 #	-DUSE_USB_COMPOSITE
 #	-DUSE_USB_MSC
-	-DMCU_STM32F103RC # TODO: Seems unused. Cleanup?
 	-DF_CPU=72000000L
 	-DARDUINO=10801
 )
