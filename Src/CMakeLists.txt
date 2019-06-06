@@ -59,6 +59,8 @@ SET(SOURCE_FILES
 	GPSLogger.cpp
 	IdleThread.cpp
 	IdleThread.h
+	I2CDriver.cpp
+	I2CDriver.h
 	LEDThread.cpp
 	LEDThread.h
 	PrintUtils.cpp

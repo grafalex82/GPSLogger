@@ -312,8 +312,8 @@ SET(HAL_SRC
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_eth.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_flash.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_flash_ex.h
-	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_gpio.h
-	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_gpio_ex.h
+	STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_gpio.h
+	STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_gpio_ex.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_hcd.h
 	STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_i2c.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_i2s.h
@@ -330,13 +330,13 @@ SET(HAL_SRC
 	STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_rcc_ex.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_rtc.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_rtc_ex.h
-	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_sd.h
+	STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_sd.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_smartcard.h
 	STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_spi.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_sram.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_tim.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_tim_ex.h
-	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_uart.h
+	STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_uart.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_usart.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_hal_wwdg.h
 	#STM32generic/system/STM32F1/HAL_Inc/stm32f1xx_ll_adc.h
@@ -375,8 +375,8 @@ SET(HAL_SRC
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_eth.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_flash.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_flash_ex.c
-	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_gpio.c
-	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_gpio_ex.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_gpio.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_gpio_ex.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_hcd.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_i2c.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_i2s.c
@@ -393,14 +393,14 @@ SET(HAL_SRC
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_rcc_ex.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_rtc.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_rtc_ex.c
-	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_sd.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_sd.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_smartcard.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_spi_ex.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_sram.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_tim.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_tim_ex.c
-	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_uart.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_uart.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_usart.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_hal_wwdg.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_adc.c
@@ -414,7 +414,7 @@ SET(HAL_SRC
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_pwr.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_rcc.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_rtc.c
-	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_sdmmc.c
+	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_sdmmc.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_spi.c
 	#STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_tim.c
 	STM32generic/system/STM32F1/HAL_Src/stm32f1xx_ll_usart.c
