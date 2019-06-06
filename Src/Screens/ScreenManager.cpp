@@ -19,11 +19,7 @@
 #include "SettingsGroupScreen.h"
 
 extern SPIDisplayDriver displayDriver;
-Adafruit_SSD1306 display(&displayDriver, -1);
-
-#if (SSD1306_LCDHEIGHT != 64)
-#error("Height incorrect, please fix Adafruit_SSD1306.h!");
-#endif
+Adafruit_SSD1306 display(128, 64, &displayDriver);
 
 // Timeouts
 const uint16_t DISPLAY_CYCLE = 100 / portTICK_PERIOD_MS;
@@ -66,8 +62,7 @@ void backToParentScreen()
 
 void initDisplay()
 {
-	// by default, we'll generate the high voltage from the 3.3v line internally! (neat!)
-	display.begin(SSD1306_SWITCHCAPVCC, false);  // initialize with the I2C addr 0x3C (for the 128x32)
+	display.begin();
 	display.setTextColor(WHITE);				// Assuming all subsequent commands draw in white color
 }
 

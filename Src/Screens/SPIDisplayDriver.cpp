@@ -37,7 +37,6 @@ void SPIDisplayDriver::begin()
 	__HAL_RCC_GPIOC_CLK_ENABLE();
 	__HAL_RCC_SPI1_CLK_ENABLE();
 
-
 	// Init pins
 	LL_GPIO_SetPinMode(DC_PIN_PORT, DC_PIN_NUM, LL_GPIO_MODE_OUTPUT);				// D/C pin
 	LL_GPIO_SetPinOutputType(DC_PIN_PORT, DC_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
@@ -93,21 +92,37 @@ void SPIDisplayDriver::begin()
 	HAL_NVIC_EnableIRQ(DMA1_Channel3_IRQn);
 }
 
+void SPIDisplayDriver::startTransaction()
+{
+	// Nothing for this implementation
+}
+
 void SPIDisplayDriver::sendCommand(uint8_t cmd)
 {
 	LL_GPIO_ResetOutputPin(DC_PIN_PORT, DC_PIN_NUM);
 	HAL_SPI_Transmit(&spiHandle, &cmd, 1, 10);
 }
 
-void SPIDisplayDriver::sendData(uint8_t * data, size_t size)
+void SPIDisplayDriver::sendCommands(const uint8_t *cmds, size_t size)
+{
+	LL_GPIO_ResetOutputPin(DC_PIN_PORT, DC_PIN_NUM);
+	HAL_SPI_Transmit(&spiHandle, (uint8_t *)cmds, size, 10);
+}
+
+void SPIDisplayDriver::sendData(const uint8_t * data, size_t size)
 {
 	LL_GPIO_SetOutputPin(DC_PIN_PORT, DC_PIN_NUM);
 
 	// Start data transfer
-	HAL_SPI_Transmit_DMA(&spiHandle, data, size);
+	HAL_SPI_Transmit_DMA(&spiHandle, (uint8_t *)data, size);
 
 	// Wait until transfer is completed
 	xSemaphoreTake(xSema, 10);
+}
+
+void SPIDisplayDriver::endTransaction()
+{
+	// Nothing for this implementation
 }
 
 void SPIDisplayDriver::dmaTransferCompletedCB()

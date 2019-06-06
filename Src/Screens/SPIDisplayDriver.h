@@ -20,8 +20,11 @@ public:
 	SPIDisplayDriver();
 
 	virtual void begin();
+	virtual void startTransaction();
 	virtual void sendCommand(uint8_t cmd);
-	virtual void sendData(uint8_t * data, size_t size);
+	virtual void sendCommands(const uint8_t *cmds, size_t size);
+	virtual void sendData(const uint8_t * data, size_t size);
+	virtual void endTransaction();
 
 	// Handle getter
 	SPI_HandleTypeDef getHandle() const {return spiHandle;}

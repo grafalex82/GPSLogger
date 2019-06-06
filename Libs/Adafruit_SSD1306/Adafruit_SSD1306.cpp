@@ -57,6 +57,10 @@
 #define ssd1306_swap(a, b) \
   (((a) ^= (b)), ((b) ^= (a)), ((a) ^= (b))) ///< No-temp-var swap operation
 
+
+uint8_t displayBuffer[128*64];
+
+
 // CONSTRUCTORS, DESTRUCTOR ------------------------------------------------
 
 /*!
@@ -78,17 +82,17 @@
             allocation is performed there!
 */
 Adafruit_SSD1306::Adafruit_SSD1306(uint8_t w, uint8_t h, ISSD1306Driver * drv, uint8_t switchvcc):
-  Adafruit_GFX(w, h), driver(drv), buffer(NULL), vccstate(switchvcc) {
+  Adafruit_GFX(w, h), driver(drv), buffer(displayBuffer), vccstate(switchvcc) {
 }
 
 /*!
     @brief  Destructor for Adafruit_SSD1306 object.
 */
 Adafruit_SSD1306::~Adafruit_SSD1306(void) {
-  if(buffer) {
-    free(buffer);
-    buffer = NULL;
-  }
+//  if(buffer) {
+//    free(buffer);
+//    buffer = NULL;
+//  }
 }
 
 // LOW-LEVEL UTILS ---------------------------------------------------------
@@ -134,8 +138,8 @@ void Adafruit_SSD1306::ssd1306_command(uint8_t c) {
 */
 boolean Adafruit_SSD1306::begin() {
 
-  if((!buffer) && !(buffer = (uint8_t *)malloc(WIDTH * ((HEIGHT + 7) / 8))))
-    return false;
+//  if((!buffer) && !(buffer = (uint8_t *)malloc(WIDTH * ((HEIGHT + 7) / 8))))
+//    return false;
 
   clearDisplay();
   if(HEIGHT > 32) {
