@@ -11,8 +11,6 @@ SET(SOURCE_FILES
 	Screens/CurrentTimeScreen.h
 	Screens/DebugScreen.cpp
 	Screens/DebugScreen.h
-	Screens/I2CDisplayDriver.cpp
-	Screens/I2CDisplayDriver.h
 	Screens/MemDumpScreen.cpp
 	Screens/MemDumpScreen.h
 	Screens/OdometerActionScreen.cpp
