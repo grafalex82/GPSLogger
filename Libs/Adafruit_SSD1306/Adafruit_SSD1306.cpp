@@ -50,7 +50,7 @@
 
 #include <Adafruit_GFX.h>
 #include "Adafruit_SSD1306.h"
-#include "splash.h"
+//#include "splash.h"
 
 // SOME DEFINES AND STATIC VARIABLES USED INTERNALLY -----------------------
 
@@ -142,6 +142,7 @@ boolean Adafruit_SSD1306::begin() {
 //    return false;
 
   clearDisplay();
+  /*
   if(HEIGHT > 32) {
     drawBitmap((WIDTH - splash1_width) / 2, (HEIGHT - splash1_height) / 2,
       splash1_data, splash1_width, splash1_height, 1);
@@ -149,6 +150,7 @@ boolean Adafruit_SSD1306::begin() {
     drawBitmap((WIDTH - splash2_width) / 2, (HEIGHT - splash2_height) / 2,
       splash2_data, splash2_width, splash2_height, 1);
   }
+  */
 
   // Setup/reset hardware
   driver->begin();
