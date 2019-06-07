@@ -4,7 +4,7 @@ import re
 
 def main():
 	if len(sys.argv) < 2:
-		print "Usage: dump_firmware.py <disassembly_file>"
+		print("Usage: dump_firmware.py <disassembly_file>")
 		exit(1)
 
 	symb_table_start = re.compile("SYMBOL TABLE:")
@@ -27,7 +27,7 @@ def main():
 			items.append(item)
 
 	for item in sorted(items):
-		print "\"0x" + item[1] + "\"\t" + item[2] + "\t" + str(item[3]) + "\t" + item[4]
+		print("\"0x" + item[1] + "\"\t" + item[2] + "\t" + str(item[3]) + "\t" + item[4])
 
 
 
