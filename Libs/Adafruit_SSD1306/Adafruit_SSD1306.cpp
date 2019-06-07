@@ -58,7 +58,7 @@
   (((a) ^= (b)), ((b) ^= (a)), ((a) ^= (b))) ///< No-temp-var swap operation
 
 
-uint8_t displayBuffer[128*64];
+uint8_t displayBuffer[128*64/8];
 
 
 // CONSTRUCTORS, DESTRUCTOR ------------------------------------------------
