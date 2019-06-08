@@ -35,12 +35,8 @@ ADD_DEFINITIONS(
 
 # Project wide include directories
 INCLUDE_DIRECTORIES(
-	# Arduino layer (stm32generic)
-	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino
-	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/stm32
-#	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/usb
-#	${GPSLOGGER_LIBS_DIR}/STM32generic/cores/arduino/usb/cdc # TODO: code should not call these functions directly and work via arduino layer
-	${GPSLOGGER_LIBS_DIR}/STM32generic/variants/BLUEPILL
+	# Arduino layer (MiniArduino)
+	${GPSLOGGER_LIBS_DIR}/MiniArduino
 
 	# HAL and CMSIS
 	${GPSLOGGER_LIBS_DIR}/STM32generic/system/CMSIS

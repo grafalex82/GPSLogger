@@ -178,9 +178,9 @@ long map(long, long, long, long, long);
 
 #endif
 
-#include "stm32_def.h"
-#include "stm32_clock.h"
-#include "stm32_gpio.h"
+#include "stm32/stm32_def.h"
+#include "stm32/stm32_clock.h"
+#include "stm32/stm32_gpio.h"
 
 #ifdef __cplusplus
 

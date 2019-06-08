@@ -71,7 +71,7 @@
 #ifndef FREERTOS_CONFIG_H
 #define FREERTOS_CONFIG_H
 
-#include "stm32_def.h"
+#include "stm32/stm32_def.h"
 
 /*-----------------------------------------------------------
  * Application specific definitions.

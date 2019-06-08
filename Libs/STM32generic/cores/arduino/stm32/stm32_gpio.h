@@ -23,7 +23,7 @@
 #ifndef STM32_GPIO_H
 #define STM32_GPIO_H
 
-#include "stm32_def.h"
+#include "stm32/stm32_def.h"
 
 #include "stm32_pin_list.h"
 
