@@ -16,14 +16,14 @@ class UsbDebugSerial : public Print
 //#include <SdFat.h>
 #include <Arduino_FreeRTOS.h>
 
-#include "SdFatSPIDriver.h"
+//#include "SdFatSPIDriver.h"
 #include "SDThread.h"
 #include "USBDebugLogger.h"
 
 #include "Print.h"
 
 // SD card instance
-SdFatSPIDriver spiDriver;
+//SdFatSPIDriver spiDriver;
 //SdFat SD(&spiDriver);
 
 // Files we are working fith

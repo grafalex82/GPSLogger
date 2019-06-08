@@ -61,10 +61,10 @@ SET(SOURCE_FILES
 	LEDThread.h
 	PrintUtils.cpp
 	PrintUtils.h
-	SdFatSPIDriver.cpp
-	SdFatSPIDriver.h
-	SdMscDriver.cpp
-	SdMscDriver.h
+#	SdFatSPIDriver.cpp
+#	SdFatSPIDriver.h
+#	SdMscDriver.cpp
+#	SdMscDriver.h
 	SDThread.cpp
 	SDThread.h
 	SerialDebugLogger.cpp
@@ -80,8 +80,8 @@ INCLUDE_DIRECTORIES(
 	${GPSLOGGER_LIBS_DIR}/AdafruitGFX
 	${GPSLOGGER_LIBS_DIR}/Adafruit_SSD1306
 	${GPSLOGGER_LIBS_DIR}/NeoGPS
-	${GPSLOGGER_LIBS_DIR}/SdFat
-	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
+#	${GPSLOGGER_LIBS_DIR}/SdFat
+#	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/SPI/src
 	${GPSLOGGER_LIBS_DIR}/STM32generic/libraries/FreeRTOS/src
 	${GPSLOGGER_LIBS_DIR}/USB/Core
 	${GPSLOGGER_LIBS_DIR}/USB/CDC
@@ -97,7 +97,7 @@ ADD_EXECUTABLE(GPSLogger ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(GPSLogger
 	NeoGPS
 	FreeRTOS
-	SDFAT
+#	SDFAT
 	AdafruitGFX
 	AdafruitSSD1306
 	USB
