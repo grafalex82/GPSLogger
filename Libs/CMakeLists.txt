@@ -145,98 +145,25 @@ ADD_LIBRARY(AdafruitSSD1306 STATIC
 )
 
 TARGET_INCLUDE_DIRECTORIES(AdafruitSSD1306 PRIVATE
-#	STM32generic/libraries/Wire/src
-#	STM32generic/libraries/SPI/src
 	AdafruitGFX
 )
 
 
 ###################
-# STM32 generic - HAL based Arduino API implementation
+# Mini Arduino - HAL based Arduino API Minimal implementation (based on STM32GENERIC project)
 ###################
 
-SET(STM32GENERIC_SRC
-	STM32generic/cores/arduino/abi.cpp
-#	STM32generic/cores/arduino/Arduino.h
-##	STM32generic/cores/arduino/hooks.c
-##	STM32generic/cores/arduino/itoa.c
-##	STM32generic/cores/arduino/itoa.h
-#	STM32generic/cores/arduino/main.cpp
-##	STM32generic/cores/arduino/new.cpp
-##	STM32generic/cores/arduino/new.h
-#	STM32generic/cores/arduino/pins_arduino.h
-	STM32generic/cores/arduino/Print.cpp
-	STM32generic/cores/arduino/Print.h
-	STM32generic/cores/arduino/Printable.h
-	STM32generic/cores/arduino/Stream.cpp
-	STM32generic/cores/arduino/Stream.h
-#	STM32generic/cores/arduino/syscalls.c
-#	STM32generic/cores/arduino/syscalls.h
-##	STM32generic/cores/arduino/wiring_private.h
-##	STM32generic/cores/arduino/WMath.cpp
-##	STM32generic/cores/arduino/WString.cpp
-##	STM32generic/cores/arduino/WString.h
-
-#	STM32generic/cores/arduino/stm32/SerialUART.cpp
-#	STM32generic/cores/arduino/stm32/SerialUART.h
-#	STM32generic/cores/arduino/stm32/SerialUSB.cpp
-#	STM32generic/cores/arduino/stm32/SerialUSB.h
-##	STM32generic/cores/arduino/stm32/stm32_ADC.c
-##	STM32generic/cores/arduino/stm32/stm32_build_defines.h
-#	STM32generic/cores/arduino/stm32/stm32_clock.h
-##	STM32generic/cores/arduino/stm32/stm32_def.h
-#	STM32generic/cores/arduino/stm32/stm32_gpio.c
-#	STM32generic/cores/arduino/stm32/stm32_gpio.h
-#	STM32generic/cores/arduino/stm32/stm32_gpio_af.c
-#	STM32generic/cores/arduino/stm32/stm32_gpio_af.h
-##	STM32generic/cores/arduino/stm32/stm32_gpio_af_F0F2F3F4F7L0L1L4.c
-#	STM32generic/cores/arduino/stm32/stm32_gpio_af_F1.c
-#	STM32generic/cores/arduino/stm32/stm32_gpio_exti.c
-	STM32generic/cores/arduino/stm32/stm32_init.c
-#	STM32generic/cores/arduino/stm32/stm32_pin_list.c
-#	STM32generic/cores/arduino/stm32/stm32_PWM.c
-#	STM32generic/cores/arduino/stm32/USBDevice.cpp
-#	STM32generic/cores/arduino/stm32/USBDevice.h
- 
-##	STM32generic/cores/arduino/usb/usb_device.c
-##	STM32generic/cores/arduino/usb/usb_device.h
-#	STM32generic/cores/arduino/usb/usbd_conf.h
-#	STM32generic/cores/arduino/usb/usbd_conf_F1.c
-##	STM32generic/cores/arduino/usb/usbd_conf_F4.c
-##	STM32generic/cores/arduino/usb/usbd_conf_F7.c
-##	STM32generic/cores/arduino/usb/usbd_conf_L0.c
-##	STM32generic/cores/arduino/usb/usbd_conf_L4.c
-#	STM32generic/cores/arduino/usb/usbd_core.c
-#	STM32generic/cores/arduino/usb/usbd_core.h
-#	STM32generic/cores/arduino/usb/usbd_ctlreq.c
-#	STM32generic/cores/arduino/usb/usbd_ctlreq.h
-#	STM32generic/cores/arduino/usb/usbd_def.h
-#	STM32generic/cores/arduino/usb/usbd_desc.c
-#	STM32generic/cores/arduino/usb/usbd_desc.h
-#	STM32generic/cores/arduino/usb/usbd_ioreq.c
-#	STM32generic/cores/arduino/usb/usbd_ioreq.h
- 
-#	STM32generic/cores/arduino/usb/cdc/usbd_cdc.c
-#	STM32generic/cores/arduino/usb/cdc/usbd_cdc.h
-#	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.c
-#	STM32generic/cores/arduino/usb/cdc/usbd_cdc_if.h
-
-
-#	STM32generic/variants/BLUEPILL/systemclock_config.c
-	STM32generic/variants/BLUEPILL/variant.h
+SET(MINI_ARDUINO_SRC
+    MiniArduino/abi.cpp
+    MiniArduino/Print.cpp
+    MiniArduino/Print.h
+    MiniArduino/Printable.h
+    MiniArduino/Stream.cpp
+    MiniArduino/Stream.h
 )
 
-ADD_LIBRARY(STM32generic STATIC ${STM32GENERIC_SRC})
+ADD_LIBRARY(MiniArduino STATIC ${MINI_ARDUINO_SRC})
 
-TARGET_INCLUDE_DIRECTORIES(STM32generic PRIVATE
-	STM32generic/system/STM32F1/stm32_chip
-	STM32generic/variants/BLUEPILL
-	STM32generic/cores/arduino
-)
-
-TARGET_COMPILE_DEFINITIONS(STM32generic PRIVATE 
-	-DMENU_USB_SERIAL
-)
 
 ###################
 # USB Core and classes
@@ -280,7 +207,6 @@ TARGET_INCLUDE_DIRECTORIES(USB PRIVATE
 	USB/MSC
 	USB/MSC_CDC
 )
-
 
 
 ###################

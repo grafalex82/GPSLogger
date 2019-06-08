@@ -100,7 +100,7 @@ TARGET_LINK_LIBRARIES(GPSLogger
 	AdafruitGFX
 	AdafruitSSD1306
 	USB
-	STM32generic
+	MiniArduino
 	HAL
 	m
 )
