@@ -4,6 +4,8 @@
 
 #include "USBDebugLogger.h"
 
+#include <stm32f1xx_ll_gpio.h>
+
 // TODO: perhaps it would be reasonable to detect button press via pin change interrupt
 
 // Pins assignment
