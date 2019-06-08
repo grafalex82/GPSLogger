@@ -15,7 +15,8 @@ volatile uint8_t ledStatus = 0xff;
 //       May not be working properly if objects of this class are created as global variables
 class LEDDriver
 {
-	const uint32_t pin = LL_GPIO_PIN_14;
+	const uint32_t ledG = LL_GPIO_PIN_14;
+	const uint32_t ledR = LL_GPIO_PIN_15;
 	bool inited = false;
 public:
 	LEDDriver()
@@ -31,27 +32,47 @@ public:
 		//enable clock to the GPIOB peripheral
 		__HAL_RCC_GPIOB_CLK_ENABLE();
 
-		// Init PC 13 as output
-		LL_GPIO_SetPinMode(GPIOB, pin, LL_GPIO_MODE_OUTPUT);
-		LL_GPIO_SetPinOutputType(GPIOB, pin, LL_GPIO_OUTPUT_PUSHPULL);
-		LL_GPIO_SetPinSpeed(GPIOB, pin, LL_GPIO_SPEED_FREQ_LOW);
+		// Init LED pins as output
+		LL_GPIO_SetPinMode(GPIOB, ledG, LL_GPIO_MODE_OUTPUT);
+		LL_GPIO_SetPinOutputType(GPIOB, ledG, LL_GPIO_OUTPUT_PUSHPULL);
+		LL_GPIO_SetPinSpeed(GPIOB, ledG, LL_GPIO_SPEED_FREQ_LOW);
+		LL_GPIO_SetOutputPin(GPIOB, ledG);
+		LL_GPIO_SetPinMode(GPIOB, ledR, LL_GPIO_MODE_OUTPUT);
+		LL_GPIO_SetPinOutputType(GPIOB, ledR, LL_GPIO_OUTPUT_PUSHPULL);
+		LL_GPIO_SetPinSpeed(GPIOB, ledR, LL_GPIO_SPEED_FREQ_LOW);
+		LL_GPIO_SetOutputPin(GPIOB, ledR);
 
 		inited = true;
 	}
 
-	void turnOn()
+	void turnOnG()
 	{
-		LL_GPIO_ResetOutputPin(GPIOB, pin);
+		LL_GPIO_ResetOutputPin(GPIOB, ledG);
 	}
 
-	void turnOff()
+	void turnOffG()
 	{
-		LL_GPIO_SetOutputPin(GPIOB, pin);
+		LL_GPIO_SetOutputPin(GPIOB, ledG);
 	}
 
-	void toggle()
+	void toggleG()
 	{
-		LL_GPIO_TogglePin(GPIOB, pin);
+		LL_GPIO_TogglePin(GPIOB, ledG);
+	}
+
+	void turnOnR()
+	{
+		LL_GPIO_ResetOutputPin(GPIOB, ledR);
+	}
+
+	void turnOffR()
+	{
+		LL_GPIO_SetOutputPin(GPIOB, ledR);
+	}
+
+	void toggleR()
+	{
+		LL_GPIO_TogglePin(GPIOB, ledR);
 	}
 } led;
 
@@ -61,12 +82,12 @@ void blink(uint8_t status)
 
 	for(int i=0; i<3; i++)
 	{
-		led.turnOn();
+		led.turnOnR();
 		if(status & 0x4)
 			HAL_Delay(300);
 		else
 			HAL_Delay(100);
-		led.turnOff();
+		led.turnOffR();
 
 		status <<= 1;
 
@@ -102,9 +123,9 @@ void vLEDThread(void *pvParameters)
 
 		if(ledStatus == 0xff)
 		{
-			led.turnOn();
+			led.turnOnR();
 			vTaskDelay(100);
-			led.turnOff();
+			led.turnOffR();
 		}
 		else
 		{
