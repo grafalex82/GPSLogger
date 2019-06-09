@@ -123,9 +123,9 @@ void vLEDThread(void *pvParameters)
 
 		if(ledStatus == 0xff)
 		{
-			led.turnOnR();
+			led.turnOnG();
 			vTaskDelay(100);
-			led.turnOffR();
+			led.turnOffG();
 		}
 		else
 		{
