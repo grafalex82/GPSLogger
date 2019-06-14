@@ -4,11 +4,11 @@
 
 static const uint8_t periodLen = 9; // 2^periodLen ticks
 
-volatile TickType_t curIdleTicks = 0;
-volatile TickType_t lastCountedTick = 0;
-volatile TickType_t lastCountedPeriod = 0;
-volatile TickType_t lastPeriodIdleValue = 0;
-volatile TickType_t minIdleValue = 1 << periodLen;
+static volatile TickType_t curIdleTicks = 0;
+static volatile TickType_t lastCountedTick = 0;
+static volatile TickType_t lastCountedPeriod = 0;
+static volatile TickType_t lastPeriodIdleValue = 0;
+static volatile TickType_t minIdleValue = 1 << periodLen;
 
 extern "C" void vApplicationIdleHook( void )
 {
