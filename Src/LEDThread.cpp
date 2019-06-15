@@ -7,7 +7,7 @@
 #include "USBDebugLogger.h"
 #include "SerialDebugLogger.h"
 
-volatile uint8_t ledStatus = 0xff;
+static volatile uint8_t ledStatus = 0xff;
 
 // Class to encapsulate working with onboard LED(s)
 //
@@ -74,7 +74,9 @@ public:
 	{
 		LL_GPIO_TogglePin(GPIOB, ledR);
 	}
-} led;
+};
+
+static LEDDriver led;
 
 void blink(uint8_t status)
 {
@@ -100,6 +102,7 @@ void setLedStatus(uint8_t status)
 	ledStatus = status;
 }
 
+__attribute__((noreturn))
 void halt(uint8_t status)
 {
 	led.init();
@@ -112,7 +115,8 @@ void halt(uint8_t status)
 	}
 }
 
-void vLEDThread(void *pvParameters)
+__attribute__((noreturn))
+void vLEDThread(void *)
 {
 	led.init();
 

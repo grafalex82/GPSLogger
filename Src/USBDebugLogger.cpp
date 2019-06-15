@@ -18,13 +18,12 @@
 #define USB_SERIAL_BUFFER_SIZE 256
 
 uint8_t usbTxBuffer[USB_SERIAL_BUFFER_SIZE];
-volatile uint16_t usbTxHead = 0;
-volatile uint16_t usbTxTail = 0;
-volatile uint16_t usbTransmitting = 0;
+static volatile uint16_t usbTxHead = 0;
+static volatile uint16_t usbTxTail = 0;
+static volatile uint16_t usbTransmitting = 0;
 
-// TODO Make it static
-SemaphoreHandle_t usbMutex = NULL;
-StaticSemaphore_t usbMutexBuffer;
+static SemaphoreHandle_t usbMutex = nullptr;
+static StaticSemaphore_t usbMutexBuffer;
 
 USBD_HandleTypeDef hUsbDeviceFS;
 extern PCD_HandleTypeDef hpcd_USB_FS;

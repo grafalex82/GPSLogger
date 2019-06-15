@@ -62,7 +62,7 @@ POSSIBILITY OF SUCH DAMAGE.
  #define pgm_read_pointer(addr) ((void *)pgm_read_word(addr))
 #endif
 
-inline GFXglyph * pgm_read_glyph_ptr(const GFXfont *gfxFont, uint8_t c)
+inline const GFXglyph * pgm_read_glyph_ptr(const GFXfont *gfxFont, uint8_t c)
 {
 #ifdef __AVR__
 	return &(((GFXglyph *)pgm_read_pointer(&gfxFont->glyph))[c]);
@@ -74,7 +74,7 @@ inline GFXglyph * pgm_read_glyph_ptr(const GFXfont *gfxFont, uint8_t c)
 #endif //__AVR__
 }
 
- inline uint8_t * pgm_read_bitmap_ptr(const GFXfont *gfxFont)
+inline const uint8_t * pgm_read_bitmap_ptr(const GFXfont *gfxFont)
 {
 #ifdef __AVR__
 	return (uint8_t *)pgm_read_pointer(&gfxFont->bitmap);
@@ -1097,8 +1097,8 @@ void Adafruit_GFX::drawChar(int16_t x, int16_t y, unsigned char c,
         // drawChar() directly with 'bad' characters of font may cause mayhem!
 
         c -= (uint8_t)pgm_read_byte(&gfxFont->first);
-		GFXglyph *glyph  = pgm_read_glyph_ptr(gfxFont, c);
-		uint8_t  *bitmap = pgm_read_bitmap_ptr(gfxFont);
+		const GFXglyph *glyph  = pgm_read_glyph_ptr(gfxFont, c);
+		const uint8_t  *bitmap = pgm_read_bitmap_ptr(gfxFont);
 
         uint16_t bo = pgm_read_word(&glyph->bitmapOffset);
         uint8_t  w  = pgm_read_byte(&glyph->width),
@@ -1182,7 +1182,7 @@ size_t Adafruit_GFX::write(uint8_t c) {
         } else if(c != '\r') {
             uint8_t first = pgm_read_byte(&gfxFont->first);
             if((c >= first) && (c <= (uint8_t)pgm_read_byte(&gfxFont->last))) {
-				GFXglyph *glyph  = pgm_read_glyph_ptr(gfxFont, c - first);
+				const GFXglyph *glyph  = pgm_read_glyph_ptr(gfxFont, c - first);
                 uint8_t   w     = pgm_read_byte(&glyph->width),
                           h     = pgm_read_byte(&glyph->height);
                 if((w > 0) && (h > 0)) { // Is there an associated bitmap?
@@ -1281,7 +1281,7 @@ void Adafruit_GFX::charBounds(char c, int16_t *x, int16_t *y,
             uint8_t first = pgm_read_byte(&gfxFont->first),
                     last  = pgm_read_byte(&gfxFont->last);
             if((c >= first) && (c <= last)) { // Char present in this font?
-				GFXglyph *glyph = pgm_read_glyph_ptr(gfxFont, c - first);
+				const GFXglyph *glyph = pgm_read_glyph_ptr(gfxFont, c - first);
                 uint8_t gw = pgm_read_byte(&glyph->width),
                         gh = pgm_read_byte(&glyph->height),
                         xa = pgm_read_byte(&glyph->xAdvance);

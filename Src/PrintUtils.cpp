@@ -118,7 +118,7 @@ void print(PrintTarget & printToTarget, const char * fmt, va_list args)
 			case 'u':
 			{
 				char buf[12];
-				size_t len = PrintNum(va_arg(args, int), 10, buf, width, padSymbol);
+				size_t len = PrintNum(va_arg(args, unsigned int), 10, buf, width, padSymbol);
 				printToTarget(buf + len, len, true);
 				break;
 			}
@@ -126,7 +126,7 @@ void print(PrintTarget & printToTarget, const char * fmt, va_list args)
 			case 'X':
 			{
 				char buf[9];
-				size_t len = PrintNum(va_arg(args, int), 16, buf, width, padSymbol);
+				size_t len = PrintNum(va_arg(args, unsigned int), 16, buf, width, padSymbol);
 				printToTarget(buf + len, len, true);
 				break;
 			}

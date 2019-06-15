@@ -1,5 +1,5 @@
-#ifndef _FREERTOSHELPERS_H_
-#define _FREERTOSHELPERS_H_
+#ifndef FREERTOSHELPERS_H_
+#define FREERTOSHELPERS_H_
 
 #include "Arduino_FreeRTOS.h"
 
@@ -43,4 +43,4 @@ public:
 	}
 };
 
-#endif //_FREERTOSHELPERS_H_
+#endif //FREERTOSHELPERS_H_

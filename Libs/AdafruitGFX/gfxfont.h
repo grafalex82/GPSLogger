@@ -19,8 +19,8 @@ typedef struct {
 
 /// Data stored for FONT AS A WHOLE
 typedef struct { 
-	uint8_t  *bitmap;      ///< Glyph bitmaps, concatenated
-	GFXglyph *glyph;       ///< Glyph array
+	const uint8_t  *bitmap;      ///< Glyph bitmaps, concatenated
+	const GFXglyph *glyph;       ///< Glyph array
 	uint8_t   first;       ///< ASCII extents (first char)
         uint8_t   last;        ///< ASCII extents (last char)
 	uint8_t   yAdvance;    ///< Newline distance (y axis)

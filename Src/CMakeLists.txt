@@ -89,7 +89,6 @@ INCLUDE_DIRECTORIES(
 	${GPSLOGGER_LIBS_DIR}/USB/MSC_CDC
 )
 
-
 # Do not link to libc or newlib-nano - we are not using anything from that
 SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --specs=nosys.specs")
 

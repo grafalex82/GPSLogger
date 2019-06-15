@@ -77,6 +77,7 @@ extern "C"
 	}
 
 	extern "C"
+	__attribute__((noreturn))
 	void vApplicationStackOverflowHook(xTaskHandle *pxTask,
 									   signed char *pcTaskName)
 	{
@@ -91,7 +92,9 @@ extern "C"
 			;
 	}
 
-	extern "C" void vApplicationMallocFailedHook( void )
+	extern "C"
+	__attribute__((noreturn))
+	void vApplicationMallocFailedHook( void )
 	{
 		/* vApplicationMallocFailedHook() will only be called if
 		configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h.  It is a hook

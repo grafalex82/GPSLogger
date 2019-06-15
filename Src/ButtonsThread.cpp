@@ -67,7 +67,8 @@ ButtonID getPressedButtonID()
 
 
 // Buttons polling thread function
-void vButtonsThread(void *pvParameters)
+__attribute__((noreturn))
+void vButtonsThread(void *)
 {
 	for (;;)
 	{
