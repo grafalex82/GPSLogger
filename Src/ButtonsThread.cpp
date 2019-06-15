@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Arduino_FreeRTOS.h>
 #include "ButtonsThread.h"
+#include "FreeRTOSHelpers.h"
 
 #include "USBDebugLogger.h"
 
@@ -21,9 +22,7 @@ const uint32_t POWER_OFF_POLL_PERIOD = 1000 / portTICK_PERIOD_MS; // Polling ver
 const uint32_t IDLE_POLL_PERIOD = 100 / portTICK_PERIOD_MS;		// And little more frequent if we are on
 const uint32_t ACTIVE_POLL_PERIOD = 10 / portTICK_PERIOD_MS;		// And very often when user actively pressing buttons
 
-QueueHandle_t buttonsQueue;
-StaticQueue_t buttonsQueueBuffer;
-ButtonMessage buttonsQueueStorage[3]; // 3 clicks more than enough
+static Queue<ButtonMessage, 3> buttonsQueue; // 3 clicks more than enough
 
 
 // Initialize buttons related stuff
@@ -36,12 +35,6 @@ void initButtons()
 	LL_GPIO_SetPinMode(BUTTONS_PORT, SEL_BUTTON_PIN, LL_GPIO_MODE_FLOATING);
 	LL_GPIO_SetPinMode(BUTTONS_PORT, OK_BUTTON_PIN, LL_GPIO_MODE_INPUT);
 	LL_GPIO_SetPinPull(BUTTONS_PORT, OK_BUTTON_PIN, LL_GPIO_PULL_DOWN);
-
-	// Initialize buttons queue
-	buttonsQueue = xQueueCreateStatic(sizeof(buttonsQueueStorage)/sizeof(ButtonMessage),
-									  sizeof(ButtonMessage),
-									  reinterpret_cast<uint8_t*>(&buttonsQueueStorage[0]),
-									  &buttonsQueueBuffer); // 3 clicks more than enough
 }
 
 
