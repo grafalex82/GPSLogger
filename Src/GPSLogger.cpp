@@ -10,10 +10,9 @@
 #include "USBDebugLogger.h"
 //#include "SerialDebugLogger.h"
 //#include "SdMscDriver.h"
+#include "Thread.h"
 
-static StaticTask_t xTaskBuffer;
-static StackType_t xStack[ configMINIMAL_STACK_SIZE ];
-
+static Thread<configMINIMAL_STACK_SIZE> ledThread(vLEDThread, "LED Thread", NULL, tskIDLE_PRIORITY + 2);
 
 int main(void)
 {
@@ -34,7 +33,6 @@ int main(void)
 	// Set up threads
 	// TODO: Consider encapsulating init and task functions into a class(es)
 	//xTaskCreate(vSDThread, "SD Thread", 512, NULL, tskIDLE_PRIORITY + 1, NULL);
-	xTaskCreateStatic(vLEDThread, "LED Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, xStack, &xTaskBuffer);
 	xTaskCreate(vDisplayTask, "Display Task", 768, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	//xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);

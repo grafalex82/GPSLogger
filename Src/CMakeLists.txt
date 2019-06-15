@@ -69,6 +69,7 @@ SET(SOURCE_FILES
 	SDThread.h
 	SerialDebugLogger.cpp
 	SerialDebugLogger.h
+	Thread.h
 	TimeFont.cpp
 	TimeFont.h
 	USBDebugLogger.cpp
