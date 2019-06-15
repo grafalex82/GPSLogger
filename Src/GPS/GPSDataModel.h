@@ -2,14 +2,12 @@
 #define __GPSDATA_H__
 
 #include "GPSSatellitesData.h"
+#include "Arduino_FreeRTOS.h"
 
 // Forward declarations
 class gps_fix;
 class GPSSatellitesData;
 class NMEAGPS;
-//struct NMEAGPS::satellite_view_t;
-typedef void * QueueHandle_t;
-typedef QueueHandle_t SemaphoreHandle_t;
 class GPSOdometer;
 class GPSOdometerData;
 
@@ -49,6 +47,7 @@ private:
 	bool odometerWasActive[ODOMERTERS_COUNT];
 	
 	SemaphoreHandle_t xGPSDataMutex;
+	StaticSemaphore_t xGPSDataMutexBuffer;
 	
 	GPSDataModel();
 	GPSDataModel( const GPSDataModel &c );

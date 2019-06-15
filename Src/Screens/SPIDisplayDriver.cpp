@@ -29,7 +29,7 @@ void SPIDisplayDriver::begin()
 {
 	// Init sync object
 	portDISABLE_INTERRUPTS();
-	xSema = xSemaphoreCreateBinary();
+	xSema = xSemaphoreCreateBinaryStatic(&xSemaBuffer);
 	portENABLE_INTERRUPTS();
 
 	// Enable clocking of corresponding periperhal

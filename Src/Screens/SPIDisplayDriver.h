@@ -15,6 +15,7 @@ class SPIDisplayDriver: public ISSD1306Driver
 
 	// transfer synchronization object
 	TaskHandle_t xSema;
+	StaticSemaphore_t xSemaBuffer;
 
 public:
 	SPIDisplayDriver();

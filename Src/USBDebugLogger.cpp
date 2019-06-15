@@ -24,6 +24,7 @@ volatile uint16_t usbTransmitting = 0;
 
 // TODO Make it static
 SemaphoreHandle_t usbMutex = NULL;
+StaticSemaphore_t usbMutexBuffer;
 
 USBD_HandleTypeDef hUsbDeviceFS;
 extern PCD_HandleTypeDef hpcd_USB_FS;
@@ -65,7 +66,7 @@ void initUSB()
 	USBD_Start(&hUsbDeviceFS);
 
 	portDISABLE_INTERRUPTS();
-	usbMutex = xSemaphoreCreateMutex();
+	usbMutex = xSemaphoreCreateMutexStatic(&usbMutexBuffer);
 	portENABLE_INTERRUPTS();
 }
 

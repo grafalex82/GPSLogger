@@ -22,6 +22,8 @@ const uint32_t IDLE_POLL_PERIOD = 100 / portTICK_PERIOD_MS;		// And little more 
 const uint32_t ACTIVE_POLL_PERIOD = 10 / portTICK_PERIOD_MS;		// And very often when user actively pressing buttons
 
 QueueHandle_t buttonsQueue;
+StaticQueue_t buttonsQueueBuffer;
+ButtonMessage buttonsQueueStorage[3]; // 3 clicks more than enough
 
 
 // Initialize buttons related stuff
@@ -36,7 +38,10 @@ void initButtons()
 	LL_GPIO_SetPinPull(BUTTONS_PORT, OK_BUTTON_PIN, LL_GPIO_PULL_DOWN);
 
 	// Initialize buttons queue
-	buttonsQueue = xQueueCreate(3, sizeof(ButtonMessage)); // 3 clicks more than enough
+	buttonsQueue = xQueueCreateStatic(sizeof(buttonsQueueStorage)/sizeof(ButtonMessage),
+									  sizeof(ButtonMessage),
+									  reinterpret_cast<uint8_t*>(&buttonsQueueStorage[0]),
+									  &buttonsQueueBuffer); // 3 clicks more than enough
 }
 
 

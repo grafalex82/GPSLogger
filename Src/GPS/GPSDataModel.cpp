@@ -13,7 +13,7 @@ GPSDataModel::GPSDataModel()
 {
 	// Initialize the mutex
 	// TODO: consider migrating to FreeRTOS 9.x which allows allocating mutex statically
-	xGPSDataMutex = xSemaphoreCreateMutex();
+	xGPSDataMutex = xSemaphoreCreateMutexStatic(&xGPSDataMutexBuffer);
 
 	// Odometers are statically allocated
 	odometers[0] = &odometer0;
