@@ -11,6 +11,20 @@
 //#include "SerialDebugLogger.h"
 //#include "SdMscDriver.h"
 
+static StaticTask_t xTaskBuffer;
+static StackType_t xStack[ configMINIMAL_STACK_SIZE ];
+
+static StaticTask_t xIdleTaskBuffer;
+static StackType_t xIdleStack[ configMINIMAL_STACK_SIZE ];
+
+extern "C"
+void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize)
+{
+	*ppxIdleTaskTCBBuffer = &xIdleTaskBuffer;
+	*ppxIdleTaskStackBuffer = xIdleStack;
+	*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+}
+
 int main(void)
 {
 	InitBoard();
@@ -30,7 +44,7 @@ int main(void)
 	// Set up threads
 	// TODO: Consider encapsulating init and task functions into a class(es)
 	//xTaskCreate(vSDThread, "SD Thread", 512, NULL, tskIDLE_PRIORITY + 1, NULL);
-	xTaskCreate(vLEDThread, "LED Thread",	configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
+	xTaskCreateStatic(vLEDThread, "LED Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, xStack, &xTaskBuffer);
 	xTaskCreate(vDisplayTask, "Display Task", 768, NULL, tskIDLE_PRIORITY + 2, NULL);
 	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
 	//xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
