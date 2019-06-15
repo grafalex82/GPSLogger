@@ -26,17 +26,17 @@ const uint16_t DISPLAY_CYCLE = 100 / portTICK_PERIOD_MS;
 const uint16_t MESSAGE_BOX_DURATION = 1000 / portTICK_PERIOD_MS;
 
 // Stack of nested screens
-Screen * screenStack[5];
-int screenIdx = 0;
+static Screen * screenStack[5];
+static int screenIdx = 0;
 
 
 // Statically allocated screens
-CurrentTimeScreen timeScreen;
-CurrentPositionScreen positionScreen;
-SpeedScreen speedScreen;
-OdometerScreen odometerScreen(0);
-SatellitesScreen satellitesScreen;
-SettingsGroupScreen rootSettingsScreen;
+static CurrentTimeScreen timeScreen;
+static CurrentPositionScreen positionScreen;
+static SpeedScreen speedScreen;
+static OdometerScreen odometerScreen(0);
+static SatellitesScreen satellitesScreen;
+static SettingsGroupScreen rootSettingsScreen;
 
 void setCurrentScreen(Screen * screen)
 {
@@ -89,7 +89,7 @@ void drawDisplay()
 void showMessageBox(const char * text)
 {
 	//Center text
-	uint8_t x = 128/2 - strlen_P(text)*8/2 + 1;
+	uint8_t x = 128/2 - strlen(text)*8/2 + 1;
 			
 	// Draw the message
 	display.clearDisplay();
@@ -114,7 +114,8 @@ void processButton(const ButtonMessage &msg)
 	// TODO: handle long and very long button presses here
 }
 
-void vDisplayTask(void *pvParameters) 
+__attribute__((noreturn))
+void vDisplayTask(void *)
 {
 	initDisplay();
 	initScreens();
