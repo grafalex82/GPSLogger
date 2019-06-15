@@ -8,7 +8,7 @@ template<const uint32_t ulStackDepth>
 class Thread
 {
 protected:
-	StaticTask_t xTaskBuffer;
+	StaticTask_t xTaskControlBlock;
 	StackType_t xStack[ ulStackDepth ];
 
 public:
@@ -17,7 +17,7 @@ public:
 		   void * const pvParameters,
 		   UBaseType_t uxPriority)
 	{
-		xTaskCreateStatic(pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, xStack, &xTaskBuffer);
+		xTaskCreateStatic(pxTaskCode, pcName, ulStackDepth, pvParameters, uxPriority, xStack, &xTaskControlBlock);
 	}
 };
 
