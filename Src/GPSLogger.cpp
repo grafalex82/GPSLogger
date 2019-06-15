@@ -12,7 +12,7 @@
 //#include "SdMscDriver.h"
 #include "Thread.h"
 
-static Thread<configMINIMAL_STACK_SIZE> ledThread(vLEDThread, "LED Thread", NULL, tskIDLE_PRIORITY + 2);
+static Thread<configMINIMAL_STACK_SIZE> ledThread(vLEDThread, "LED Thread", NULL, tskIDLE_PRIORITY + 1);
 static Thread<768>						displayThread(vDisplayTask, "Display Task", NULL, tskIDLE_PRIORITY + 2);
 static Thread<configMINIMAL_STACK_SIZE> buttonsThread(vButtonsThread, "Buttons Thread", NULL, tskIDLE_PRIORITY + 2);
 static Thread<256>						gpsThread(vGPSTask, "GPS Task", NULL, tskIDLE_PRIORITY + 3);
