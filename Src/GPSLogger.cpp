@@ -13,6 +13,14 @@
 #include "Thread.h"
 
 static Thread<configMINIMAL_STACK_SIZE> ledThread(vLEDThread, "LED Thread", NULL, tskIDLE_PRIORITY + 2);
+static Thread<768>						displayThread(vDisplayTask, "Display Task", NULL, tskIDLE_PRIORITY + 2);
+static Thread<configMINIMAL_STACK_SIZE> buttonsThread(vButtonsThread, "Buttons Thread", NULL, tskIDLE_PRIORITY + 2);
+static Thread<256>						gpsThread(vGPSTask, "GPS Task", NULL, tskIDLE_PRIORITY + 3);
+
+//xTaskCreate(vSDThread, "SD Thread", 512, NULL, tskIDLE_PRIORITY + 1, NULL);
+//xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
+//xTaskCreate(xSDTestThread, "SD test thread", 200, NULL, tskIDLE_PRIORITY + 3, NULL);
+
 
 int main(void)
 {
@@ -29,15 +37,6 @@ int main(void)
 
 	initButtons();
 	//initSDThread();
-
-	// Set up threads
-	// TODO: Consider encapsulating init and task functions into a class(es)
-	//xTaskCreate(vSDThread, "SD Thread", 512, NULL, tskIDLE_PRIORITY + 1, NULL);
-	xTaskCreate(vDisplayTask, "Display Task", 768, NULL, tskIDLE_PRIORITY + 2, NULL);
-	xTaskCreate(vButtonsThread, "Buttons Thread", configMINIMAL_STACK_SIZE, NULL, tskIDLE_PRIORITY + 2, NULL);
-	//xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
-	//xTaskCreate(xSDTestThread, "SD test thread", 200, NULL, tskIDLE_PRIORITY + 3, NULL);
-	xTaskCreate(vGPSTask, "GPS Task", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
 
 	// Run scheduler and all the threads
 	vTaskStartScheduler();
