@@ -14,16 +14,6 @@
 static StaticTask_t xTaskBuffer;
 static StackType_t xStack[ configMINIMAL_STACK_SIZE ];
 
-static StaticTask_t xIdleTaskBuffer;
-static StackType_t xIdleStack[ configMINIMAL_STACK_SIZE ];
-
-extern "C"
-void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize)
-{
-	*ppxIdleTaskTCBBuffer = &xIdleTaskBuffer;
-	*ppxIdleTaskStackBuffer = xIdleStack;
-	*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
-}
 
 int main(void)
 {

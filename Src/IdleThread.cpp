@@ -10,6 +10,17 @@ static volatile TickType_t lastCountedPeriod = 0;
 static volatile TickType_t lastPeriodIdleValue = 0;
 static volatile TickType_t minIdleValue = 1 << periodLen;
 
+static StaticTask_t xIdleTaskBuffer;
+static StackType_t xIdleStack[ configMINIMAL_STACK_SIZE ];
+
+extern "C"
+void vApplicationGetIdleTaskMemory( StaticTask_t **ppxIdleTaskTCBBuffer, StackType_t **ppxIdleTaskStackBuffer, uint32_t *pulIdleTaskStackSize)
+{
+	*ppxIdleTaskTCBBuffer = &xIdleTaskBuffer;
+	*ppxIdleTaskStackBuffer = xIdleStack;
+	*pulIdleTaskStackSize = configMINIMAL_STACK_SIZE;
+}
+
 extern "C" void vApplicationIdleHook( void )
 {
 	// Process idle tick counter
