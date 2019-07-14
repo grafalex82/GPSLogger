@@ -1,6 +1,10 @@
-#include <Print.h>
 #include "USBDebugLogger.h"
 
+#include <Print.h>
+
+#include <stm32f1xx_hal.h>
+#include <stm32f1xx_hal_rcc.h>
+#include <stm32f1xx_ll_gpio.h>
 
 // SdFat needs Serial for its interface. Provide our one
 // (must be declared before including SdFat.h)
@@ -20,7 +24,23 @@ class UsbDebugSerial : public Print
 #include "SDThread.h"
 #include "USBDebugLogger.h"
 
-#include "Print.h"
+
+// Pins assignment
+static GPIO_TypeDef * const  SD_ENABLE_PIN_PORT = GPIOC;
+static const uint32_t        SD_ENABLE_PIN_NUM  = LL_GPIO_PIN_7;
+static GPIO_TypeDef * const  SDIO_D0_PIN_PORT   = GPIOC;
+static const uint32_t        SDIO_D0_PIN_NUM    = LL_GPIO_PIN_8;
+static GPIO_TypeDef * const  SDIO_D1_PIN_PORT   = GPIOC;
+static const uint32_t        SDIO_D1_PIN_NUM    = LL_GPIO_PIN_9;
+static GPIO_TypeDef * const  SDIO_D2_PIN_PORT   = GPIOC;
+static const uint32_t        SDIO_D2_PIN_NUM    = LL_GPIO_PIN_10;
+static GPIO_TypeDef * const  SDIO_D3_PIN_PORT   = GPIOC;
+static const uint32_t        SDIO_D3_PIN_NUM    = LL_GPIO_PIN_11;
+static GPIO_TypeDef * const  SDIO_CK_PIN_PORT   = GPIOC;
+static const uint32_t        SDIO_CK_PIN_NUM    = LL_GPIO_PIN_12;
+static GPIO_TypeDef * const  SDIO_CMD_PIN_PORT   = GPIOD;
+static const uint32_t        SDIO_CMD_PIN_NUM    = LL_GPIO_PIN_2;
+
 
 // SD card instance
 //SdFatSPIDriver spiDriver;
@@ -56,7 +76,6 @@ struct SDMessage
 
 QueueHandle_t sdQueue;
 
-
 // To same some RAM I am using a single buffer to accumulate raw GPS data and then send it to
 // SD thread. Alternative would be accumulating data in a separate buffer in GPS thread, then
 // assembly the message and therefore copy the buffer to message object.
@@ -82,30 +101,104 @@ void ackRawGPSData(uint8_t len)
 	xQueueSend(sdQueue, &rawGPSDataBuf, 10);
 }
 
-#if 0
+void initSDIOPins()
+{
+	__HAL_RCC_GPIOC_CLK_ENABLE();
+	__HAL_RCC_GPIOD_CLK_ENABLE();
+	__HAL_RCC_SDIO_CLK_ENABLE();
+	__HAL_RCC_DMA2_CLK_ENABLE();
+
+	LL_GPIO_SetPinMode(SD_ENABLE_PIN_PORT, SD_ENABLE_PIN_NUM, LL_GPIO_MODE_OUTPUT);                    // Enable pin
+	LL_GPIO_SetPinOutputType(SD_ENABLE_PIN_PORT, SD_ENABLE_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(SD_ENABLE_PIN_PORT, SD_ENABLE_PIN_NUM, LL_GPIO_SPEED_FREQ_LOW);
+
+	//@TODO: Always SD card for now. Measure idle current vs SD card enabled/initialized. Consider removing enable transistor
+	LL_GPIO_ResetOutputPin(SD_ENABLE_PIN_PORT, SD_ENABLE_PIN_NUM);
+
+
+	// Initialize SDIO pins:
+	LL_GPIO_SetPinMode(SDIO_D0_PIN_PORT, SDIO_D0_PIN_NUM, LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinPull(SDIO_D0_PIN_PORT, SDIO_D0_PIN_NUM, LL_GPIO_PULL_UP);
+	LL_GPIO_SetPinSpeed(SDIO_D0_PIN_PORT, SDIO_D0_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+
+	LL_GPIO_SetPinMode(SDIO_D1_PIN_PORT, SDIO_D1_PIN_NUM, LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinPull(SDIO_D1_PIN_PORT, SDIO_D1_PIN_NUM, LL_GPIO_PULL_UP);
+	LL_GPIO_SetPinSpeed(SDIO_D1_PIN_PORT, SDIO_D1_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+
+	LL_GPIO_SetPinMode(SDIO_D2_PIN_PORT, SDIO_D2_PIN_NUM, LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinPull(SDIO_D2_PIN_PORT, SDIO_D2_PIN_NUM, LL_GPIO_PULL_UP);
+	LL_GPIO_SetPinSpeed(SDIO_D2_PIN_PORT, SDIO_D2_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+
+	LL_GPIO_SetPinMode(SDIO_D3_PIN_PORT, SDIO_D3_PIN_NUM, LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinPull(SDIO_D3_PIN_PORT, SDIO_D3_PIN_NUM, LL_GPIO_PULL_UP);
+	LL_GPIO_SetPinSpeed(SDIO_D3_PIN_PORT, SDIO_D3_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+
+	LL_GPIO_SetPinMode(SDIO_CK_PIN_PORT, SDIO_CK_PIN_NUM, LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinOutputType(SDIO_CK_PIN_PORT, SDIO_CK_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(SDIO_CK_PIN_PORT, SDIO_CK_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+
+	LL_GPIO_SetPinMode(SDIO_CMD_PIN_PORT, SDIO_CMD_PIN_NUM, LL_GPIO_MODE_ALTERNATE);
+	LL_GPIO_SetPinOutputType(SDIO_CMD_PIN_PORT, SDIO_CMD_PIN_NUM, LL_GPIO_OUTPUT_PUSHPULL);
+	LL_GPIO_SetPinSpeed(SDIO_CMD_PIN_PORT, SDIO_CMD_PIN_NUM, LL_GPIO_SPEED_FREQ_HIGH);
+}
+
 bool initSDCard()
 {
-	//TODO Perhaps we should uninitialize SD card first
+	DMA_HandleTypeDef hdma_sdio;
+	SD_HandleTypeDef hsd;
 
-	usbDebugWrite("Initializing SD card...\n");
+	usbDebugWrite("Initializing SDIO ports...\n");
+	initSDIOPins();
 
-	// see if the card is present and can be initialized:
-	if (!SD.begin(PA4))
+	usbDebugWrite("Initialize SDIO...\n");
+
+	hsd.Instance = SDIO;
+	hsd.Init.ClockEdge = SDIO_CLOCK_EDGE_FALLING;
+	hsd.Init.ClockBypass = SDIO_CLOCK_BYPASS_DISABLE;
+	hsd.Init.ClockPowerSave = SDIO_CLOCK_POWER_SAVE_DISABLE;
+	hsd.Init.BusWide = SDIO_BUS_WIDE_1B;
+	hsd.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
+	hsd.Init.ClockDiv = 250;
+
+	if (HAL_SD_Init(&hsd) != HAL_OK)
 	{
-		usbDebugWrite("Card failed, or not present\n");
-		// don't do anything more:
+		usbDebugWrite("Failed to initialize SDIO\n");
 		return false;
 	}
-	usbDebugWrite("card initialized.\n");
 
-	//rawDataFile.open(&SD, "RAW_GPS.TXT", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
-	//bulkFile.open(&SD, "bulk_2.dat", O_RDWR | O_CREAT | O_AT_END | O_SYNC);
-	if(!bulkFile.open(&SD, "bulk.dat", O_READ))
-		usbDebugWrite("Filed to open file\n");
+	usbDebugWrite("Initialize SDIO DMA...\n");
+	hdma_sdio.Instance = DMA2_Channel4;
+	hdma_sdio.Init.Direction = DMA_PERIPH_TO_MEMORY;
+	hdma_sdio.Init.PeriphInc = DMA_PINC_DISABLE;
+	hdma_sdio.Init.MemInc = DMA_MINC_ENABLE;
+	hdma_sdio.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
+	hdma_sdio.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
+	hdma_sdio.Init.Mode = DMA_NORMAL;
+	hdma_sdio.Init.Priority = DMA_PRIORITY_LOW;
+	if (HAL_DMA_Init(&hdma_sdio) != HAL_OK)
+	{
+	  usbDebugWrite("Initialize SDIO DMA Failed\n");
+	  return false;
+	}
+
+	usbDebugWrite("Initializing Card...\n");
+	HAL_StatusTypeDef err = HAL_SD_InitCard(&hsd);
+	usbDebugWrite("InitCard() status: %d\n", err);
+	usbDebugWrite("InitCard() State: %d\n", hsd.State);
+	usbDebugWrite("InitCard() error code: %04x\n", hsd.ErrorCode);
+
+	usbDebugWrite("Setting 4-byte bus\n");
+	err = HAL_SD_ConfigWideBusOperation(&hsd, SDIO_BUS_WIDE_4B);
+	usbDebugWrite("HAL_SD_ConfigWideBusOperation() status: %d\n", err);
+	usbDebugWrite("HAL_SD_ConfigWideBusOperation() State: %d\n", hsd.State);
+	usbDebugWrite("HAL_SD_ConfigWideBusOperation() error code: %04x\n", hsd.ErrorCode);
+
+	usbDebugWrite("Done\n");
 
 	return true;
 }
 
+#if 0
 void saveRawData(const SDMessage & msg)
 {
 //	SerialUSB.print("Dumping GPS message ");
@@ -172,22 +265,27 @@ void initSDThread()
 	sdQueue = xQueueCreate(5, sizeof(SDMessage)); // hope 5 messages would be enough
 }
 
+#endif
+
+
 void vSDThread(void *pvParameters)
 {
-	initSDThread();
+	//initSDThread();
 
 	while(true)
 	{
 		vTaskDelay(3000);
 
 		if(initSDCard())
-			runSDMessageLoop();
+		{
+			//runSDMessageLoop();
+			usbDebugWrite("SD Card initialized successfully!\n");
+		}
 
 		//vTaskDelay(2000);
 	}
 }
 
-#endif
 
 /*
 	usbDebugWrite("Initializing card...");

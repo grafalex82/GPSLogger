@@ -260,7 +260,7 @@ SET(HAL_SRC
 	HAL/STM32F1/HAL_Inc/stm32f1xx_hal_rcc_ex.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_hal_rtc.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_hal_rtc_ex.h
-#	HAL/STM32F1/HAL_Inc/stm32f1xx_hal_sd.h
+	HAL/STM32F1/HAL_Inc/stm32f1xx_hal_sd.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_hal_smartcard.h
 	HAL/STM32F1/HAL_Inc/stm32f1xx_hal_spi.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_hal_sram.h
@@ -283,7 +283,7 @@ SET(HAL_SRC
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_ll_pwr.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_ll_rcc.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_ll_rtc.h
-#	HAL/STM32F1/HAL_Inc/stm32f1xx_ll_sdmmc.h
+	HAL/STM32F1/HAL_Inc/stm32f1xx_ll_sdmmc.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_ll_spi.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_ll_system.h
 #	HAL/STM32F1/HAL_Inc/stm32f1xx_ll_tim.h
@@ -325,7 +325,7 @@ SET(HAL_SRC
 	HAL/STM32F1/HAL_Src/stm32f1xx_hal_rcc_ex.c
 #	HAL/STM32F1/HAL_Src/stm32f1xx_hal_rtc.c
 #	HAL/STM32F1/HAL_Src/stm32f1xx_hal_rtc_ex.c
-#	HAL/STM32F1/HAL_Src/stm32f1xx_hal_sd.c
+	HAL/STM32F1/HAL_Src/stm32f1xx_hal_sd.c
 #	HAL/STM32F1/HAL_Src/stm32f1xx_hal_smartcard.c
 	HAL/STM32F1/HAL_Src/stm32f1xx_hal_spi.c
 #	HAL/STM32F1/HAL_Src/stm32f1xx_hal_spi_ex.c
@@ -348,7 +348,7 @@ SET(HAL_SRC
 #	HAL/STM32F1/HAL_Src/stm32f1xx_ll_pwr.c
 #	HAL/STM32F1/HAL_Src/stm32f1xx_ll_rcc.c
 #	HAL/STM32F1/HAL_Src/stm32f1xx_ll_rtc.c
-#	HAL/STM32F1/HAL_Src/stm32f1xx_ll_sdmmc.c
+	HAL/STM32F1/HAL_Src/stm32f1xx_ll_sdmmc.c
 #	HAL/STM32F1/HAL_Src/stm32f1xx_ll_spi.c
 #	HAL/STM32F1/HAL_Src/stm32f1xx_ll_tim.c
 	HAL/STM32F1/HAL_Src/stm32f1xx_ll_usart.c
