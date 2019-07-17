@@ -63,6 +63,8 @@ SET(SOURCE_FILES
 	PrintUtils.h
 #	SdFatSPIDriver.cpp
 #	SdFatSPIDriver.h
+	SDIODriver.cpp
+	SDIODriver.h
 #	SdMscDriver.cpp
 #	SdMscDriver.h
 	SDThread.cpp

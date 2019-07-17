@@ -16,7 +16,7 @@ static Thread<configMINIMAL_STACK_SIZE> ledThread(vLEDThread, "LED Thread", NULL
 static Thread<768>						displayThread(vDisplayTask, "Display Task", NULL, tskIDLE_PRIORITY + 2);
 static Thread<configMINIMAL_STACK_SIZE> buttonsThread(vButtonsThread, "Buttons Thread", NULL, tskIDLE_PRIORITY + 2);
 //static Thread<256>						gpsThread(vGPSTask, "GPS Thread", NULL, tskIDLE_PRIORITY + 3);
-static Thread<512>						sdThread(vSDThread, "SD Thread", NULL, tskIDLE_PRIORITY + 1);
+static Thread<768>						sdThread(vSDThread, "SD Thread", NULL, tskIDLE_PRIORITY + 1);
 
 //xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
 //xTaskCreate(xSDTestThread, "SD test thread", 200, NULL, tskIDLE_PRIORITY + 3, NULL);
