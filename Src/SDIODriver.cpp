@@ -77,7 +77,7 @@ bool SDIODriver::initSDIO()
 	sdHandle.Init.ClockPowerSave = SDIO_CLOCK_POWER_SAVE_DISABLE;
 	sdHandle.Init.BusWide = SDIO_BUS_WIDE_1B;
 	sdHandle.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
-	sdHandle.Init.ClockDiv = 250;
+	sdHandle.Init.ClockDiv = 2;
 	if(HAL_SD_Init(&sdHandle) != HAL_OK)
 		return false;
 
@@ -88,7 +88,7 @@ bool SDIODriver::initSDIO()
 	dmaReadHandle.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
 	dmaReadHandle.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
 	dmaReadHandle.Init.Mode = DMA_NORMAL;
-	dmaReadHandle.Init.Priority = DMA_PRIORITY_LOW;
+	dmaReadHandle.Init.Priority = DMA_PRIORITY_MEDIUM;
 	if(HAL_DMA_Init(&dmaReadHandle) != HAL_OK)
 		return false;
 
@@ -99,7 +99,7 @@ bool SDIODriver::initSDIO()
 	dmaWriteHandle.Init.PeriphDataAlignment = DMA_PDATAALIGN_WORD;
 	dmaWriteHandle.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
 	dmaWriteHandle.Init.Mode = DMA_NORMAL;
-	dmaWriteHandle.Init.Priority = DMA_PRIORITY_LOW;
+	dmaWriteHandle.Init.Priority = DMA_PRIORITY_MEDIUM;
 	if(HAL_DMA_Init(&dmaWriteHandle) != HAL_OK)
 		return false;
 
