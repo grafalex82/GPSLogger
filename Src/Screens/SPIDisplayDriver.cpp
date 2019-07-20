@@ -22,16 +22,10 @@ static const uint32_t			ENABLE_PIN_NUM	= LL_GPIO_PIN_2;
 
 SPIDisplayDriver::SPIDisplayDriver()
 {
-	xSema = NULL;
 }
 
 void SPIDisplayDriver::begin()
 {
-	// Init sync object
-	portDISABLE_INTERRUPTS();
-	xSema = xSemaphoreCreateBinaryStatic(&xSemaBuffer);
-	portENABLE_INTERRUPTS();
-
 	// Enable clocking of corresponding periperhal
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 	__HAL_RCC_GPIOC_CLK_ENABLE();
@@ -117,7 +111,7 @@ void SPIDisplayDriver::sendData(const uint8_t * data, size_t size)
 	HAL_SPI_Transmit_DMA(&spiHandle, (uint8_t *)data, size);
 
 	// Wait until transfer is completed
-	xSemaphoreTake(xSema, 10);
+	sema.take(10);
 }
 
 void SPIDisplayDriver::endTransaction()
@@ -128,8 +122,7 @@ void SPIDisplayDriver::endTransaction()
 void SPIDisplayDriver::dmaTransferCompletedCB()
 {
 	// Resume SD thread
-	BaseType_t xHigherPriorityTaskWoken;
-	xSemaphoreGiveFromISR(xSema, &xHigherPriorityTaskWoken);
+	BaseType_t xHigherPriorityTaskWoken = sema.giveFromISR();
 	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
 
@@ -138,7 +131,7 @@ extern "C" void DMA1_Channel3_IRQHandler(void)
 	HAL_DMA_IRQHandler(displayDriver.getHandle().hdmatx);
 }
 
-extern "C" void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
+extern "C" void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *)
 {
 	displayDriver.dmaTransferCompletedCB();
 }

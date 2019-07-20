@@ -37,9 +37,53 @@ public:
 										 &queueControlBlock);
 	}
 
-	operator QueueHandle_t() const
+	//operator QueueHandle_t() const
+	//{
+	//	return queueHandle;
+	//}
+
+	bool receive(T * val, TickType_t xTicksToWait)
 	{
-		return queueHandle;
+		return xQueueReceive(queueHandle, val, xTicksToWait);
+	}
+
+	bool send(T & val, TickType_t xTicksToWait)
+	{
+		return xQueueSend(queueHandle, &val, xTicksToWait);
+	}
+};
+
+class Sema
+{
+	SemaphoreHandle_t sema;
+	StaticSemaphore_t semaControlBlock;
+
+public:
+	Sema()
+	{
+		sema = xSemaphoreCreateBinaryStatic(&semaControlBlock);
+	}
+
+	//operator TaskHandle_t() const
+	//{
+	//	return xSema;
+	//}
+
+	BaseType_t giveFromISR()
+	{
+		BaseType_t xHigherPriorityTaskWoken;
+		xSemaphoreGiveFromISR(sema, &xHigherPriorityTaskWoken);
+		return xHigherPriorityTaskWoken;
+	}
+
+	BaseType_t give()
+	{
+		return xSemaphoreGive(sema);
+	}
+
+	BaseType_t take(TickType_t xTicksToWait)
+	{
+		return xSemaphoreTake(sema, xTicksToWait);
 	}
 };
 

@@ -1,6 +1,8 @@
 #ifndef SPIDISPLAYDRIVER_H
 #define SPIDISPLAYDRIVER_H
 
+#include "FreeRTOSHelpers.h"
+
 #include <Adafruit_SSD1306.h>
 #include <Arduino_FreeRTOS.h>
 
@@ -14,8 +16,7 @@ class SPIDisplayDriver: public ISSD1306Driver
 	DMA_HandleTypeDef dmaHandleTx;
 
 	// transfer synchronization object
-	TaskHandle_t xSema;
-	StaticSemaphore_t xSemaBuffer;
+	Sema sema;
 
 public:
 	SPIDisplayDriver();

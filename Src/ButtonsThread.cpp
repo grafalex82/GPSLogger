@@ -96,7 +96,7 @@ void vButtonsThread(void *)
 				msg.event = BUTTON_CLICK;
 
 			// Send the message
-			xQueueSend(buttonsQueue, &msg, 0);
+			buttonsQueue.send(msg, 0);
 		}
 		
 		// TODO: Use different polling periods depending on global system state (off/idle/active)
@@ -107,5 +107,5 @@ void vButtonsThread(void *)
 
 bool waitForButtonMessage(ButtonMessage * msg, TickType_t xTicksToWait)
 {
-	return xQueueReceive(buttonsQueue, msg, xTicksToWait);
+	return buttonsQueue.receive(msg, xTicksToWait);
 }
