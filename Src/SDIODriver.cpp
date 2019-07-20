@@ -151,8 +151,6 @@ bool SDIODriver::init()
 
 bool SDIODriver::cardRead(uint32_t lba, uint8_t * pBuf, uint32_t blocksCount)
 {
-	usbDebugWrite("Reading a sector %d\n", lba);
-
 	// Start read operation
 	curDMAHandle = sdHandle.hdmarx;
 	HAL_StatusTypeDef err = HAL_SD_ReadBlocks_DMA(&sdHandle, pBuf, lba, blocksCount);
@@ -160,7 +158,6 @@ bool SDIODriver::cardRead(uint32_t lba, uint8_t * pBuf, uint32_t blocksCount)
 		return false;
 
 	// Wait until transfer is completed
-	usbDebugWrite("Waiting for done\n");
 	if(xSemaphoreTake(xSema, 100) != pdTRUE)
 		return false;
 
@@ -171,7 +168,7 @@ bool SDIODriver::cardWrite(uint32_t lba, const uint8_t * pBuf, uint32_t blocksCo
 {
 	// Start read operation
 	curDMAHandle = sdHandle.hdmatx;
-	HAL_StatusTypeDef err = HAL_SD_WriteBlocks_DMA(&sdHandle, (uint8_t *)pBuf, lba, blocksCount);
+	HAL_StatusTypeDef err = HAL_SD_WriteBlocks_DMA(&sdHandle, const_cast<uint8_t *>(pBuf), lba, blocksCount);
 	if(err != HAL_OK)
 		return false;
 

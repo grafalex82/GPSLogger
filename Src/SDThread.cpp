@@ -24,13 +24,6 @@ class UsbDebugSerial : public Print
 
 SDIODriver sdioDriver;
 
-// SD card instance
-//SdFatSPIDriver spiDriver;
-//SdFat SD(&spiDriver);
-
-// Files we are working fith
-//FatFile rawDataFile;
-//FatFile bulkFile;
 
 enum SDMessageType
 {
@@ -154,7 +147,7 @@ void initSDThread()
 #endif
 
 
-uint8_t readbuf[512];
+uint8_t readbuf[4096];
 
 void vSDThread(void *pvParameters)
 {
@@ -168,152 +161,23 @@ void vSDThread(void *pvParameters)
 		{
 			usbDebugWrite("SD Card initialized successfully!\n");
 
-			for(uint32_t s=0; s<10000; s++)
+			uint32_t prev = HAL_GetTick();
+			for(uint32_t kb=0; kb<8000000; )
 			{
-				sdioDriver.cardRead(s, readbuf, 1);
+				sdioDriver.cardRead(kb/2, readbuf, 8);
+				kb += 4;
 
-				for(int i=0; i<512; i++)
+				uint32_t cur = HAL_GetTick();
+				if(cur-prev >= 1000)
 				{
-					usbDebugWrite("%02x ", readbuf[i]);
-					if(i%16 == 15)
-						usbDebugWrite("\n");
+					usbDebugWrite("Read %d kb\n", kb);
+					kb = 0;
+					prev = HAL_GetTick();
 				}
-
-				vTaskDelay(500);
 			}
 		}
 		else
 			usbDebugWrite("Failed to initialize SD card!\n");
 	}
 }
-
-
-/*
-	usbDebugWrite("Initializing card...");
-
-	uint8_t r = card.init(SPI_HALF_SPEED, PA4);
-
-
-	SerialUSB.print("Finished card initialization:");
-	SerialUSB.print(r);
-	usbDebugWrite("");
-
-	if(!r)
-	{
-		SerialUSB.print("Error code:");
-		SerialUSB.print(card.errorCode());
-		usbDebugWrite("");
-		goto exit;
-	}
-
-	// print the type of card
-	SerialUSB.print("\nCard type: ");
-	switch (card.type()) {
-	  case SD_CARD_TYPE_SD1:
-		usbDebugWrite("SD1");
-		break;
-	  case SD_CARD_TYPE_SD2:
-		usbDebugWrite("SD2");
-		break;
-	  case SD_CARD_TYPE_SDHC:
-		usbDebugWrite("SDHC");
-		break;
-	  default:
-		usbDebugWrite("Unknown");
-	}
-
-	// Now we will try to open the 'volume'/'partition' - it should be FAT16 or FAT32
-	if (!volume.init(card)) {
-	  usbDebugWrite("Could not find FAT16/FAT32 partition.\nMake sure you've formatted the card");
-	  return;
-	}
-
-
-	// print the type and size of the first FAT-type volume
-	uint32_t volumesize;
-	SerialUSB.print("\nVolume type is FAT");
-	usbDebugWrite(volume.fatType(), DEC);
-	usbDebugWrite();
-
-	volumesize = volume.blocksPerCluster();    // clusters are collections of blocks
-	volumesize *= volume.clusterCount();       // we'll have a lot of clusters
-	volumesize *= 512;                            // SD card blocks are always 512 bytes
-	SerialUSB.print("Volume size (bytes): ");
-	usbDebugWrite(volumesize);
-
-	SerialUSB.print("Volume size (Kbytes): ");
-	volumesize /= 1024;
-	usbDebugWrite(volumesize);
-	SerialUSB.print("Volume size (Mbytes): ");
-	volumesize /= 1024;
-	usbDebugWrite(volumesize);
-
-
-	usbDebugWrite("\nFiles found on the card (name, date and size in bytes): ");
-	root.openRoot(volume);
-
-	// list all files in the card with date and size
-	root.ls(LS_R | LS_DATE | LS_SIZE);
-exit:
-
-*/
-/*
-	SerialUSB.print("Initializing SD card...");
-
-	// see if the card is present and can be initialized:
-	if (!SD.begin(PA4)) {
-	  usbDebugWrite("Card failed, or not present");
-	  // don't do anything more:
-	  return;
-	}
-	usbDebugWrite("card initialized.");
-
-	File dataFile = SD.open("8X12FONT.CPP");
-	// if the file is available, write to it:
-	if (dataFile)
-	{
-		usbDebugWrite("File opened");
-		while (dataFile.available())
-		{
-			SerialUSB.write(dataFile.read());
-		}
-		dataFile.close();
-	}
-	// if the file isn't open, pop up an error:
-	else
-	{
-		usbDebugWrite("error opening datalog.txt");
-	}
-*/
-
-/*
-	SerialUSB.print("Initializing SD card...");
-
-	// see if the card is present and can be initialized:
-	if (!SD.begin(PA4)) {
-	  usbDebugWrite("Card failed, or not present");
-	  // don't do anything more:
-	  return;
-	}
-	usbDebugWrite("card initialized.");
-
-	File dataFile = SD.open("TEST.DAT", FILE_WRITE);
-	if (dataFile)
-	{
-		usbDebugWrite("File opened");
-		for(int i=0; i<100; i++)
-		{
-			SerialUSB.print("Printing a message #");
-			usbDebugWrite(i);
-			dataFile.print("Printing a message #");
-			dataFile.println(i);
-		}
-		dataFile.close();
-	}
-	// if the file isn't open, pop up an error:
-	else
-	{
-		usbDebugWrite("error opening TEST.DAT");
-	}
-*/
 
