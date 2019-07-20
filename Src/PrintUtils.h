@@ -1,5 +1,5 @@
-#ifndef __UTILS_H__
-#define __UTILS_H__
+#ifndef UTILS_H_
+#define UTILS_H_
 
 #include <stdint.h> // for uint16_t
 #include <stdarg.h>
@@ -62,4 +62,4 @@ public:
 
 
 
-#endif //__UTILS_H__
+#endif //UTILS_H_

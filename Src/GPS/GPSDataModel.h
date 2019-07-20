@@ -1,5 +1,5 @@
-#ifndef __GPSDATA_H__
-#define __GPSDATA_H__
+#ifndef GPSDATA_H_
+#define GPSDATA_H_
 
 #include "GPSSatellitesData.h"
 #include "Arduino_FreeRTOS.h"
@@ -54,4 +54,4 @@ private:
 	GPSDataModel& operator=( const GPSDataModel &c );	
 }; //GPSDataModel
 
-#endif //__GPSDATA_H__
+#endif //GPSDATA_H_

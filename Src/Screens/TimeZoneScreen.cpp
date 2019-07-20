@@ -68,7 +68,7 @@ void TimeZoneScreen::drawScreen() const
 	printToDisplay("%02d:%02d", dateTime.hours, dateTime.minutes);
 	
 	// Draw the date and time zone strings
-	display.setFont(NULL);
+	display.setFont(nullptr);
 	display.setCursor(78,8);
 	printToDisplay("%02d/%02d/%02d", dateTime.date, dateTime.month, dateTime.year);
 

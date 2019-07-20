@@ -1,6 +1,9 @@
 #ifndef _SCREEN_H_
 #define _SCREEN_H_
 
+class Adafruit_SSD1306;
+extern Adafruit_SSD1306 display;
+
 class Screen
 {
 	Screen * nextScreen;

@@ -1,7 +1,7 @@
-#ifndef __GPSTHREAD_H__
-#define __GPSTHREAD_H__
+#ifndef GPSTHREAD_H_
+#define GPSTHREAD_H_
 
 void initGPS();
 void vGPSTask(void *pvParameters);
 
-#endif //__GPSTHREAD_H__
+#endif //GPSTHREAD_H_

@@ -1,7 +1,9 @@
-#ifndef __TIMEZONESCREEN_H__
-#define __TIMEZONESCREEN_H__
+#ifndef TIMEZONESCREEN_H_
+#define TIMEZONESCREEN_H_
 
 #include "Screen.h"
+
+#include <stdint.h>
 
 class TimeZoneScreen : public Screen
 {
@@ -26,4 +28,4 @@ private:
 	uint8_t timeZoneIdx;
 }; //TimeZoneScreen
 
-#endif //__TIMEZONESCREEN_H__
+#endif //TIMEZONESCREEN_H_

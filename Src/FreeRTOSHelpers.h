@@ -1,5 +1,5 @@
-#ifndef _FREERTOSHELPERS_H_
-#define _FREERTOSHELPERS_H_
+#ifndef FREERTOSHELPERS_H_
+#define FREERTOSHELPERS_H_
 
 #include "Arduino_FreeRTOS.h"
 
@@ -37,10 +37,54 @@ public:
 										 &queueControlBlock);
 	}
 
-	operator QueueHandle_t() const
+	//operator QueueHandle_t() const
+	//{
+	//	return queueHandle;
+	//}
+
+	bool receive(T * val, TickType_t xTicksToWait)
 	{
-		return queueHandle;
+		return xQueueReceive(queueHandle, val, xTicksToWait);
+	}
+
+	bool send(T & val, TickType_t xTicksToWait)
+	{
+		return xQueueSend(queueHandle, &val, xTicksToWait);
 	}
 };
 
-#endif //_FREERTOSHELPERS_H_
+class Sema
+{
+	SemaphoreHandle_t sema;
+	StaticSemaphore_t semaControlBlock;
+
+public:
+	Sema()
+	{
+		sema = xSemaphoreCreateBinaryStatic(&semaControlBlock);
+	}
+
+	//operator TaskHandle_t() const
+	//{
+	//	return xSema;
+	//}
+
+	BaseType_t giveFromISR()
+	{
+		BaseType_t xHigherPriorityTaskWoken;
+		xSemaphoreGiveFromISR(sema, &xHigherPriorityTaskWoken);
+		return xHigherPriorityTaskWoken;
+	}
+
+	BaseType_t give()
+	{
+		return xSemaphoreGive(sema);
+	}
+
+	BaseType_t take(TickType_t xTicksToWait)
+	{
+		return xSemaphoreTake(sema, xTicksToWait);
+	}
+};
+
+#endif //FREERTOSHELPERS_H_

@@ -14,7 +14,7 @@
 #include "USBDebugLogger.h"
 
 // A GPS parser
-NMEAGPS gpsParser;
+static NMEAGPS gpsParser;
 
 // Size of UART input buffer
 const uint8_t gpsBufferSize = 128;
@@ -37,7 +37,7 @@ class GPS_UART
 	volatile uint8_t lastReceivedIndex = 0;
 
 	// GPS thread handle
-	TaskHandle_t xGPSThread = NULL;
+	TaskHandle_t xGPSThread = nullptr;
 
 public:
 	void init()
@@ -119,9 +119,11 @@ public:
 
 		// If a EOL symbol received, notify GPS thread that line is avaialble to read
 		if(c == '\n')
-			vTaskNotifyGiveFromISR(xGPSThread, NULL);
+			vTaskNotifyGiveFromISR(xGPSThread, nullptr);
 	}
-} gpsUart; // An instance of UART handler
+};
+
+static GPS_UART gpsUart; // An instance of UART handler
 
 
 extern "C" void USART1_IRQHandler(void)
@@ -130,7 +132,8 @@ extern "C" void USART1_IRQHandler(void)
 	gpsUart.charReceivedCB(byte);
 }
 
-void vGPSTask(void *pvParameters)
+__attribute__((noreturn))
+void vGPSTask(void *)
 {
 	uint8_t maxLen = 0;
 
@@ -151,7 +154,7 @@ void vGPSTask(void *pvParameters)
 		// Read received string and parse GPS stream char by char
 		while(gpsUart.available())
 		{
-			int c = gpsUart.readChar();
+			char c = gpsUart.readChar();
 			gpsParser.handle(c);
 			buf[len] = c;
 

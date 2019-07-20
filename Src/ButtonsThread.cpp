@@ -67,7 +67,8 @@ ButtonID getPressedButtonID()
 
 
 // Buttons polling thread function
-void vButtonsThread(void *pvParameters)
+__attribute__((noreturn))
+void vButtonsThread(void *)
 {
 	for (;;)
 	{
@@ -95,7 +96,7 @@ void vButtonsThread(void *pvParameters)
 				msg.event = BUTTON_CLICK;
 
 			// Send the message
-			xQueueSend(buttonsQueue, &msg, 0);
+			buttonsQueue.send(msg, 0);
 		}
 		
 		// TODO: Use different polling periods depending on global system state (off/idle/active)
@@ -106,5 +107,5 @@ void vButtonsThread(void *pvParameters)
 
 bool waitForButtonMessage(ButtonMessage * msg, TickType_t xTicksToWait)
 {
-	return xQueueReceive(buttonsQueue, msg, xTicksToWait);
+	return buttonsQueue.receive(msg, xTicksToWait);
 }

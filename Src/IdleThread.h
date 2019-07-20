@@ -1,7 +1,7 @@
-#ifndef __IDLETHREAD_H__
-#define __IDLETHREAD_H__
+#ifndef IDLETHREAD_H_
+#define IDLETHREAD_H_
 
 float getCPULoad();
 float getMaxCPULoad();
 
-#endif //__IDLETHREAD_H__
+#endif //IDLETHREAD_H_

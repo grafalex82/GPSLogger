@@ -5,9 +5,9 @@
 #include "GPSDataModel.h"
 #include "GPSOdometer.h"
 
-GPSOdometer odometer0;
-GPSOdometer odometer1;
-GPSOdometer odometer2;
+static GPSOdometer odometer0;
+static GPSOdometer odometer1;
+static GPSOdometer odometer2;
 
 GPSDataModel::GPSDataModel()
 {

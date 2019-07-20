@@ -1,5 +1,7 @@
-#ifndef __GPSSATELLITESDATA_H__
-#define __GPSSATELLITESDATA_H__
+#ifndef GPSSATELLITESDATA_H_
+#define GPSSATELLITESDATA_H_
+
+#include <stdint.h>
 
 const uint8_t SAT_ARRAY_SIZE = 20; // Must match NMEAGPS_MAX_SATELLITES
 
@@ -29,4 +31,4 @@ public:
 	bool isSatteliteTracked(uint8_t sat) const {return satellitesData[sat].tracked;}
 };
 
-#endif //__GPSSATELLITESDATA_H__
+#endif //GPSSATELLITESDATA_H_

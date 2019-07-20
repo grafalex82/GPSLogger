@@ -1,6 +1,8 @@
 #ifndef SDTHREAD_H
 #define SDTHREAD_H
 
+#include <stdint.h>
+
 // Maximum lenth of a single raw GPS data message (not including terminating \n)
 const uint8_t maxRawGPSDataLen = 80;
 // Returns a pointer to an internal buffer where GPS thread can accumulate raw GPS data (not more than maxRawGPSDataLen symbols)
