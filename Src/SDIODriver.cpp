@@ -77,7 +77,7 @@ bool SDIODriver::initSDIO()
 	sdHandle.Init.ClockPowerSave = SDIO_CLOCK_POWER_SAVE_DISABLE;
 	sdHandle.Init.BusWide = SDIO_BUS_WIDE_1B;
 	sdHandle.Init.HardwareFlowControl = SDIO_HARDWARE_FLOW_CONTROL_DISABLE;
-	sdHandle.Init.ClockDiv = 2;
+	sdHandle.Init.ClockDiv = 0;
 	if(HAL_SD_Init(&sdHandle) != HAL_OK)
 		return false;
 
@@ -91,7 +91,7 @@ bool SDIODriver::initSDIO()
 	dmaReadHandle.Init.Priority = DMA_PRIORITY_MEDIUM;
 	if(HAL_DMA_Init(&dmaReadHandle) != HAL_OK)
 		return false;
-
+/*
 	dmaWriteHandle.Instance = DMA2_Channel4;
 	dmaWriteHandle.Init.Direction = DMA_MEMORY_TO_PERIPH;
 	dmaWriteHandle.Init.PeriphInc = DMA_PINC_DISABLE;
@@ -102,9 +102,9 @@ bool SDIODriver::initSDIO()
 	dmaWriteHandle.Init.Priority = DMA_PRIORITY_MEDIUM;
 	if(HAL_DMA_Init(&dmaWriteHandle) != HAL_OK)
 		return false;
-
+*/
 	__HAL_LINKDMA(&sdHandle, hdmarx, dmaReadHandle);
-	__HAL_LINKDMA(&sdHandle, hdmatx, dmaWriteHandle);
+//	__HAL_LINKDMA(&sdHandle, hdmatx, dmaWriteHandle);
 
 	HAL_NVIC_SetPriority(DMA2_Channel4_IRQn, 9, 0);
 	HAL_NVIC_EnableIRQ(DMA2_Channel4_IRQn);
@@ -156,7 +156,6 @@ bool SDIODriver::cardRead(uint32_t lba, uint8_t * pBuf, uint32_t blocksCount)
 	// Start read operation
 	curDMAHandle = sdHandle.hdmarx;
 	HAL_StatusTypeDef err = HAL_SD_ReadBlocks_DMA(&sdHandle, pBuf, lba, blocksCount);
-//	HAL_StatusTypeDef err = HAL_SD_ReadBlocks(&sdHandle, pBuf, lba, blocksCount, 100);
 	if(err != HAL_OK)
 		return false;
 
