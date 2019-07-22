@@ -17,6 +17,7 @@ static Thread<768>						displayThread(vDisplayTask, "Display Task", nullptr, tsk
 static Thread<configMINIMAL_STACK_SIZE> buttonsThread(vButtonsThread, "Buttons Thread", nullptr, tskIDLE_PRIORITY + 2);
 //static Thread<256>						gpsThread(vGPSTask, "GPS Thread", nullptr, tskIDLE_PRIORITY + 3);
 static Thread<768>						sdThread(vSDThread, "SD Thread", nullptr, tskIDLE_PRIORITY + 1);
+static Thread<512>						sdTestThread(xSDTestThread, "SD test Thread", nullptr, tskIDLE_PRIORITY + 1);
 
 //xTaskCreate(xSDIOThread, "SD IO executor", 256, NULL, tskIDLE_PRIORITY + 3, NULL);
 //xTaskCreate(xSDTestThread, "SD test thread", 200, NULL, tskIDLE_PRIORITY + 3, NULL);
