@@ -64,11 +64,6 @@ public:
 		sema = xSemaphoreCreateBinaryStatic(&semaControlBlock);
 	}
 
-	//operator TaskHandle_t() const
-	//{
-	//	return xSema;
-	//}
-
 	BaseType_t giveFromISR()
 	{
 		BaseType_t xHigherPriorityTaskWoken;
@@ -76,14 +71,14 @@ public:
 		return xHigherPriorityTaskWoken;
 	}
 
-	BaseType_t give()
+	bool give()
 	{
-		return xSemaphoreGive(sema);
+		return xSemaphoreGive(sema) == pdTRUE;
 	}
 
-	BaseType_t take(TickType_t xTicksToWait)
+	bool take(TickType_t xTicksToWait)
 	{
-		return xSemaphoreTake(sema, xTicksToWait);
+		return xSemaphoreTake(sema, xTicksToWait) == pdTRUE;
 	}
 };
 
