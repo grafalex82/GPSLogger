@@ -81,6 +81,22 @@ bool SDIODriver::initSDIO()
 	if(HAL_SD_Init(&sdHandle) != HAL_OK)
 		return false;
 
+	initReadDMA();
+	initWriteDMA();
+
+	__HAL_LINKDMA(&sdHandle, hdmarx, dmaReadHandle);
+	__HAL_LINKDMA(&sdHandle, hdmatx, dmaWriteHandle);
+
+	HAL_NVIC_SetPriority(DMA2_Channel4_IRQn, 9, 0);
+	HAL_NVIC_EnableIRQ(DMA2_Channel4_IRQn);
+	HAL_NVIC_SetPriority(SDIO_IRQn, 10, 0);
+	HAL_NVIC_EnableIRQ(SDIO_IRQn);
+
+	return true;
+}
+
+bool SDIODriver::initReadDMA()
+{
 	dmaReadHandle.Instance = DMA2_Channel4;
 	dmaReadHandle.Init.Direction = DMA_PERIPH_TO_MEMORY;
 	dmaReadHandle.Init.PeriphInc = DMA_PINC_DISABLE;
@@ -89,9 +105,11 @@ bool SDIODriver::initSDIO()
 	dmaReadHandle.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
 	dmaReadHandle.Init.Mode = DMA_NORMAL;
 	dmaReadHandle.Init.Priority = DMA_PRIORITY_MEDIUM;
-	if(HAL_DMA_Init(&dmaReadHandle) != HAL_OK)
-		return false;
-/*
+	return HAL_DMA_Init(&dmaReadHandle) == HAL_OK;
+}
+
+bool SDIODriver::initWriteDMA()
+{
 	dmaWriteHandle.Instance = DMA2_Channel4;
 	dmaWriteHandle.Init.Direction = DMA_MEMORY_TO_PERIPH;
 	dmaWriteHandle.Init.PeriphInc = DMA_PINC_DISABLE;
@@ -100,18 +118,8 @@ bool SDIODriver::initSDIO()
 	dmaWriteHandle.Init.MemDataAlignment = DMA_MDATAALIGN_WORD;
 	dmaWriteHandle.Init.Mode = DMA_NORMAL;
 	dmaWriteHandle.Init.Priority = DMA_PRIORITY_MEDIUM;
-	if(HAL_DMA_Init(&dmaWriteHandle) != HAL_OK)
-		return false;
-*/
-	__HAL_LINKDMA(&sdHandle, hdmarx, dmaReadHandle);
-//	__HAL_LINKDMA(&sdHandle, hdmatx, dmaWriteHandle);
 
-	HAL_NVIC_SetPriority(DMA2_Channel4_IRQn, 9, 0);
-	HAL_NVIC_EnableIRQ(DMA2_Channel4_IRQn);
-	HAL_NVIC_SetPriority(SDIO_IRQn, 10, 0);
-	HAL_NVIC_EnableIRQ(SDIO_IRQn);
-
-	return true;
+	return HAL_DMA_Init(&dmaWriteHandle) == HAL_OK;
 }
 
 bool SDIODriver::initCard()
@@ -151,6 +159,10 @@ bool SDIODriver::init()
 
 bool SDIODriver::cardRead(uint32_t lba, uint8_t * pBuf, uint32_t blocksCount)
 {
+	// @TODO Do not call this on controllers that have separate read and write DMA
+	// channels for SDIO.
+	initReadDMA();
+
 	// Start read operation
 	curDMAHandle = sdHandle.hdmarx;
 	HAL_StatusTypeDef err = HAL_SD_ReadBlocks_DMA(&sdHandle, pBuf, lba, blocksCount);
@@ -166,6 +178,10 @@ bool SDIODriver::cardRead(uint32_t lba, uint8_t * pBuf, uint32_t blocksCount)
 
 bool SDIODriver::cardWrite(uint32_t lba, const uint8_t * pBuf, uint32_t blocksCount)
 {
+	// @TODO Do not call this on controllers that have separate read and write DMA
+	// channels for SDIO.
+	initWriteDMA();
+
 	// Start read operation
 	curDMAHandle = sdHandle.hdmatx;
 	HAL_StatusTypeDef err = HAL_SD_WriteBlocks_DMA(&sdHandle, const_cast<uint8_t *>(pBuf), lba, blocksCount);

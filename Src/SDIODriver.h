@@ -40,6 +40,8 @@ private:
 	void initSDIOPins();
 	bool initSDIO();
 	bool initCard();
+	bool initReadDMA();
+	bool initWriteDMA();
 };
 
 #endif // SDIODRIVER_H
